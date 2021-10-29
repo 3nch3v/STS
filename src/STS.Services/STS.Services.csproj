@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\STS.Common\STS.Common.csproj" />
+    <ProjectReference Include="..\STS.Data\STS.Data.csproj" />
+  </ItemGroup>
+
+</Project>
