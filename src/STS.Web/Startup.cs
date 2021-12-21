@@ -59,7 +59,8 @@ namespace STS.Web
             // Application services
             services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<IUserService, UserService>();
-            
+            services.AddTransient<ITaskService, TaskService>();
+           
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

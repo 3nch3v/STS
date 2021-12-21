@@ -28,9 +28,18 @@ namespace STS.Web.Controllers
             this.userManager = userManager;
         }
 
-        [Route("\\")]
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Ticket(int id)
+        {
+            var ticket = ticketService.GetById(id);
+
+            var ticketDto = mapper.Map<TicketViewModel>(ticket);
+
+            return View(ticketDto);
+        }
+
+        [HttpGet]
+        public IActionResult Tickets()
         {
             var userId = userManager.GetUserId(User);
 
@@ -42,16 +51,6 @@ namespace STS.Web.Controllers
             };
 
             return View(ticketsDtos);
-        }
-
-        [HttpGet]
-        public IActionResult Ticket(int id)
-        {
-            var ticket = ticketService.GetById(id);
-
-            var ticketDto = mapper.Map<TicketViewModel>(ticket);
-
-            return View(ticketDto);
         }
 
         [HttpGet]
@@ -72,7 +71,7 @@ namespace STS.Web.Controllers
 
             await ticketService.CreateAsync(userId, ticket);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Tickets));
         }
 
         [HttpGet]
@@ -86,7 +85,7 @@ namespace STS.Web.Controllers
                 return BadRequest();
             }
 
-            var ticketDto = mapper.Map<BaseTicketViewModel>(ticket);
+            var ticketDto = mapper.Map<TicketViewModel>(ticket);
 
             return View(ticketDto);
         }
@@ -109,7 +108,7 @@ namespace STS.Web.Controllers
 
             await ticketService.EditAsync(id, ticketInput);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Tickets));
         }
 
         [HttpDelete]
@@ -125,7 +124,7 @@ namespace STS.Web.Controllers
 
             await ticketService.DeleteAsync(id);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Tickets));
         }
     }
 }

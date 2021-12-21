@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 using STS.Data.Common;
@@ -9,6 +10,11 @@ namespace STS.Data.Models
 {
     public class EmployeeTask : BaseDeletableModel<int>
     {
+        public EmployeeTask()
+        {
+            this.Comments = new HashSet<ReplyTask>();
+        }
+
         [Required]
         [MaxLength(TitleMaxLength)]
         public string Title { get; set; }
@@ -36,5 +42,7 @@ namespace STS.Data.Models
         public string ManagerId { get; set; }
 
         public virtual ApplicationUser Manager { get; set; }
+
+        public virtual ICollection<ReplyTask> Comments { get; set; }
     }
 }
