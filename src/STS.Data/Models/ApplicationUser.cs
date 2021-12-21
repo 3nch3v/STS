@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 using Microsoft.AspNetCore.Identity;
 
 using STS.Data.Common;
@@ -20,16 +21,16 @@ namespace STS.Data.Models
             Tasks = new HashSet<EmployeeTask>();
             Roles = new HashSet<IdentityUserRole<string>>();
             Claims = new HashSet<IdentityUserClaim<string>>();
-            Logins = new HashSet<IdentityUserLogin<string>>();
+            Logins = new HashSet<IdentityUserLogin<string>>(); 
         }
 
         [Required]
         [MaxLength(EmployeeNameMaxLength)]
-        public string Vorname { get; set; }
+        public string FirstName { get; set; }
 
         [Required]
         [MaxLength(EmployeeNameMaxLength)]
-        public string Name { get; set; }
+        public string LastName { get; set; }
 
         [Required]
         [MaxLength(EmployeePositionNameMaxLength)]

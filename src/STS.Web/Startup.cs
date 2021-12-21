@@ -10,6 +10,9 @@ using Microsoft.Extensions.Hosting;
 using STS.Data;
 using STS.Data.Models;
 using STS.Data.Seeding;
+using STS.Services;
+using STS.Services.Contracts;
+using System.Reflection;
 
 namespace STS.Web
 {
@@ -45,6 +48,8 @@ namespace STS.Web
                 })
                 .AddRazorRuntimeCompilation();
 
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             services.AddRazorPages();
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -52,7 +57,9 @@ namespace STS.Web
             services.AddSingleton(this.configuration);
 
             // Application services
-            //services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<ITicketService, TicketService>();
+            services.AddTransient<IUserService, UserService>();
+            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,15 +1,15 @@
-﻿namespace STS.Data.Seeding
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+
+using STS.Common;
+using STS.Data.Models;
+
+namespace STS.Data.Seeding
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using STS.Common;
-    using STS.Data.Models;
-
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.Extensions.DependencyInjection;
-
     internal class RolesSeeder : ISeeder
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)

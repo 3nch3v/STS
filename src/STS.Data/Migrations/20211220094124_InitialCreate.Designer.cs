@@ -10,8 +10,8 @@ using STS.Data;
 namespace STS.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211029103430_SystemDbEntities")]
-    partial class SystemDbEntities
+    [Migration("20211220094124_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -194,8 +194,18 @@ namespace STS.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -205,11 +215,6 @@ namespace STS.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -243,11 +248,6 @@ namespace STS.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Vorname")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
@@ -274,8 +274,8 @@ namespace STS.Data.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(10000)
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -366,6 +366,10 @@ namespace STS.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ManagerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -385,6 +389,8 @@ namespace STS.Data.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("ManagerId");
 
                     b.HasIndex("PriorityId");
 
@@ -422,6 +428,48 @@ namespace STS.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Priorities");
+                });
+
+            modelBuilder.Entity("STS.Data.Models.ReplyTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeTaskId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeTaskId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RepliesTasks");
                 });
 
             modelBuilder.Entity("STS.Data.Models.Status", b =>
@@ -462,10 +510,13 @@ namespace STS.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AssignedToId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(10000)
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -498,6 +549,8 @@ namespace STS.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssignedToId");
 
                     b.HasIndex("DepartmentId");
 
@@ -601,6 +654,12 @@ namespace STS.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("STS.Data.Models.ApplicationUser", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("STS.Data.Models.Priority", "Priority")
                         .WithMany()
                         .HasForeignKey("PriorityId")
@@ -615,13 +674,38 @@ namespace STS.Data.Migrations
 
                     b.Navigation("Employee");
 
+                    b.Navigation("Manager");
+
                     b.Navigation("Priority");
 
                     b.Navigation("Status");
                 });
 
+            modelBuilder.Entity("STS.Data.Models.ReplyTask", b =>
+                {
+                    b.HasOne("STS.Data.Models.EmployeeTask", "EmployeeTask")
+                        .WithMany()
+                        .HasForeignKey("EmployeeTaskId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("STS.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("EmployeeTask");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("STS.Data.Models.Ticket", b =>
                 {
+                    b.HasOne("STS.Data.Models.ApplicationUser", "AssignedTo")
+                        .WithMany()
+                        .HasForeignKey("AssignedToId");
+
                     b.HasOne("STS.Data.Models.Department", "Department")
                         .WithMany("Tickets")
                         .HasForeignKey("DepartmentId")
@@ -645,6 +729,8 @@ namespace STS.Data.Migrations
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AssignedTo");
 
                     b.Navigation("Department");
 

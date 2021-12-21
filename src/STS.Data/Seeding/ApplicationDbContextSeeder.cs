@@ -1,12 +1,12 @@
-﻿namespace STS.Data.Seeding
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+namespace STS.Data.Seeding
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-
     public class ApplicationDbContextSeeder : ISeeder
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
@@ -28,6 +28,8 @@
                               new RolesSeeder(),
                               new StatusesSeeder(),
                               new PrioritiesSeeder(),
+                              new DepartmentsSeeder(),
+                              new UsersSeeder(),
                           };
 
             foreach (var seeder in seeders)
