@@ -1,0 +1,34 @@
+﻿@using STS.Web.ViewModels.Tickets
+@model TicketInputModel
+
+@{
+    ViewData["Title"] = "Create Ticket";
+}
+
+<form asp-controller="Tickets" asp-action="Create" class="col-md-12 offser-md-8">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="PriorityId">Priority</label>
+        <select class="form-control-sm" asp-for="PriorityId" asp-items="Model.Priorities.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"></select>
+        <span asp-validation-for="PriorityId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DepartmentId">Department</label>
+        <select class="form-control-sm" asp-for="DepartmentId" asp-items="Model.Departments.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"></select>
+        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+    </div>
+
+    @* //:TODO fetch with js only the current employees for the selected department *@
+
+    <div class="form-group">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" class="form-control" required>
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Content">Description</label>
+        <textarea asp-for="Content" class="form-control" rows="10" required></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+    <button type="submit" class="tm-btn text-uppercase mb-3 mt-3">Create</button>
+</form>

@@ -15,15 +15,18 @@ namespace STS.Web.Controllers
     public class TicketsController : Controller
     {
         private readonly ITicketService ticketService;
+        private readonly ICommonService commonService;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
 
         public TicketsController(
             ITicketService ticketService,
+            ICommonService commonService,
             IMapper mapper,
             UserManager<ApplicationUser> userManager)
         {
             this.ticketService = ticketService;
+            this.commonService = commonService;
             this.mapper = mapper;
             this.userManager = userManager;
         }
@@ -56,7 +59,13 @@ namespace STS.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var inputDto = new TicketInputModel
+            {
+                Priorities = mapper.Map<List<PriorityViewModel>>(commonService.GetPriorities()),
+                Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartments()),
+            };
+
+            return View(inputDto);
         }
 
         [HttpPost]
@@ -64,6 +73,17 @@ namespace STS.Web.Controllers
         {
             if(!ModelState.IsValid)
             {
+                var inputDto = new TicketInputModel
+                {
+                    Title = ticket.Title,
+                    Content = ticket.Content,
+                    PriorityId = ticket.PriorityId,
+                    AssignedToId = ticket.AssignedToId,
+                    DepartmentId = ticket.DepartmentId,
+                    Priorities = mapper.Map<List<PriorityViewModel>>(commonService.GetPriorities()),
+                    Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartments()),
+                };
+
                 return View(ticket);
             }
 

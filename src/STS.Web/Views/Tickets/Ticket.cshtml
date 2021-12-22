@@ -1,0 +1,24 @@
+﻿@using STS.Web.ViewModels.Tickets;
+@model TicketViewModel;
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div>
+    <div>
+        <p>@Model.PriorityName</p>
+        <p>@Model.StatusName</p>
+        <p>@Model.Title</p>
+        <p>@Model.Content</p>
+        <p>@Model.AssignedToUserName</p>
+    </div>
+    <div>
+        <ul>
+            @foreach(var comment in Model.Comments)
+            {
+                <li>@comment.Content</li>
+            }
+        </ul>
+    </div>
+</div>

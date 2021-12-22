@@ -18,6 +18,11 @@ namespace STS.Web.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated) 
+            {
+                return RedirectToAction("Tickets", "Tickets");
+            }
+
             return View();
         }
 

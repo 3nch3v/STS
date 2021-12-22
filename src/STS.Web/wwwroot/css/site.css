@@ -1,71 +1,215 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
+﻿html {
+    position: relative;
+    min-height: 100%;
     font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: #262626;
+    color: white;
 }
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    color: white;
+}
+
+a {
+    color: white;
+}
+
+li {
+    color: white;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+.navbar {
+    color: white;
+}
+
+/* Tickets styles */
+
+.tickets-container {
+    display: inline-flex;
+}
+
+.tickets-table {
+    display: table;
+}
+
+.tickets-table-row,
+.tickets-table-header {
+    display: table-row;
+}
+
+.tickets-list {
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+}
+
+.tickets-nav ul,
+.tickets-list,
+.tasks-review {
+    padding: 0 20px 20px 20px;
+    list-style: none;
+    list-style-type: none;
+}
+
+.tickets-nav ul li a {
+    font-size: 20px
+}
+
+.tickets-nav ul li a:hover,
+.tickets-table-row:hover {
+    text-decoration: none;
+    color: papayawhip;
+}
+
+.tickets-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.tickets-table-header div,
+.tickets-table-row div {
+    display: table-cell;
+    margin: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.tickets-table .tickets-table-row:nth-child(odd) {
+    background: #332e2e;
+}
+
+.tickets-table-header {
+    font-weight: bold;
+    text-align: left;
+}
+
+
+
+/*Ticket search article*/
+
+.ticket-search-art {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.search-input-field {
+    padding: 4px
+}
+
+.search-btn {
+    background-color: #262626;
+    border-color: white;
+    color: white;
+    font-weight: bold;
+    margin-right: 25px;
+}
+
+.search-btn:hover{
+    background-color: grey;
+}
+
+.create-btn {
+    margin: 20px 20px;
+    font-size: 22px;
+    color: papayawhip;
+}
+
+.create-btn:hover{
+    text-decoration: none;
+    color: white;
+    background-color: dimgrey;
+    padding: 3px 5px;
+    border-radius: 6px;
+}
+
+/*Statuses Syles*/
+.status,
+.priority,
+.search-btn {
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 8px;
+}
+
+.status.urgent,
+.priority.urgent,
+.priority.high {
+    background-color: orangered;
+}
+
+.priority.urgent {
+    background-color: mediumvioletred ;
+}
+
+.status.open
+ {
+    background-color: forestgreen;
+}
+
+.status.solved,
+.status.closed,
+.priority.low {
+    background-color: darkgrey;
+}
+
+.status.onhold {
+    background-color: cornflowerblue;
+}
+
+.status.pending {
+    background-color: goldenrod;
+}
+
+.status.inprogress {
+    background-color: goldenrod;
+}
+
+.priority.medium {
+    background-color: yellowgreen;
+
 }

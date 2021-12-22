@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administration\Views\" />
-    <Folder Include="Configurations\" />
+    <Folder Include="Views\Tasks\" />
   </ItemGroup>
 
   <ItemGroup>

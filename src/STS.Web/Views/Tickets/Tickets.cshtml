@@ -1,0 +1,113 @@
+﻿@using STS.Web.ViewModels.Tickets
+@model TicketsViewModel
+
+@{
+    ViewData["Title"] = "Tickets";
+}
+
+<article class="ticket-search-art">
+    <section>
+        <a class="create-btn" asp-controller="Tickets" asp-action="Create" title="Create a new ticket...">New Ticket</a>
+    </section>
+    <section class="search-section">
+        <form>
+            <input class="search-input-field" name="search" type="text" placeholder="Searching terms..." />
+            <button class="search-btn" type="submit">Search</button>
+        </form>
+    </section>
+</article>
+
+<article class="tickets-container">
+    <nav class="tickets-nav">
+        <ul>
+            <li><a asp-action="">Tickets</a></li>
+            <li><a asp-action="">New answer</a></li>
+            <li><a asp-action="">Assigned to me</a></li>
+            <li><a asp-action="">Me tickets</a></li>
+        </ul>
+    </nav>
+
+    <section class="tickets-list">
+        <article class="tickets-table">
+            <header class="tickets-table-header">
+                <div>Ticket #</div>
+                <div>Status</div>
+                <div>Prioriry</div>
+                <div>Title</div>
+                <div>Created</div>
+                <div>Assigned</div>
+            </header>
+
+            @foreach (var ticket in Model.Tickets)
+            {
+                <a class="tickets-table-row" asp-action="Ticket" asp-route-id="@ticket.Id">
+                    <div>@ticket.Id</div>
+                    <div><span class="status @ticket.StatusName.ToLower()">@ticket.StatusName</span></div>
+                    <div><span class="priority @ticket.PriorityName.ToLower()">@ticket.PriorityName</span></div>
+                    <div>@ticket.Title</div>
+                    <div>@ticket.CreatedOn</div>
+                    <div>
+                        @(ticket.AssignedToUserName == null
+                    ? "unassigned"
+                    : ticket.AssignedToUserName )
+                    </div>
+                </a>
+            }
+        </article>
+    </section>
+
+    <aside class="tasks-review">
+
+        @*TODO create vc*@
+
+        <table>
+            <tr>
+                <th>Prioriry</th>
+                <th>Task</th>
+                <th>Deadline</th>
+            </tr>
+
+            @*@foreach (var task in Model.Tasks)
+                {
+                <tr>
+                <td>@task.StatusName</td>
+                <td>@task.PriorityName</td>
+                <td>@task.Title</td>
+                <td>@task.Deadline</td>
+                </tr>
+                }*@
+
+            <tr>
+                <td class="priority low">Low</td>
+                <td>Go to the manager</td>
+                <td>22.02.2022</td>
+            </tr>
+            <tr>
+                <td class="priority urgent">Urgent</td>
+                <td>Please create the statistics</td>
+                <td>02.02.2022</td>
+            </tr>
+            <tr>
+                <td class="priority medium">Medium</td>
+                <td>Go to the manager</td>
+                <td>22.02.2022</td>
+            </tr>
+            <tr>
+                <td class="priority high">High</td>
+                <td>Please create the statistics</td>
+                <td>02.02.2022</td>
+            </tr>
+            <tr>
+                <td class="priority urgent">Urgent</td>
+                <td>Please create the statistics</td>
+                <td>02.02.2022</td>
+            </tr>
+            <tr>
+                <td class="">Urgent</td>
+                <td>Please create the statistics</td>
+                <td>02.02.2022</td>
+            </tr>
+
+        </table>
+    </aside>
+</article>

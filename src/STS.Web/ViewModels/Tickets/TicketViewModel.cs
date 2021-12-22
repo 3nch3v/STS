@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace STS.Web.ViewModels.Tickets
 {
-    internal class TicketViewModel
+    public class TicketViewModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
         public string Title { get; set; }
 
@@ -15,6 +16,8 @@ namespace STS.Web.ViewModels.Tickets
         public string StatusName { get; set; }
 
         public string AssignedToUserName { get; set; }
+
+        public DateTime CreatedOn { get; set; }
 
         public ICollection<CommentViewModel> Comments { get; set; }
     }

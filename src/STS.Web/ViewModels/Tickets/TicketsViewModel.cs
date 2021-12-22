@@ -2,8 +2,8 @@
 
 namespace STS.Web.ViewModels.Tickets
 {
-    internal class TicketsViewModel
+    public class TicketsViewModel
     {
-        internal IEnumerable<TicketViewModel> Tickets { get; set; }
+        public IEnumerable<TicketViewModel> Tickets { get; set; }
     }
 }

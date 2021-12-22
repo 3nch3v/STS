@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using static STS.Common.GlobalConstants;
 
 namespace STS.Web.ViewModels.Tickets
@@ -17,8 +18,12 @@ namespace STS.Web.ViewModels.Tickets
 
         public int PriorityId { get; set; }
 
-        public int StatusId { get; set; }
-
         public string AssignedToId { get; set; }
+
+        public IEnumerable<PriorityViewModel> Priorities { get; set; }
+
+        public IEnumerable<StatusViewModel> Statuses { get; set; }
+
+        public IEnumerable<DepartmentViewModel> Departments { get; set; }
     }
 }

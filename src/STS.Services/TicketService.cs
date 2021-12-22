@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -15,15 +13,18 @@ namespace STS.Services
     public class TicketService : ITicketService
     {
         private readonly IUserService userService;
+        private readonly ICommonService commonService;
         private readonly IMapper mapper;
         private readonly ApplicationDbContext dbContext;
 
         public TicketService(
             IUserService userService,
+            ICommonService commonService,
             IMapper mapper,
             ApplicationDbContext dbContext)
         {
             this.userService = userService;
+            this.commonService = commonService;
             this.mapper = mapper;
             this.dbContext = dbContext;
         }
@@ -47,9 +48,8 @@ namespace STS.Services
         public async Task CreateAsync<T>(string userId, T ticketDto) 
         {
             var ticket = mapper.Map<Ticket>(ticketDto);
-
             ticket.EmployeeId = userId;
-
+            ticket.StatusId = commonService.GetStatusId("Open");
             await dbContext.Tickets.AddAsync(ticket);
 
             await dbContext.SaveChangesAsync();
