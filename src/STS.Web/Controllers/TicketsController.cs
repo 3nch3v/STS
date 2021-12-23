@@ -10,6 +10,8 @@ using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tickets;
 
+using static STS.Common.GlobalConstants;
+
 namespace STS.Web.Controllers
 {
     public class TicketsController : Controller
@@ -42,15 +44,17 @@ namespace STS.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Tickets()
+        public IActionResult Tickets(int page = DefaultPageNumber)
         {
             var userId = userManager.GetUserId(User);
 
-            var tickets = ticketService.GetAll(userId);
+            var tickets = ticketService.GetAll(userId, page, TicketsPerPage);
 
-            var ticketsDtos = new TicketsViewModel
+            var ticketsDtos = new TicketsListViewModel
             {
-                Tickets = mapper.Map<List<TicketViewModel>>(tickets),
+                Page = page,
+                TicketsCount = ticketService.GetTicketsCount(userId),
+                Tickets = mapper.Map<List<TicketListViewModel>>(tickets),
             };
 
             return View(ticketsDtos);
@@ -105,7 +109,7 @@ namespace STS.Web.Controllers
                 return BadRequest();
             }
 
-            var ticketDto = mapper.Map<TicketViewModel>(ticket);
+            var ticketDto = mapper.Map<TicketListViewModel>(ticket);
 
             return View(ticketDto);
         }

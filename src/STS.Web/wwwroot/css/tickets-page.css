@@ -1,0 +1,114 @@
+﻿.tickets-container {
+    width: 100%;
+    display: inline-flex;
+}
+
+.tickets-nav {
+    width: 15%;
+}
+
+.tickets-wrapper {
+    width: 60%;
+}
+
+.tasks-review {
+    width: 25%;
+}
+
+.tickets-table,
+.task-vc-table {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.tickets-table-row,
+.tickets-table-header,
+.tasks-vc-row,
+.t-vc-header {
+    display: table-row;
+}
+
+.tickets-list {
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+    height: 450px;
+}
+
+.tickets-nav ul,
+.tickets-list,
+.tasks-review {
+    padding: 0 20px 20px 20px;
+    list-style: none;
+    list-style-type: none;
+}
+
+.tickets-nav ul li a {
+    font-size: 20px;
+}
+
+.tickets-nav ul li a:hover,
+.tickets-table-row:hover {
+    text-decoration: none;
+    color: papayawhip;
+}
+
+
+.tickets-table-header div,
+.tickets-table-row div,
+.t-vc-header div,
+.tasks-vc-row div {
+    display: table-cell;
+    padding: 5px;
+}
+
+.tickets-table .tickets-table-row:nth-child(odd) {
+    background: #332e2e;
+}
+
+.tickets-table-header {
+    font-weight: bold;
+    text-align: left;
+}
+
+.t-num-title {
+    width: 50%;
+}
+
+/*Ticket search article*/
+
+.ticket-search-art {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.search-input-field {
+    padding: 4px;
+}
+
+.search-btn {
+    background-color: #262626;
+    border-color: white;
+    color: white;
+    font-weight: bold;
+    margin-right: 25px;
+}
+
+.search-btn:hover {
+    background-color: grey;
+}
+
+.create-btn {
+    margin: 20px 20px;
+    font-size: 22px;
+    color: papayawhip;
+}
+
+.create-btn:hover {
+    text-decoration: none;
+    color: white;
+    background-color: dimgrey;
+    padding: 3px 5px;
+    border-radius: 6px;
+}

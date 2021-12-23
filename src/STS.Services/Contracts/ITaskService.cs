@@ -10,6 +10,8 @@ namespace STS.Services.Contracts
 
         IEnumerable<EmployeeTask> GetAll(string userId);
 
+        IEnumerable<EmployeeTask> GetOpenTasks(string userId);
+
         Task CreateAsync<T>(string userId, T task);
 
         Task DeleteAsync(int id);

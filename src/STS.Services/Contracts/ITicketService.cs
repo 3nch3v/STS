@@ -6,9 +6,11 @@ namespace STS.Services.Contracts
 {
     public interface ITicketService
     {
+        int GetTicketsCount(string userId);
+
         Ticket GetById(int ticketId);
 
-        IEnumerable<Ticket> GetAll(string userId);
+        IEnumerable<Ticket> GetAll(string userId, int page, int ticketsPerPage);
 
         Task CreateAsync<T>(string userId, T ticketDto);
 

@@ -20,6 +20,12 @@
 
         public const int DepartmentNameMaxLength = 50;
 
+        public const int TicketsPerPage = 12;
+
+        public const int DefaultPageNumber = 1;
+
+        public const int TasksSideBarCount = 12;
+
         public const string SystemName = "STS";
 
         public const string AdministratorRoleName = "Administrator";

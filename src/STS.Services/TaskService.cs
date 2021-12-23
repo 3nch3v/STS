@@ -8,6 +8,8 @@ using STS.Data;
 using STS.Data.Models;
 using STS.Services.Contracts;
 
+using static STS.Common.GlobalConstants;
+
 namespace STS.Services
 {
     public class TaskService : ITaskService
@@ -61,6 +63,16 @@ namespace STS.Services
             return dbContext.EmployeesTasks
                .Where(x => x.Id == id)
                .FirstOrDefault();
+        }
+
+        public IEnumerable<EmployeeTask> GetOpenTasks(string userId)
+        {
+            return dbContext.EmployeesTasks
+               .Where(x => x.EmployeeId == userId)
+               .OrderBy(x => x.Deadline)
+               .ThenByDescending(x => x.PriorityId)
+               .Take(TasksSideBarCount)
+               .ToList();
         }
     }
 }

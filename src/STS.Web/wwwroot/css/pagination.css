@@ -1,0 +1,22 @@
+﻿ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.page-nav-list li {
+    display: inline;
+    justify-content: center;
+}
+
+ul.page-nav-list li a {
+    color: white;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+ul.page-nav-list li a:hover:not(.active) {
+    background-color: grey;
+}

@@ -1,0 +1,28 @@
+﻿@using STS.Web.ViewModels.Tasks;
+@model TasksViewModel;
+
+@if (Model.Tasks.Count() > 0)
+{
+    <article class="task-vc-table">
+        <header class="t-vc-header">
+            <div class="t-vc-priority">Prioriry</div>
+            <div class="t-vc-title">Task</div>
+            <div class="t-vc-deadline">Deadline</div>
+        </header>
+
+        @foreach (var task in Model.Tasks)
+        {
+            <a class="tasks-vc-row" asp-controller="Tasks" asp-action="Task" asp-route-id="@task.Id">
+                <div>
+                    <span class="priority @task.PriorityName.ToLower()">@task.PriorityName</span>
+                </div>
+                <div>@(task.Title.Length < 20 ? task.Title : $"{task.Title.Substring(0, 20)}...")</div>
+                <div>@task.Deadline.ToString("MM/dd/yy")</div>
+            </a>
+        }
+    </article>
+}
+else
+{
+    <p>You have no current tasks.</p>
+}

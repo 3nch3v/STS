@@ -2,8 +2,8 @@
 
 namespace STS.Web.ViewModels.Tasks
 {
-    internal class TasksViewModel
+    public class TasksViewModel
     {
-        internal IEnumerable<TaskViewModel> Tasks { get; set; }
+        public IEnumerable<BaseTaskViewModel> Tasks { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using STS.Data.Models;
+using STS.Web.ViewModels.Tasks;
 using STS.Web.ViewModels.Tickets;
 
 namespace STS.Web.Configurations
@@ -12,8 +14,10 @@ namespace STS.Web.Configurations
             CreateMap<Priority, PriorityViewModel>(); 
             CreateMap<Department, DepartmentViewModel>(); 
             CreateMap<TicketInputModel, Ticket>();
+            CreateMap<Ticket, TicketListViewModel>();
             CreateMap<Ticket, TicketViewModel>();
-            CreateMap<Comment, CommentViewModel>();       
+            CreateMap<Comment, CommentViewModel>();
+            CreateMap<EmployeeTask, BaseTaskViewModel>();
         }
     }
 }

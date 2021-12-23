@@ -36,13 +36,24 @@ namespace STS.Services
                 .FirstOrDefault();
         }
 
-        public IEnumerable<Ticket> GetAll(string userId)
+        public IEnumerable<Ticket> GetAll(string userId, int page, int ticketsPerPage)
         {
             var userDepartmentId = userService.GetDepartmentId(userId);
 
             return dbContext.Tickets
                 .Where(x => x.DepartmentId == userDepartmentId)
+                .Skip((page - 1) * ticketsPerPage)
+                .Take(ticketsPerPage)
                 .ToList();
+        }
+
+        public int GetTicketsCount(string userId)
+        {
+            var userDepartmentId = userService.GetDepartmentId(userId);
+
+            return dbContext.Tickets
+                .Where(x => x.DepartmentId == userDepartmentId)
+                .Count();
         }
 
         public async Task CreateAsync<T>(string userId, T ticketDto) 
