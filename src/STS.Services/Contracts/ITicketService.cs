@@ -10,7 +10,7 @@ namespace STS.Services.Contracts
 
         Ticket GetById(int ticketId);
 
-        IEnumerable<Ticket> GetAll(string userId, int page, int ticketsPerPage);
+        IEnumerable<Ticket> GetAll(string userId, int page, int ticketsPerPage, string keyword);
 
         Task CreateAsync<T>(string userId, T ticketDto);
 

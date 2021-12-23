@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,23 +30,25 @@ namespace STS.Services
             this.dbContext = dbContext;
         }
 
-        public Ticket GetById(int ticketId) 
+        public Ticket GetById(int ticketId)
         {
             return dbContext.Tickets
                 .Where(x => x.Id == ticketId)
                 .FirstOrDefault();
         }
 
-        public IEnumerable<Ticket> GetAll(string userId, int page, int ticketsPerPage)
+        public IEnumerable<Ticket> GetAll(string userId, int page, int ticketsPerPage, string keyword)
         {
-            var userDepartmentId = userService.GetDepartmentId(userId);
+            Func<Ticket, bool> filter = GetFilter(userId, keyword);
 
             return dbContext.Tickets
-                .Where(x => x.DepartmentId == userDepartmentId)
+                .Where(filter)
+                .OrderByDescending(x => x.CreatedOn)
+                .ThenByDescending(x => x.PriorityId)
                 .Skip((page - 1) * ticketsPerPage)
                 .Take(ticketsPerPage)
                 .ToList();
-        }
+        }                                  
 
         public int GetTicketsCount(string userId)
         {
@@ -56,7 +59,7 @@ namespace STS.Services
                 .Count();
         }
 
-        public async Task CreateAsync<T>(string userId, T ticketDto) 
+        public async Task CreateAsync<T>(string userId, T ticketDto)
         {
             var ticket = mapper.Map<Ticket>(ticketDto);
             ticket.EmployeeId = userId;
@@ -109,6 +112,72 @@ namespace STS.Services
             dbContext.Tickets.Remove(ticket);
 
             await dbContext.SaveChangesAsync();
+        }
+
+        private Func<Ticket, bool> GetFilter(string userId, string keyword)
+        {
+            var userDepartmentId = userService.GetDepartmentId(userId);
+
+            if (keyword == "my")
+            {
+                Func<Ticket, bool> createdByUser = ticket => ticket.EmployeeId == userId
+                                                          && ticket.Status.Name.ToLower() != "closed"
+                                                          && ticket.Status.Name.ToLower() != "solved";
+                return createdByUser;
+            }
+
+            if (keyword == "to me")
+            {
+                Func<Ticket, bool> assignedToUser = ticket => (ticket.DepartmentId == userDepartmentId
+                                                                && ticket.AssignedToId == userId)
+                                                           && ticket.Status.Name.ToLower() != "closed"
+                                                           && ticket.Status.Name.ToLower() != "solved";
+                return assignedToUser;
+            }
+
+            if (keyword == "answers")
+            {
+                Func<Ticket, bool> newAnswers = ticket => ((ticket.DepartmentId == userDepartmentId
+                                                                && ticket.AssignedToId == userId) 
+                                                          || ticket.EmployeeId == userId)
+                                                       && ticket.Status.Name.ToLower() == "open"
+                                                       && ticket.Status.Name.ToLower() != "closed"
+                                                       && ticket.Status.Name.ToLower() != "solved";
+                return newAnswers;
+            }
+
+            if (keyword == "new")
+            {
+                Func<Ticket, bool> newTickets = ticket => ticket.DepartmentId == userDepartmentId
+                                                       && ticket.Status.Name.ToLower() == "open"
+                                                       && ticket.Status.Name.ToLower() != "closed"
+                                                       && ticket.Status.Name.ToLower() != "solved";
+                return newTickets;
+            }
+
+            if (keyword == "history")
+            {
+                Func<Ticket, bool> solved = ticket => ticket.DepartmentId == userDepartmentId
+                                                   && ticket.Status.Name.ToLower() == "closed"
+                                                   && ticket.Status.Name.ToLower() == "solved";
+                return solved;
+            }
+
+            if (keyword == "all" || keyword == null) 
+            {
+                Func<Ticket, bool> all = ticket => ticket.DepartmentId == userDepartmentId
+                                            && ticket.Status.Name.ToLower() != "closed"
+                                            && ticket.Status.Name.ToLower() != "solved";
+                return all;
+            }
+
+            Func<Ticket, bool> searchedTickets = ticket => ticket.DepartmentId == userDepartmentId
+                                                        && (ticket.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                                            || ticket.Content.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                                            || ticket.Employee.FirstName.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                                            || ticket.Employee.LastName.Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                                            || ticket.Employee.UserName.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+            return searchedTickets;
         }
     }
 }

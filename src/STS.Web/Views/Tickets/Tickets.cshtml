@@ -1,8 +1,12 @@
 ﻿@using STS.Web.ViewModels.Tickets;
+@using static STS.Common.GlobalConstants;
 @model TicketsListViewModel;
 
 @{
     ViewData["Title"] = "Tickets";
+    this.TempData.Keep("keyword");
+    this.ViewData["keyword"] = this.TempData["keyword"];
+    string[] keys = new string[] { "my", "to me", "answers", "new", "all", "history" };
 }
 
 <article class="ticket-search-art">
@@ -10,8 +14,15 @@
         <a class="create-btn" asp-controller="Tickets" asp-action="Create" title="Create a new ticket...">New Ticket</a>
     </section>
     <section class="search-section">
-        <form>
-            <input class="search-input-field" name="search" type="text" placeholder="Searching terms..." />
+        <form asp-controller="Tickets" asp-action="Tickets" method="get">
+            <input 
+                class="search-input-field" 
+                name="keyword" 
+                type="text" 
+                value="@(!keys.Contains(this.ViewData["keyword"]) ? this.ViewData["keyword"] : null)"
+                required 
+                minlength = 2
+             />
             <button class="search-btn" type="submit">Search</button>
         </form>
     </section>
@@ -20,10 +31,24 @@
 <article class="tickets-container">
     <nav class="tickets-nav">
         <ul>
-            <li><a asp-action="">Tickets</a></li>
-            <li><a asp-action="">New answer</a></li>
-            <li><a asp-action="">Assigned to me</a></li>
-            <li><a asp-action="">Me tickets</a></li>
+            <li>
+                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="my">My tickets (122)</a>
+            </li>
+            <li>
+                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="to me">Assigned to me (0)</a>
+            </li>
+            <li>
+                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="answers">New answers (22)</a>
+            </li>
+            <li>
+                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="new">New tickets (176)</a>
+            </li>
+            <li>
+                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="all">All tickets (1234243)</a>
+            </li>
+             <li>
+                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="history">History (234243)</a>
+            </li>
         </ul>
     </nav>
     <div class="tickets-wrapper">
@@ -55,14 +80,16 @@
                 }
             </article>
         </section>
-        <nav class="page-nav">
+       @if(Model.Tickets.Count() > TicketsPerPage)
+        {
+             <nav class="page-nav">
             <ul class="page-nav-list">
- 
+
                 @if (Model.HasPreviousPage)
                 {
-                                   <li>
-                    <a asp-action="Tickets" asp-route-page="@Model.PreviousPage">Previous</a>
-                </li>
+                    <li>
+                        <a asp-action="Tickets" asp-route-page="@Model.PreviousPage">Previous</a>
+                    </li>
                     <li>
                         <a asp-action="Tickets" asp-route-page="@(Model.Page - 1)">@(Model.Page - 1)</a>
                     </li>
@@ -75,16 +102,18 @@
                     <li>
                         <a asp-action="Tickets" asp-route-page="@(Model.Page + 1)">@(Model.Page + 1)</a>
                     </li>
-                      <li>
-                    <a asp-action="Tickets" asp-route-page="@Model.NextPage">Next</a>
-                </li>
+                    <li>
+                        <a asp-action="Tickets" asp-route-page="@Model.NextPage">Next</a>
+                    </li>
                 }
-              
+
             </ul>
         </nav>
+        }
     </div>
 
     <aside class="tasks-review">
+        <p class="daily-tasks">Daily tasks</p>
         <vc:tasks-side-bar></vc:tasks-side-bar>
     </aside>
 

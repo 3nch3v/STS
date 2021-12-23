@@ -44,11 +44,13 @@ namespace STS.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Tickets(int page = DefaultPageNumber)
+        public IActionResult Tickets(string keyword, int page = DefaultPageNumber)
         {
+            this.TempData["keyword"] = keyword;
+
             var userId = userManager.GetUserId(User);
 
-            var tickets = ticketService.GetAll(userId, page, TicketsPerPage);
+            var tickets = ticketService.GetAll(userId, page, TicketsPerPage, keyword);
 
             var ticketsDtos = new TicketsListViewModel
             {

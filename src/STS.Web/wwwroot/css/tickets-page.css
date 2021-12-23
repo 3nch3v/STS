@@ -1,10 +1,13 @@
 ﻿.tickets-container {
     width: 100%;
-    display: inline-flex;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
 }
 
 .tickets-nav {
-    width: 15%;
+    max-width: 15%;
 }
 
 .tickets-wrapper {
@@ -12,14 +15,15 @@
 }
 
 .tasks-review {
-    width: 25%;
+    max-width: 25%;
+    min-width: 25%;
 }
 
 .tickets-table,
 .task-vc-table {
     display: table;
     border-collapse: collapse;
-    width: 100%;
+
 }
 
 .tickets-table-row,
@@ -32,7 +36,6 @@
 .tickets-list {
     border-left: solid 1px white;
     border-right: solid 1px white;
-    height: 450px;
 }
 
 .tickets-nav ul,
@@ -48,7 +51,8 @@
 }
 
 .tickets-nav ul li a:hover,
-.tickets-table-row:hover {
+.tickets-table-row:hover,
+.tasks-vc-row:hover {
     text-decoration: none;
     color: papayawhip;
 }
@@ -111,4 +115,23 @@
     background-color: dimgrey;
     padding: 3px 5px;
     border-radius: 6px;
+}
+
+p.no-task {
+    top: 70px;
+    position: relative;
+    width: 150px;
+    white-space: nowrap;
+    -ms-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    border-radius: 6px;
+    background-color: gray;
+    padding: 6px 10px;
+}
+
+p.daily-tasks {
+    font-weight: bold;
+    font-size: 18px
 }
