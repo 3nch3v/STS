@@ -55,7 +55,7 @@ namespace STS.Web.Controllers
             var ticketsDtos = new TicketsListViewModel
             {
                 Page = page,
-                TicketsCount = ticketService.GetTicketsCount(userId),
+                TicketsCount = ticketService.GetTicketsCount(userId, keyword),
                 Tickets = mapper.Map<List<TicketListViewModel>>(tickets),
             };
 

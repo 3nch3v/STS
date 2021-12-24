@@ -1,0 +1,47 @@
+﻿.select-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: start;
+}
+
+.p-select {
+    margin-right: 20px
+}
+
+.select-group div select,
+.t-tile input,
+.t-description textarea {
+    background-color: black;
+    color: white;
+}
+
+.select-group div select:focus,
+.t-tile input:focus,
+.t-description textarea:focus{
+    background-color: dimgrey;
+    color: white;
+}
+
+.create-dialog {
+    padding: 10px 5px;
+    background-color: #1E1E1E;
+    border-radius: 6px;
+    border-color: lightgoldenrodyellow;
+    color: white;
+    width: 600px;
+}
+
+.c-form-btns {
+    display: flex;
+    justify-content: space-between;  
+}
+
+.c-btn,
+.cancel-btn{
+    border-radius: 6px;
+    padding: 6px 20px;
+    color: white;
+    background-color: dimgrey;
+    font-weight: bold;
+}

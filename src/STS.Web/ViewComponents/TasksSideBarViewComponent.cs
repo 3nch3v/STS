@@ -29,7 +29,7 @@ namespace STS.Web.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var user = this.Request.HttpContext.User;
+            var user = Request.HttpContext.User;
             var userId = userManager.GetUserId(user);
 
             var tasks = new TasksViewModel

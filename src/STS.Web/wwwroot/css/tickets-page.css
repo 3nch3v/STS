@@ -28,8 +28,7 @@
 
 .tickets-table-row,
 .tickets-table-header,
-.tasks-vc-row,
-.t-vc-header {
+.tasks-vc-row {
     display: table-row;
 }
 
@@ -60,7 +59,6 @@
 
 .tickets-table-header div,
 .tickets-table-row div,
-.t-vc-header div,
 .tasks-vc-row div {
     display: table-cell;
     padding: 5px;
@@ -79,8 +77,6 @@
     width: 50%;
 }
 
-/*Ticket search article*/
-
 .ticket-search-art {
     display: flex;
     justify-content: space-between;
@@ -91,30 +87,22 @@
     padding: 4px;
 }
 
+
+.show-create-btn,
 .search-btn {
-    background-color: #262626;
-    border-color: white;
-    color: white;
-    font-weight: bold;
-    margin-right: 25px;
-}
-
-.search-btn:hover {
-    background-color: grey;
-}
-
-.create-btn {
-    margin: 20px 20px;
-    font-size: 22px;
-    color: papayawhip;
-}
-
-.create-btn:hover {
-    text-decoration: none;
+    border-radius: 6px;
+    padding: 6px 20px;
     color: white;
     background-color: dimgrey;
-    padding: 3px 5px;
-    border-radius: 6px;
+    font-weight: bold;
+}
+
+.show-create-btn {
+    margin-left: 20px;
+}
+
+.search-btn {
+    margin-right: 20px;
 }
 
 p.no-task {

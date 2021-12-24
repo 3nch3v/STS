@@ -13,6 +13,8 @@ namespace STS.Services
 {
     public class TicketService : ITicketService
     {
+        private static string[] ticketsNavCategories = { "my", "to me", "answers", "new", "all", "history" };
+
         private readonly IUserService userService;
         private readonly ICommonService commonService;
         private readonly IMapper mapper;
@@ -49,15 +51,6 @@ namespace STS.Services
                 .Take(ticketsPerPage)
                 .ToList();
         }                                  
-
-        public int GetTicketsCount(string userId)
-        {
-            var userDepartmentId = userService.GetDepartmentId(userId);
-
-            return dbContext.Tickets
-                .Where(x => x.DepartmentId == userDepartmentId)
-                .Count();
-        }
 
         public async Task CreateAsync<T>(string userId, T ticketDto)
         {
@@ -114,6 +107,33 @@ namespace STS.Services
             await dbContext.SaveChangesAsync();
         }
 
+        public Dictionary<string, int> GetCategoriesTicketsCount(string userId)
+        {
+            var statistic = new Dictionary<string, int>();
+
+            foreach (var category in ticketsNavCategories)
+            {
+                var filter = GetFilter(userId, category);
+                var count = GetCount(filter);
+                statistic.Add(category, count);
+            }
+
+            return statistic;
+        }
+
+        public int GetTicketsCount(string userId, string keyword)
+        {
+            var filter = GetFilter(userId, keyword);
+            return GetCount(filter);
+        }
+
+        public int GetCount(Func<Ticket, bool> filter)
+        {
+            return dbContext.Tickets
+                .Where(filter)
+                .Count();
+        }
+
         private Func<Ticket, bool> GetFilter(string userId, string keyword)
         {
             var userDepartmentId = userService.GetDepartmentId(userId);
@@ -122,7 +142,8 @@ namespace STS.Services
             {
                 Func<Ticket, bool> createdByUser = ticket => ticket.EmployeeId == userId
                                                           && ticket.Status.Name.ToLower() != "closed"
-                                                          && ticket.Status.Name.ToLower() != "solved";
+                                                          && ticket.Status.Name.ToLower() != "solved"
+                                                          && ticket.IsDeleted == false;
                 return createdByUser;
             }
 
@@ -130,8 +151,9 @@ namespace STS.Services
             {
                 Func<Ticket, bool> assignedToUser = ticket => (ticket.DepartmentId == userDepartmentId
                                                                 && ticket.AssignedToId == userId)
-                                                           && ticket.Status.Name.ToLower() != "closed"
-                                                           && ticket.Status.Name.ToLower() != "solved";
+                                                           && (ticket.Status.Name.ToLower() != "closed"
+                                                              || ticket.Status.Name.ToLower() != "solved")
+                                                           && ticket.IsDeleted == false;
                 return assignedToUser;
             }
 
@@ -141,8 +163,9 @@ namespace STS.Services
                                                                 && ticket.AssignedToId == userId) 
                                                           || ticket.EmployeeId == userId)
                                                        && ticket.Status.Name.ToLower() == "open"
-                                                       && ticket.Status.Name.ToLower() != "closed"
-                                                       && ticket.Status.Name.ToLower() != "solved";
+                                                       && (ticket.Status.Name.ToLower() != "closed"
+                                                          || ticket.Status.Name.ToLower() != "solved")
+                                                       && ticket.IsDeleted == false;
                 return newAnswers;
             }
 
@@ -150,24 +173,27 @@ namespace STS.Services
             {
                 Func<Ticket, bool> newTickets = ticket => ticket.DepartmentId == userDepartmentId
                                                        && ticket.Status.Name.ToLower() == "open"
-                                                       && ticket.Status.Name.ToLower() != "closed"
-                                                       && ticket.Status.Name.ToLower() != "solved";
+                                                       && (ticket.Status.Name.ToLower() != "closed"
+                                                          || ticket.Status.Name.ToLower() != "solved")
+                                                       && ticket.IsDeleted == false;
                 return newTickets;
             }
 
             if (keyword == "history")
             {
                 Func<Ticket, bool> solved = ticket => ticket.DepartmentId == userDepartmentId
-                                                   && ticket.Status.Name.ToLower() == "closed"
-                                                   && ticket.Status.Name.ToLower() == "solved";
+                                                   && (ticket.Status.Name.ToLower() == "closed"
+                                                      || ticket.Status.Name.ToLower() == "solved")
+                                                   && ticket.IsDeleted == false;
                 return solved;
             }
 
             if (keyword == "all" || keyword == null) 
             {
                 Func<Ticket, bool> all = ticket => ticket.DepartmentId == userDepartmentId
-                                            && ticket.Status.Name.ToLower() != "closed"
-                                            && ticket.Status.Name.ToLower() != "solved";
+                                            && (ticket.Status.Name.ToLower() != "closed"
+                                                ||ticket.Status.Name.ToLower() != "solved")
+                                            && ticket.IsDeleted == false;
                 return all;
             }
 
@@ -176,7 +202,8 @@ namespace STS.Services
                                                             || ticket.Content.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                                             || ticket.Employee.FirstName.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                                                             || ticket.Employee.LastName.Contains(keyword, StringComparison.OrdinalIgnoreCase)
-                                                            || ticket.Employee.UserName.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+                                                            || ticket.Employee.UserName.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                                                        && ticket.IsDeleted == false;
             return searchedTickets;
         }
     }

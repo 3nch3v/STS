@@ -6,9 +6,11 @@ namespace STS.Services.Contracts
 {
     public interface ITicketService
     {
-        int GetTicketsCount(string userId);
+        int GetTicketsCount(string userId, string keyword);
 
         Ticket GetById(int ticketId);
+
+        Dictionary<string, int> GetCategoriesTicketsCount(string userId);
 
         IEnumerable<Ticket> GetAll(string userId, int page, int ticketsPerPage, string keyword);
 

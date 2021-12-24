@@ -3,54 +3,35 @@
 @model TicketsListViewModel;
 
 @{
-    ViewData["Title"] = "Tickets";
+    this.ViewData["Title"] = "Tickets";
     this.TempData.Keep("keyword");
     this.ViewData["keyword"] = this.TempData["keyword"];
     string[] keys = new string[] { "my", "to me", "answers", "new", "all", "history" };
+
 }
 
 <article class="ticket-search-art">
     <section>
-        <a class="create-btn" asp-controller="Tickets" asp-action="Create" title="Create a new ticket...">New Ticket</a>
+        <button class="show-create-btn" title="Create a new ticket...">New Ticket</button>
+       @* <a class="create-btn" asp-controller="Tickets" asp-action="Create" title="Create a new ticket...">New Ticket</a>*@
     </section>
     <section class="search-section">
         <form asp-controller="Tickets" asp-action="Tickets" method="get">
-            <input 
-                class="search-input-field" 
-                name="keyword" 
-                type="text" 
-                value="@(!keys.Contains(this.ViewData["keyword"]) ? this.ViewData["keyword"] : null)"
-                required 
-                minlength = 2
-             />
+            <input class="search-input-field"
+                   name="keyword"
+                   type="text"
+                   value="@(!keys.Contains(this.ViewData["keyword"]) ? this.ViewData["keyword"] : null)"
+                   required
+                   minlength=2 />
             <button class="search-btn" type="submit">Search</button>
         </form>
     </section>
 </article>
 
 <article class="tickets-container">
-    <nav class="tickets-nav">
-        <ul>
-            <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="my">My tickets (122)</a>
-            </li>
-            <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="to me">Assigned to me (0)</a>
-            </li>
-            <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="answers">New answers (22)</a>
-            </li>
-            <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="new">New tickets (176)</a>
-            </li>
-            <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="all">All tickets (1234243)</a>
-            </li>
-             <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="history">History (234243)</a>
-            </li>
-        </ul>
-    </nav>
+
+    <vc:tickets-nav-bar></vc:tickets-nav-bar>
+
     <div class="tickets-wrapper">
         <section class="tickets-list">
             <article class="tickets-table">
@@ -65,12 +46,12 @@
 
                 @foreach (var ticket in Model.Tickets)
                 {
-                    <a class="tickets-table-row" asp-action="Ticket" asp-route-id="@ticket.Id">
+                    <a class="tickets-table-row" asp-action="Ticket" asp-route-id="@ticket.Id" data-ticket-id="@ticket.Id">
                         <div>@ticket.Id</div>
-                        <div><span class="status @ticket.StatusName.ToLower()">@ticket.StatusName</span></div>
-                        <div><span class="priority @ticket.PriorityName.ToLower()">@ticket.PriorityName</span></div>
+                        <div><span class="status @ticket.StatusName.ToLower().Replace(" ", "")">@ticket.StatusName</span></div>
+                        <div><span class="priority @ticket.PriorityName.ToLower().Replace(" ", "")">@ticket.PriorityName</span></div>
                         <div>@(ticket.Title.Length < 50 ? ticket.Title : $"{ticket.Title.Substring(0, 50)}...")</div>
-                        <div>@ticket.CreatedOn.ToString("MM/dd/yy")</div>
+                        <div>@ticket.CreatedOn.ToString("dd/MM/yy")</div>
                         <div>
                             @(ticket.AssignedToUserName == null
                         ? "unassigned"
@@ -80,35 +61,38 @@
                 }
             </article>
         </section>
-       @if(Model.Tickets.Count() > TicketsPerPage)
+
+        @if (Model.PagesCount > 1)
         {
-             <nav class="page-nav">
-            <ul class="page-nav-list">
+            <nav class="page-nav">
+                <ul class="page-nav-list">
 
-                @if (Model.HasPreviousPage)
-                {
-                    <li>
-                        <a asp-action="Tickets" asp-route-page="@Model.PreviousPage">Previous</a>
-                    </li>
-                    <li>
-                        <a asp-action="Tickets" asp-route-page="@(Model.Page - 1)">@(Model.Page - 1)</a>
-                    </li>
-                }
-                <li>
-                    <a asp-action="Tickets" asp-route-page="@Model.Page">@Model.Page</a>
-                </li>
-                @if (Model.HasNextPage)
-                {
-                    <li>
-                        <a asp-action="Tickets" asp-route-page="@(Model.Page + 1)">@(Model.Page + 1)</a>
-                    </li>
-                    <li>
-                        <a asp-action="Tickets" asp-route-page="@Model.NextPage">Next</a>
-                    </li>
-                }
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li>
+                            <a asp-action="Tickets" asp-route-page="@Model.PreviousPage" asp-route-keyword="@this.ViewData["keyword"]">Previous</a>
+                        </li>
+                        <li>
+                            <a asp-action="Tickets" asp-route-page="@(Model.Page - 1)" asp-route-keyword="@this.ViewData["keyword"]">@(Model.Page - 1)</a>
+                        </li>
+                    }
 
-            </ul>
-        </nav>
+                    <li>
+                        <a asp-action="Tickets" asp-route-page="@Model.Page" asp-route-keyword="@this.ViewData["keyword"]">@Model.Page</a>
+                    </li>
+
+                    @if (Model.HasNextPage)
+                    {
+                        <li>
+                            <a asp-action="Tickets" asp-route-page="@(Model.Page + 1)" asp-route-keyword="@this.ViewData["keyword"]">@(Model.Page + 1)</a>
+                        </li>
+                        <li>
+                            <a asp-action="Tickets" asp-route-page="@Model.NextPage" asp-route-keyword="@this.ViewData["keyword"]">Next</a>
+                        </li>
+                    }
+
+                </ul>
+            </nav>
         }
     </div>
 
@@ -116,5 +100,15 @@
         <p class="daily-tasks">Daily tasks</p>
         <vc:tasks-side-bar></vc:tasks-side-bar>
     </aside>
-
 </article>
+
+<dialog class="create-dialog">
+    <vc:create-ticket></vc:create-ticket>
+</dialog>
+
+
+@section Scripts {
+const sdd = 21;
+<script src="~/js/create-ticket.js"></script>
+<script src="~/js/show-ticket.js"></script>
+}

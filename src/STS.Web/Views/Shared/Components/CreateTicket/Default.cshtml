@@ -40,6 +40,9 @@
             <textarea asp-for="Content" class="form-control" rows="10" required></textarea>
             <span asp-validation-for="Content" class="text-danger"></span>
         </div>
-        <button type="submit" class="c-btn">Create</button>
+        <div class="c-form-btns">
+            <button type="submit" class="c-btn">Create</button>
+            <button class="cancel-btn" type="button">Cancel</button>
+        </div>
     </form>
 </article>

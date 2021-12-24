@@ -4,12 +4,6 @@
 @if (Model.Tasks.Count() > 0)
 {
     <article class="task-vc-table">
-        <header class="t-vc-header">
-            <div class="t-vc-priority">Prioriry</div>
-            <div class="t-vc-title">Task</div>
-            <div class="t-vc-deadline">Deadline</div>
-        </header>
-
         @foreach (var task in Model.Tasks)
         {
             <a class="tasks-vc-row" asp-controller="Tasks" asp-action="Task" asp-route-id="@task.Id">
