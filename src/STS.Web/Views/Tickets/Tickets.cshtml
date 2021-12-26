@@ -29,12 +29,13 @@
 </article>
 
 <article class="tickets-container">
+    <section>
+        <vc:tickets-nav-bar></vc:tickets-nav-bar>
+    </section>
 
-    <vc:tickets-nav-bar></vc:tickets-nav-bar>
-
-    <div class="tickets-wrapper">
+    <section class="tickets-wrapper">
         <section class="tickets-list">
-            <article class="tickets-table">
+            <div class="tickets-table">
                 <header class="tickets-table-header">
                     <div class="t-num-header">Ticket</div>
                     <div class="t-num-status">Status</div>
@@ -59,7 +60,7 @@
                         </div>
                     </a>
                 }
-            </article>
+            </div>
         </section>
 
         @if (Model.PagesCount > 1)
@@ -94,7 +95,7 @@
                 </ul>
             </nav>
         }
-    </div>
+    </section>
 
     <aside class="tasks-review">
         <p class="daily-tasks">Daily tasks</p>
@@ -106,9 +107,6 @@
     <vc:create-ticket></vc:create-ticket>
 </dialog>
 
-
 @section Scripts {
-const sdd = 21;
 <script src="~/js/create-ticket.js"></script>
-<script src="~/js/show-ticket.js"></script>
 }

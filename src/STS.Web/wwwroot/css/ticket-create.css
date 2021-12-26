@@ -23,7 +23,8 @@
     color: white;
 }
 
-.create-dialog {
+.create-dialog,
+.comment-dialog {
     padding: 10px 5px;
     background-color: #1E1E1E;
     border-radius: 6px;
@@ -38,7 +39,8 @@
 }
 
 .c-btn,
-.cancel-btn{
+.cancel-btn,
+.cancel-c-btn {
     border-radius: 6px;
     padding: 6px 20px;
     color: white;

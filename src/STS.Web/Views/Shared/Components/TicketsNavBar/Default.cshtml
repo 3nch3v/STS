@@ -1,24 +1,24 @@
 ﻿@model Dictionary<string, int>
 
 <nav class="tickets-nav">
-        <ul>
-            <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="my">My tickets (@Model["my"])</a>
-            </li>
-            <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="to me">Assigned to me (@Model["to me"])</a>
-            </li>
-            <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="answers">New answers (@Model["answers"])</a>
-            </li>
-            <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="new">New tickets (@Model["new"])</a>
-            </li>
-            <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="all">All tickets (@Model["all"])</a>
-            </li>
-             <li>
-                <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="history">History (@Model["history"])</a>
-            </li>
-        </ul>
-    </nav>
+    <ul>
+        <li>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="my">My tickets (@Model["my"])</a>
+        </li>
+        <li>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="to me">Assigned to me (@Model["to me"])</a>
+        </li>
+        <li>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="answers">New answers (@Model["answers"])</a>
+        </li>
+        <li>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="new">New tickets (@Model["new"])</a>
+        </li>
+        <li>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="all">All tickets (@Model["all"])</a>
+        </li>
+        <li>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="history">History (@Model["history"])</a>
+        </li>
+    </ul>
+</nav>

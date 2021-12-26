@@ -1,3 +1,5 @@
+using System.Reflection;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +14,6 @@ using STS.Data.Models;
 using STS.Data.Seeding;
 using STS.Services;
 using STS.Services.Contracts;
-using System.Reflection;
 
 namespace STS.Web
 {
@@ -62,6 +63,7 @@ namespace STS.Web
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITaskService, TaskService>();
             services.AddTransient<ICommonService, CommonService>();
+            services.AddTransient<ICommentService, CommentService>();
 
         }
 
@@ -93,7 +95,7 @@ namespace STS.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+         
             app.UseEndpoints(
                 endpoints =>
                 {

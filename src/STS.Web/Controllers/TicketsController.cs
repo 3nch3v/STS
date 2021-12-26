@@ -37,7 +37,6 @@ namespace STS.Web.Controllers
         public IActionResult Ticket(int id)
         {
             var ticket = ticketService.GetById(id);
-
             var ticketDto = mapper.Map<TicketViewModel>(ticket);
 
             return View(ticketDto);

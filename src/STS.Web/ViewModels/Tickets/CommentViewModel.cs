@@ -2,10 +2,12 @@
 {
     public class CommentViewModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
         public string Content { get; set; }
 
         public string UserUserName { get; set; }
+
+        public string CreatedOn { get; set; }
     }
 }

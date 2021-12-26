@@ -1,1 +1,77 @@
-﻿
+﻿.ticket,
+.ticket-wrapper,
+.comment-wrapper {
+    width: 100%;
+}
+.ticket,
+.ticket-details-title {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+}
+
+.ticket-details {
+    min-width: 80%;
+}
+
+.ticket-actions {
+    min-width: 15%;
+    padding-left: 10px;
+    border-left: 1px solid white;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 100%;
+    align-content: space-between;
+}
+
+.tile-status-priority {
+    min-width: 20%;
+}
+
+.ticket-title {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.ticket-body {
+    margin-right: 20px;
+}
+
+.ticket,
+.t-comment {
+    border: 1px solid white;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.t-comment {
+    margin-top: 5px;
+}
+
+.comment-actions {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid grey;
+}
+
+.username,
+.date {
+    color: red;
+}
+
+.comment-wrapper,
+.comment-dialog {
+    background-color: #262626;
+    color: white;
+    padding: 10px;
+}
+
+.comment-ta {
+    background-color: black;
+    color: white;
+}
+
+.comment-ta:focus {
+    background-color: dimgrey;
+    color: white;
+}

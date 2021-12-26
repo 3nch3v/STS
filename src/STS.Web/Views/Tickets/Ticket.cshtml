@@ -1,25 +1,115 @@
 ﻿@using STS.Web.ViewModels.Tickets;
 @model TicketViewModel;
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
 @{
     ViewData["Title"] = Model.Title;
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+    ViewData["requestToken"] = requestToken;
+    ViewData["ticketId"] = Model.Id;
 }
 
-<div>
-    <div>
-        <p>@Model.PriorityName</p>
-        <p>@Model.StatusName</p>
-        <p>@Model.Title</p>
-        <p>@Model.Content</p>
-        <p>@Model.AssignedToUserName</p>
-    </div>
-    <div>
-        <ul>
-            @foreach(var comment in Model.Comments)
-            {
-                <li>@comment.Content</li>
-            }
-        </ul>
-    </div>
-</div>
+<article class="ticket-search-art">
+    <section>
+        <button class="show-create-btn" title="Create a new ticket...">New Ticket</button>
+    </section>
+    <section class="search-section">
+        <form asp-controller="Tickets" asp-action="Tickets" method="get">
+            <input class="search-input-field"
+                   name="keyword"
+                   type="text"
+                   required
+                   minlength=2 />
+            <button class="search-btn" type="submit">Search</button>
+        </form>
+    </section>
+</article>
 
+<article class="tickets-container">
+
+    <vc:tickets-nav-bar></vc:tickets-nav-bar>
+
+    <section class="ticket-wrapper">
+
+        <section class="ticket">
+            <section class="ticket-details">
+
+                <section class="ticket-details-title">
+                    <span class="tile-status-priority">
+                        <span class="status @Model.StatusName.ToLower().Replace(" ", "")">@Model.StatusName</span>
+                        <span class="priority @Model.PriorityName.ToLower().Replace(" ", "")">@Model.PriorityName</span>
+                    </span>
+                    <p class="ticket-title">@Model.Title</p>
+                </section>
+
+                <section class="ticket-body">
+                    <p>@Model.Content</p>
+                </section>
+
+            </section>
+
+            <section class="ticket-actions">
+                <div class="actions">
+                    <p>Change status</p>
+                    <p>Assign to</p>
+                    <p>Assign to me</p>
+                    <p>Edit</p>
+                    <p>Delete</p>
+                </div>
+                <p>
+                    @(Model.AssignedToUserName == null
+                    ? "unassigned"
+                    : $" Assigned to: {Model.AssignedToUserName}")
+                </p>
+            </section>
+        </section>
+
+        <section class="ticket-comments">
+            @foreach (var comment in Model.Comments)
+            {
+                <section class="t-comment" data-commemt-id="@comment.Id">
+                    <p>@comment.Content</p>
+
+                    <div class="comment-actions">
+                        <div>
+                            <span>Edit</span>
+                            <span>Delete</span>
+                        </div>
+                        <div>
+                            <span>
+                                From
+                                <span class="username">@comment.UserUserName</span>
+                                on
+                                <span class="date">@comment.CreatedOn</span>
+                            </span>
+                        </div>
+                    </div>
+                </section>
+            }
+        </section>
+
+        <section>
+            <button class="t-comment-btn">Comment</button>
+        </section>
+
+    </section>
+
+    <aside class="tasks-review">
+        <p class="daily-tasks">Daily tasks</p>
+        <vc:tasks-side-bar></vc:tasks-side-bar>
+    </aside>
+
+</article>
+
+<dialog class="create-dialog">
+    <vc:create-ticket></vc:create-ticket>
+</dialog>
+
+<dialog class="comment-dialog">
+    <partial name="_CommentFormPartial" view-data="ViewData"></partial>
+</dialog>
+
+@section Scripts {
+    <script type="module" src="~/js/comment-ticket.js"></script>
+    <script type="module" src="~/js/create-ticket.js"></script>
+}

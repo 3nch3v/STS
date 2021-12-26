@@ -17,6 +17,7 @@ namespace STS.Web.Configurations
             CreateMap<Ticket, TicketListViewModel>();
             CreateMap<Ticket, TicketViewModel>();
             CreateMap<Comment, CommentViewModel>();
+            CreateMap<CommentInputModel, Comment>();
             CreateMap<EmployeeTask, BaseTaskViewModel>();
         }
     }

@@ -7,15 +7,14 @@
 }
 
 .tickets-nav {
-    max-width: 15%;
+    min-width: 15%;
 }
 
 .tickets-wrapper {
-    width: 60%;
+    min-width: 60%;
 }
 
 .tasks-review {
-    max-width: 25%;
     min-width: 25%;
 }
 
@@ -23,7 +22,6 @@
 .task-vc-table {
     display: table;
     border-collapse: collapse;
-
 }
 
 .tickets-table-row,
@@ -85,11 +83,15 @@
 
 .search-input-field {
     padding: 4px;
+    background-color: black;
+    border-radius: 6px;
+    color: white;
+    border-color: lightgoldenrodyellow;
 }
 
-
 .show-create-btn,
-.search-btn {
+.search-btn,
+.t-comment-btn {
     border-radius: 6px;
     padding: 6px 20px;
     color: white;
@@ -105,7 +107,11 @@
     margin-right: 20px;
 }
 
-p.no-task {
+.t-comment-btn {
+    margin-top: 15px;
+}
+
+p .no-task {
     top: 70px;
     position: relative;
     width: 150px;
@@ -122,4 +128,8 @@ p.no-task {
 p.daily-tasks {
     font-weight: bold;
     font-size: 18px
+}
+
+.page-nav-list {
+    margin-bottom: 10px;
 }
