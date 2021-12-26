@@ -1,4 +1,5 @@
 ﻿import appendComment from './render-comment.js';
+import { create } from './services/data.js';
 
 (function () {
     const showModal = document.querySelector('.t-comment-btn');
@@ -22,19 +23,13 @@
 
         const ticketId = commentForm.dataset.ticketId;
         const token = commentForm.dataset.requestToken;
+        const commentDto = {
+            content: comment,
+            ticketId: ticketId
+        }
 
-        const url = "https://localhost:5001/api/comment"
+        const data = await create(commentDto, token);
 
-        const res = await fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "RequestVerificationToken": token
-            },
-            body: JSON.stringify({ content: comment, ticketId})
-        });
-
-        const data = await res.json();
         appendComment(data);
         commentForm.reset();
         dialog.close('Cancel');
