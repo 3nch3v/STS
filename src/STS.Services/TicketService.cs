@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using STS.Data;
+using STS.Data.Dtos;
 using STS.Data.Models;
 using STS.Services.Contracts;
 
@@ -62,47 +63,62 @@ namespace STS.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task EditAsync<T>(int ticketId, T ticketDto)
+        public async Task<Ticket> EditAsync<T>(int ticketId, T ticketDto)
         {
-            var ticket = dbContext.Tickets
-                .Where(x => x.Id == ticketId)
-                .FirstOrDefault();
+            var dbTicket = GetById(ticketId);
 
-            var ticketInput = mapper.Map<Ticket>(ticketDto);
+            var ticketInput = mapper.Map<TicketDto>(ticketDto);
 
-            if (ticket.Title != ticketInput.Title)
+            if (ticketInput.Title != null 
+                && dbTicket.Title != ticketInput.Title)
             {
-                ticket.Title = ticketInput.Title;
+                dbTicket.Title = ticketInput.Title;
             }
-            if (ticket.Content != ticketInput.Content)
+            if (ticketInput.Content != null 
+                && dbTicket.Content != ticketInput.Content)
             {
-                ticket.Content = ticketInput.Content;
+                dbTicket.Content = ticketInput.Content;
             }
-            if (ticket.Status != ticketInput.Status)
+            if (ticketInput.AssignedToId != null 
+                &&  dbTicket.AssignedToId != ticketInput.AssignedToId)
             {
-                ticket.Status = ticketInput.Status;
+                dbTicket.AssignedToId = ticketInput.AssignedToId;
             }
-            if (ticket.Priority != ticketInput.Priority)
+            if (ticketInput.StatusId != null 
+                && dbTicket.StatusId != ticketInput.StatusId)
             {
-                ticket.Priority = ticketInput.Priority;
+                dbTicket.StatusId = (int)ticketInput.StatusId;
             }
-            if (ticket.AssignedTo != ticketInput.AssignedTo)
+            if (ticketInput.PriorityId != null 
+                && dbTicket.PriorityId != ticketInput.PriorityId)
             {
-                ticket.AssignedTo = ticketInput.AssignedTo;
+                dbTicket.PriorityId = (int)ticketInput.PriorityId;
             }
-
-            await dbContext.Tickets.AddAsync(ticketInput);
+            if (ticketInput.DepartmentId != null 
+                && dbTicket.DepartmentId != ticketInput.DepartmentId)
+            {
+                dbTicket.DepartmentId = (int)ticketInput.DepartmentId;
+            }
 
             await dbContext.SaveChangesAsync();
+            var result = GetById(ticketId);
+            return result;
         }
 
         public async Task DeleteAsync(int ticketId)
         {
-            var ticket = dbContext.Tickets
-               .Where(x => x.Id == ticketId)
-               .FirstOrDefault();
+            var ticket = GetById(ticketId);
 
-            dbContext.Tickets.Remove(ticket);
+            ticket.IsDeleted = true;
+
+            var comments = dbContext.Comments
+                .Where(x => x.TicketId == ticketId)
+                .ToList();
+
+            foreach (var comment in comments)
+            {
+                comment.IsDeleted = true;
+            }
 
             await dbContext.SaveChangesAsync();
         }
@@ -191,8 +207,8 @@ namespace STS.Services
             if (keyword == "all" || keyword == null) 
             {
                 Func<Ticket, bool> all = ticket => ticket.DepartmentId == userDepartmentId
-                                            && (ticket.Status.Name.ToLower() != "closed"
-                                                ||ticket.Status.Name.ToLower() != "solved")
+                                            && ticket.Status.Name.ToLower() != "closed"
+                                            && ticket.Status.Name.ToLower() != "solved"
                                             && ticket.IsDeleted == false;
                 return all;
             }

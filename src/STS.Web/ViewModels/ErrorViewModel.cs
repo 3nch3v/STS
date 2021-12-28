@@ -1,5 +1,3 @@
-using System;
-
 namespace STS.Web.ViewModels
 {
     public class ErrorViewModel
@@ -7,5 +5,7 @@ namespace STS.Web.ViewModels
         public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+        public string ErrorMessage { get; set; }
     }
 }

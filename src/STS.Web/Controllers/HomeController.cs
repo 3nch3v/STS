@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-using System.Diagnostics;
-
 using STS.Web.ViewModels;
+
+using static STS.Common.GlobalConstants;
 
 namespace STS.Web.Controllers
 {
@@ -18,7 +20,7 @@ namespace STS.Web.Controllers
 
         public IActionResult Index()
         {
-            if (User.Identity.IsAuthenticated) 
+            if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Tickets", "Tickets");
             }
@@ -32,9 +34,31 @@ namespace STS.Web.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int code)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            string msg = this.GetMessage(code);
+            var error = new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
+                ErrorMessage = msg,
+            };
+
+            return View(error);
+        }
+
+        private string GetMessage(int code)
+        {
+            return code switch
+            {
+                400 => ErrorMessage.BadRequest,
+                401 => ErrorMessage.Unauthorised,
+                403 => ErrorMessage.Forbidden,
+                404 => ErrorMessage.NotFound,
+                500 => ErrorMessage.ServerError,
+                502 => ErrorMessage.BadGateway,
+                505 => ErrorMessage.HttpNotSupported,
+                _ => this.ViewBag.ErrorMessage = ErrorMessage.NotFound,
+            };
         }
     }
 }

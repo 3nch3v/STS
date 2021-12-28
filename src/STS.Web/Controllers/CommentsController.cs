@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,17 +13,16 @@ namespace STS.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentsController : ControllerBase
     {
         private readonly ICommentService commentService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public CommentController(ICommentService commentService, UserManager<ApplicationUser> userManager)
+        public CommentsController(ICommentService commentService, UserManager<ApplicationUser> userManager)
         {
             this.commentService = commentService;
             this.userManager = userManager;
         }
-
 
         [HttpPost]
         public async Task<ActionResult<CommentViewModel>> Create([FromBody] CommentInputModel comment)
@@ -44,6 +45,30 @@ namespace STS.Web.Controllers
             };
 
             return commentDto;
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<bool>> Delete(int id)
+        {
+            var comment = commentService.GetById(id);
+
+            if (comment == null)
+            {
+                return NotFound("Comment with the given id was not found");
+            }
+
+            try
+            {
+                var result = await commentService.Delete(id);
+
+                return Ok(result);
+            }
+            catch(Exception)
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError, 
+                    "Error deleting data");
+            }
         }
     }
 }

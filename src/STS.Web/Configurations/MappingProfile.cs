@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-
+using STS.Data.Dtos;
 using STS.Data.Models;
+using STS.Web.ViewModels.Common;
 using STS.Web.ViewModels.Tasks;
 using STS.Web.ViewModels.Tickets;
 
@@ -19,6 +20,9 @@ namespace STS.Web.Configurations
             CreateMap<Comment, CommentViewModel>();
             CreateMap<CommentInputModel, Comment>();
             CreateMap<EmployeeTask, BaseTaskViewModel>();
+            CreateMap<ApplicationUser, EmployeesViewModel>();
+            CreateMap<TicketEditModel, TicketDto>();
+            
         }
     }
 }

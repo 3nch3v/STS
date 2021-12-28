@@ -1,23 +1,17 @@
 ﻿<article class="comment-wrapper">
-        <form 
-            method="post" 
-            class="comment-form"
-            data-ticket-id = "@ViewData["ticketId"]"
-            data-request-token = "@ViewData["requestToken"]"
-        >
-            <div class="form-group">
-                <label for="content">Comment:</label>
-                <textarea 
-                    for="content" 
-                    name="comment" 
-                    class="form-control comment-ta" 
-                    rows="5" 
-                    required>
+    <form method="post" class="comment-form">
+        <div class="form-group">
+            <label for="content">Comment:</label>
+            <textarea for="content"
+                      name="comment"
+                      class="form-control comment-ta"
+                      rows="5"
+                      required>
             </textarea>
-            </div>
-            <div class="c-form-btns">
-                <button type="submit" class="c-btn">Post</button>
-                <button class="cancel-c-btn" type="button">Cancel</button>
-            </div>
-        </form>
-    </article>
+        </div>      
+        <div class="c-form-btns">
+            <button type="submit" class="c-btn">Post</button>
+            <button class="cancel-c-btn" type="button">Cancel</button>
+        </div>
+    </form>
+</article>

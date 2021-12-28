@@ -12,6 +12,8 @@ namespace STS.Services.Contracts
 
         IEnumerable<Department> GetDepartments();
 
+        IEnumerable<ApplicationUser> GetEmployees(int departmentId);
+
         int GetStatusId(string status);
     }
 }

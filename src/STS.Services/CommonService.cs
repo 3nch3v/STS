@@ -20,6 +20,13 @@ namespace STS.Services
             return dbContext.Departments.ToList();
         }
 
+        public IEnumerable<ApplicationUser> GetEmployees(int departmentId)
+        {
+            return dbContext.Users.
+                Where(x => x.DepartmentId == departmentId)
+                .ToList();
+        }
+
         public IEnumerable<Priority> GetPriorities()
         {
             return dbContext.Priorities.ToList();

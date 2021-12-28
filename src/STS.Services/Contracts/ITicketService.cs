@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using STS.Data.Models;
 
 namespace STS.Services.Contracts
@@ -16,7 +17,7 @@ namespace STS.Services.Contracts
 
         Task CreateAsync<T>(string userId, T ticketDto);
 
-        Task EditAsync<T>(int ticketId, T ticketDto);
+        Task<Ticket> EditAsync<T>(int ticketId, T ticketDto);
 
         Task DeleteAsync(int ticketId);
     }

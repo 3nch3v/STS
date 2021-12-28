@@ -75,3 +75,12 @@
     background-color: dimgrey;
     color: white;
 }
+
+.c-del-btn {
+    background-color: #262626; 
+    border-radius: 6px; 
+    border-color: lightgoldenrodyellow;
+}
+    .c-del-btn i {
+        color: white;
+    }

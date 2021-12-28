@@ -7,13 +7,11 @@
     this.TempData.Keep("keyword");
     this.ViewData["keyword"] = this.TempData["keyword"];
     string[] keys = new string[] { "my", "to me", "answers", "new", "all", "history" };
-
 }
 
 <article class="ticket-search-art">
     <section>
         <button class="show-create-btn" title="Create a new ticket...">New Ticket</button>
-       @* <a class="create-btn" asp-controller="Tickets" asp-action="Create" title="Create a new ticket...">New Ticket</a>*@
     </section>
     <section class="search-section">
         <form asp-controller="Tickets" asp-action="Tickets" method="get">
@@ -108,5 +106,5 @@
 </dialog>
 
 @section Scripts {
-<script src="~/js/create-ticket.js"></script>
+<script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
 }

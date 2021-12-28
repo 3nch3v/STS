@@ -4,9 +4,9 @@
 
 @{
     ViewData["Title"] = Model.Title;
+    ViewData["ticketId"] = Model.Id;
     var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
     ViewData["requestToken"] = requestToken;
-    ViewData["ticketId"] = Model.Id;
 }
 
 <article class="ticket-search-art">
@@ -31,58 +31,129 @@
 
     <section class="ticket-wrapper">
 
-        <section class="ticket">
+        <section class="ticket" data-ticket-id="@Model.Id" data-request-token="@requestToken">
             <section class="ticket-details">
 
                 <section class="ticket-details-title">
-                    <span class="tile-status-priority">
+                    <section class="tile-status-priority">
                         <span class="status @Model.StatusName.ToLower().Replace(" ", "")">@Model.StatusName</span>
                         <span class="priority @Model.PriorityName.ToLower().Replace(" ", "")">@Model.PriorityName</span>
-                    </span>
-                    <p class="ticket-title">@Model.Title</p>
+                    </section>
+
+                    <section class='t-title-section'>
+                        <p class="ticket-title">@Model.Title</p>
+                    </section>
+
+                    @if (Model.IsOwner)
+                    {
+                        <section class="edit-title-section">
+                            <a class="edit-t-title" href="javascript.void(0)">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </section>
+                    }
                 </section>
 
-                <section class="ticket-body">
-                    <p>@Model.Content</p>
+                <section class="ticket-body-section">
+                    <section class="ticket-content">
+                        <p>@Model.Content</p>
+                    </section>
+
+                    @if (Model.IsOwner)
+                    {
+                        <section class="edit-content-section">
+                            <a class="edit-t-content" href="javascript.void(0)">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </section>
+                    }
+                </section>
+
+                <section>
+                    from
+                    <span class="username">@Model.EmployeeUserName</span>
+                    on
+                    <span class="date">@Model.CreatedOn</span>
                 </section>
 
             </section>
 
             <section class="ticket-actions">
-                <div class="actions">
-                    <p>Change status</p>
-                    <p>Assign to</p>
-                    <p>Assign to me</p>
-                    <p>Edit</p>
-                    <p>Delete</p>
-                </div>
-                <p>
-                    @(Model.AssignedToUserName == null
-                    ? "unassigned"
-                    : $" Assigned to: {Model.AssignedToUserName}")
-                </p>
+                <select class="form-control-sm t-status-select"
+                        asp-items="Model.Statuses.Where(x => x.Name != Model.StatusName).Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
+                    <option selected="selected" value="@Model.StatusId">@Model.StatusName</option>
+                </select>
+
+                <select class="form-control-sm t-department-select"
+                        asp-items="Model.Departments.Where(x => x.Name != Model.DepartmentName).Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
+                    <option selected="selected" value="@Model.DepartmentId">@Model.DepartmentName</option>
+                </select>
+
+                <select class="form-control-sm t-assign-select"
+                        asp-items="Model.Employees.Where(x => x.UserName != Model.AssignedToUserName).Select(x => new SelectListItem(x.UserName, x.Id))">
+                    <option selected="selected" value="@Model.AssignedToId">@(Model.AssignedToUserName ?? "Select user")</option>
+                </select>
+
+                <ul class="actions">
+                    @if (Model.AssignedToId != Model.LoggedInUserId)
+                    {
+                        <li>
+                            <a href="javascript.void(0)"
+                           type="button"
+                           class="assign-to-me-btn"
+                           data-my-id="@Model.LoggedInUserId">
+                                Assign to me
+                            </a>
+                        </li>
+                    }
+                    @if (Model.IsOwner)
+                    {
+                        <li>
+                            <a asp-controller="Tickets"
+                           asp-action="Delete"
+                           asp-route-id="@Model.Id">
+                                Delete
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <p class="assigned-to-username">
+                            @(Model.AssignedToUserName == null
+                            ? "unassigned"
+                            : $"Assigned to {Model.AssignedToUserName}")
+                        </p>
+                    </li>
+                </ul>
             </section>
         </section>
 
         <section class="ticket-comments">
             @foreach (var comment in Model.Comments)
             {
-                <section class="t-comment" data-commemt-id="@comment.Id">
+                <section class="t-comment">
                     <p>@comment.Content</p>
 
                     <div class="comment-actions">
                         <div>
-                            <span>Edit</span>
-                            <span>Delete</span>
-                        </div>
-                        <div>
                             <span>
-                                From
+                                from
                                 <span class="username">@comment.UserUserName</span>
                                 on
                                 <span class="date">@comment.CreatedOn</span>
                             </span>
                         </div>
+                        <div>
+                            @if (Model.LoggedInUserId == comment.UserId)
+                            {
+                                <button class="c-del-btn"
+                                title="Delete comment."
+                                data-comment-id="@comment.Id"
+                                data-request-token="@requestToken">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            }
+                        </div>
+
                     </div>
                 </section>
             }
@@ -110,6 +181,7 @@
 </dialog>
 
 @section Scripts {
-    <script type="module" src="~/js/comment-ticket.js"></script>
-    <script type="module" src="~/js/create-ticket.js"></script>
+<script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
+<script type="module" src="~/js/services/comments-services.js"></script>
+<script type="module" src="~/js/services/tickets-services.js"></script>
 }

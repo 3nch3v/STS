@@ -2,18 +2,29 @@
 using STS.Data;
 using STS.Data.Models;
 using STS.Services.Contracts;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace STS.Services
 {
     public class CommentService : ICommentService
     {
+        private const string status = "Open";
+
         private readonly IMapper mapper;
+        private readonly ITicketService ticketService;
+        private readonly ICommonService commonService;
         private readonly ApplicationDbContext dbContext;
 
-        public CommentService(IMapper mapper, ApplicationDbContext dbContext)
+        public CommentService(
+            IMapper mapper,
+            ITicketService ticketService,
+            ICommonService commonService,
+            ApplicationDbContext dbContext)
         {
             this.mapper = mapper;
+            this.ticketService = ticketService;
+            this.commonService = commonService;
             this.dbContext = dbContext;
         }
 
@@ -21,11 +32,26 @@ namespace STS.Services
         {
             var comment = mapper.Map<Comment>(commentDto);
             comment.UserId = userId;
-
+            var ticket = ticketService.GetById(comment.TicketId);
+            ticket.StatusId = commonService.GetStatusId(status);
             await dbContext.Comments.AddAsync(comment);
             await dbContext.SaveChangesAsync();
 
             return comment;
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            var comment = GetById(id);
+            dbContext.Comments.Remove(comment);
+            await dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
+        public Comment GetById(int id)
+        {
+            return dbContext.Comments.FirstOrDefault(x => x.Id == id);    
         }
     }
 }

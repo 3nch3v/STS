@@ -22,7 +22,7 @@ async function request(url, options) {
     }
 }
 
-function getOptions(method = 'GET', body, token) {
+function getOptions(method = 'GET', token, body) {
     const options = {
         method,
         headers: {}
@@ -44,12 +44,12 @@ export async function get(url) {
     return request(url, getOptions());
 }
 
-export async function post(url, data, token) {
-    return request(url, getOptions('POST', data, token));
+export async function post(url, token, data) {
+    return request(url, getOptions('POST', token, data));
 }
 
-export async function put(url, data, token) {
-    return request(url, getOptions('PUT', data, token));
+export async function put(url, token, data) {
+    return request(url, getOptions('PUT', token, data));
 }
 
 export async function del(url, token) {
