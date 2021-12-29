@@ -6,9 +6,17 @@
 
         public const int EmployeePositionNameMaxLength = 50;
 
+        public const int TitleMinLength = 2;
+
         public const int TitleMaxLength = 100;
 
+        public const int ContentMinLength = 5;
+
         public const int ContentMaxLength = 2000;
+
+        public const int CommentMinLength = 2;
+
+        public const int CommentMaxLength = 2000;
 
         public const int TaskDescriptionMaxLength = 1000;
 

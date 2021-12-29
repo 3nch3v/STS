@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using STS.Data;
 using STS.Data.Models;
 using STS.Data.Seeding;
+using STS.Messaging;
 using STS.Services;
 using STS.Services.Contracts;
 
@@ -64,7 +65,7 @@ namespace STS.Web
             services.AddTransient<ITaskService, TaskService>();
             services.AddTransient<ICommonService, CommonService>();
             services.AddTransient<ICommentService, CommentService>();
-
+            services.AddTransient<IEmailSender, NullMessageSender>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

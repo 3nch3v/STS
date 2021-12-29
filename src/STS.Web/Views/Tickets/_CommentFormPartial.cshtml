@@ -6,9 +6,15 @@
                       name="comment"
                       class="form-control comment-ta"
                       rows="5"
-                      required>
-            </textarea>
-        </div>      
+                      required></textarea>
+        </div>
+        <div>
+            <p class="comment-validation text-danger"></p>
+        </div>
+        <div>
+            <input type="checkbox" id="send-email-check" name="send-email" for="send-email">
+            <label for="send-email"> Send email notification</label>
+        </div>
         <div class="c-form-btns">
             <button type="submit" class="c-btn">Post</button>
             <button class="cancel-c-btn" type="button">Cancel</button>

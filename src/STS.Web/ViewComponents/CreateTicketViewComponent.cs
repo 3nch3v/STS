@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tickets;
@@ -18,6 +19,7 @@ namespace STS.Web.ViewComponents
         }
 
         [HttpGet]
+        [Authorize]
         public IViewComponentResult Invoke()
         {
             var inputDto = new TicketInputModel

@@ -1,8 +1,6 @@
 ﻿namespace STS.Web.ViewModels.Tickets
 {
-    public class StatusViewModel
+    public class StatusViewModel : BaseViewModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
     }
 }

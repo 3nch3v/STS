@@ -2,12 +2,11 @@
 @model TicketInputModel
 
 @{
-    ViewData["Title"] = "Create Ticket";
+    ViewData["Title"] = "Create a Ticket";
 }
 
 <article class="c-wrapper">
     <form asp-controller="Tickets" asp-action="Create" class="col-md-12 offser-md-8">
-        <div asp-validation-summary="All" class="text-danger"></div>
         <section class="select-group">
             <div class="p-select">
                 <label asp-for="PriorityId">Priority</label>
@@ -15,9 +14,7 @@
                     class="form-control-sm" 
                     asp-for="PriorityId" 
                     asp-items="Model.Priorities.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"
-                >
-                </select>
-                <span asp-validation-for="PriorityId" class="text-danger"></span>
+                ></select>
             </div>
             <div >
                 <label asp-for="DepartmentId">Department</label>
@@ -25,20 +22,16 @@
                     class="form-control-sm" 
                     asp-for="DepartmentId" 
                     asp-items="Model.Departments.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"
-                >
-                </select>
-                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                ></select>
             </div>
         </section>
         <div class="form-group t-tile">
             <label asp-for="Title">Title</label>
-            <input asp-for="Title" class="form-control" required>
-            <span asp-validation-for="Title" class="text-danger"></span>
+            <input asp-for="Title" class="form-control ticket-i-title" type="text" minlength="2" maxlength="100" required >
         </div>
         <div class="form-group t-description">
             <label asp-for="Content">Description</label>
-            <textarea asp-for="Content" class="form-control" rows="10" required></textarea>
-            <span asp-validation-for="Content" class="text-danger"></span>
+            <textarea asp-for="Content" class="form-control ticket-ta-content" type="text" rows="10" minlength="5" maxlength="2000" required ></textarea>
         </div>
         <button type="submit" class="c-btn">Create</button>
     </form>

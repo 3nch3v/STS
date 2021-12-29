@@ -33,32 +33,39 @@
 
     <section class="tickets-wrapper">
         <section class="tickets-list">
-            <div class="tickets-table">
-                <header class="tickets-table-header">
-                    <div class="t-num-header">Ticket</div>
-                    <div class="t-num-status">Status</div>
-                    <div class="t-num-priority">Prioriry</div>
-                    <div class="t-num-title">Title</div>
-                    <div class="t-num-created">Date</div>
-                    <div class="t-num-assigned">Assigned to</div>
-                </header>
+            @if (Model.TicketsCount > 0)
+            {
+                <div class="tickets-table">
+                    <header class="tickets-table-header">
+                        <div class="t-num-header">Ticket</div>
+                        <div class="t-num-status">Status</div>
+                        <div class="t-num-priority">Prioriry</div>
+                        <div class="t-num-title">Title</div>
+                        <div class="t-num-created">Date</div>
+                        <div class="t-num-assigned">Assigned to</div>
+                    </header>
 
-                @foreach (var ticket in Model.Tickets)
-                {
-                    <a class="tickets-table-row" asp-action="Ticket" asp-route-id="@ticket.Id" data-ticket-id="@ticket.Id">
-                        <div>@ticket.Id</div>
-                        <div><span class="status @ticket.StatusName.ToLower().Replace(" ", "")">@ticket.StatusName</span></div>
-                        <div><span class="priority @ticket.PriorityName.ToLower().Replace(" ", "")">@ticket.PriorityName</span></div>
-                        <div>@(ticket.Title.Length < 50 ? ticket.Title : $"{ticket.Title.Substring(0, 50)}...")</div>
-                        <div>@ticket.CreatedOn.ToString("dd/MM/yy")</div>
-                        <div>
-                            @(ticket.AssignedToUserName == null
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <a class="tickets-table-row" asp-action="Ticket" asp-route-id="@ticket.Id" data-ticket-id="@ticket.Id">
+                            <div>@ticket.Id</div>
+                            <div><span class="status @ticket.StatusName.ToLower().Replace(" ", "")">@ticket.StatusName</span></div>
+                            <div><span class="priority @ticket.PriorityName.ToLower().Replace(" ", "")">@ticket.PriorityName</span></div>
+                            <div>@(ticket.Title.Length < 45 ? ticket.Title : $"{ticket.Title.Substring(0, 45)}...")</div>
+                            <div>@ticket.CreatedOn.ToString("dd/MM/yy")</div>
+                            <div>
+                                @(ticket.AssignedToUserName == null
                         ? "unassigned"
                         : ticket.AssignedToUserName )
-                        </div>
-                    </a>
-                }
-            </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No Tickets Currently Available</p>
+            }
         </section>
 
         @if (Model.PagesCount > 1)
@@ -106,5 +113,6 @@
 </dialog>
 
 @section Scripts {
-<script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
+    <script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
+    <script type="module" src="~/js/services/create-ticket-validation.js"></script>
 }

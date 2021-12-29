@@ -1,20 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 using AutoMapper;
 
 using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tickets;
+using STS.Web.ViewModels.Common;
 
 using static STS.Common.GlobalConstants;
-using STS.Web.ViewModels.Common;
-using Microsoft.AspNetCore.Authorization;
-using System;
-using Microsoft.AspNetCore.Http;
 
 namespace STS.Web.Controllers
 {
@@ -51,16 +51,25 @@ namespace STS.Web.Controllers
                 return NotFound();
             }
 
-            var userId = userManager.GetUserId(User);
-            var departmentId = userService.GetDepartmentId(userId);
+            try
+            {
+                var userId = userManager.GetUserId(User);
+                var departmentId = userService.GetDepartmentId(userId);
 
-            var ticketDto = mapper.Map<TicketViewModel>(ticket);
-            ticketDto.Statuses = mapper.Map<List<StatusViewModel>>(commonService.GetStatuses());
-            ticketDto.Employees = mapper.Map<List<EmployeesViewModel>>(commonService.GetEmployees(departmentId));
-            ticketDto.Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartments());
-            ticketDto.LoggedInUserId = userId;
+                var ticketDto = mapper.Map<TicketViewModel>(ticket);
+                ticketDto.Statuses = mapper.Map<List<StatusViewModel>>(commonService.GetStatuses());
+                ticketDto.Employees = mapper.Map<List<EmployeesViewModel>>(commonService.GetEmployees(departmentId));
+                ticketDto.Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartments());
+                ticketDto.LoggedInUserId = userId;
 
-            return View(ticketDto);
+                return View(ticketDto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(
+                  StatusCodes.Status500InternalServerError,
+                  "Requested resource could not be delivered.");
+            }
         }
 
         [HttpGet]
@@ -87,26 +96,12 @@ namespace STS.Web.Controllers
         {
             if(!ModelState.IsValid)
             {
-                var inputDto = new TicketInputModel
-                {
-                    Title = ticket.Title,
-                    Content = ticket.Content,
-                    PriorityId = ticket.PriorityId,
-                    AssignedToId = ticket.AssignedToId,
-                    DepartmentId = ticket.DepartmentId,
-                    Priorities = mapper.Map<List<PriorityViewModel>>(commonService.GetPriorities()),
-                    Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartments()),
-                };
-
-                return View(ticket);
+                return StatusCode(
+                  StatusCodes.Status422UnprocessableEntity,
+                  "Invalid input data.");
             }
 
             var userId = userManager.GetUserId(User);
-
-            if (userId == null) 
-            {
-                return Unauthorized();
-            }
 
             try
             {
@@ -117,7 +112,7 @@ namespace STS.Web.Controllers
             {
                 return StatusCode(
                    StatusCodes.Status500InternalServerError,
-                   "Item could not be saved.");
+                   "Ticket could not be created.");
             }
         }
 

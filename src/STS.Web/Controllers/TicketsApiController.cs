@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 using AutoMapper;
 
@@ -32,6 +33,7 @@ namespace STS.Web.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<ActionResult<TicketViewModel>> Edit([FromBody] TicketEditModel ticketDto)
         {
             var ticket = ticketService.GetById(ticketDto.Id);
@@ -43,11 +45,11 @@ namespace STS.Web.Controllers
 
             var userId = userManager.GetUserId(User);
 
-            if(userId == null ||
-                ((ticketDto.Title != null || ticketDto.Content !=null)
-                  && ticket.EmployeeId != userId))
+            if (!isRequestValid(ticketDto, userId, ticket.EmployeeId)) 
             {
-                return Unauthorized();
+                return StatusCode(
+                   StatusCodes.Status422UnprocessableEntity,
+                   "Comment could not be updated.");
             }
 
             try
@@ -60,8 +62,32 @@ namespace STS.Web.Controllers
             {
                 return StatusCode(
                    StatusCodes.Status500InternalServerError,
-                   "Item could not be updated.");
+                   "Comment could not be updated.");
             }
+        }
+
+        private bool isRequestValid(TicketEditModel ticketDto, string userId, string ticketEmployeeId)
+        {
+            if (userId == null ||
+                ((ticketDto.Title != null || ticketDto.Content != null)
+                  && ticketEmployeeId != userId))
+            {
+                return false;
+            }
+
+            if (ticketDto.Title != null && 
+                (ticketDto.Title.Length < 2 || ticketDto.Title.Length > 100))
+            {
+                return false;
+            }
+
+            if (ticketDto.Content != null &&
+               (ticketDto.Content.Length < 5 || ticketDto.Content.Length > 2000))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

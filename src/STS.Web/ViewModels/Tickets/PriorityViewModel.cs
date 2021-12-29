@@ -1,9 +1,6 @@
 ﻿namespace STS.Web.ViewModels.Tickets
 {
-    public class PriorityViewModel
+    public class PriorityViewModel : BaseViewModel
     {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
     }
 }

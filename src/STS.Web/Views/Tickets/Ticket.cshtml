@@ -35,28 +35,39 @@
             <section class="ticket-details">
 
                 <section class="ticket-details-title">
+
                     <section class="tile-status-priority">
                         <span class="status @Model.StatusName.ToLower().Replace(" ", "")">@Model.StatusName</span>
                         <span class="priority @Model.PriorityName.ToLower().Replace(" ", "")">@Model.PriorityName</span>
                     </section>
 
+
+
+
                     <section class='t-title-section'>
-                        <p class="ticket-title">@Model.Title</p>
+                        <section class='t-title'>
+                            <p class="ticket-title">@Model.Title</p>
+                        </section>
+
+                        @if (Model.IsOwner)
+                        {
+                            <section class="edit-title-section">
+                                <a class="edit-t-title" href="javascript.void(0)">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            </section>
+                        }
                     </section>
 
-                    @if (Model.IsOwner)
-                    {
-                        <section class="edit-title-section">
-                            <a class="edit-t-title" href="javascript.void(0)">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                        </section>
-                    }
+                    <section class='t-title-section-edited'></section>
+
                 </section>
 
+
+
                 <section class="ticket-body-section">
-                    <section class="ticket-content">
-                        <p>@Model.Content</p>
+                    <section class="ticket-content-section">
+                        <p class="ticket-content">@Model.Content</p>
                     </section>
 
                     @if (Model.IsOwner)
@@ -69,6 +80,8 @@
                     }
                 </section>
 
+                <section class="t-content-section-edited"></section>
+
                 <section>
                     from
                     <span class="username">@Model.EmployeeUserName</span>
@@ -77,6 +90,9 @@
                 </section>
 
             </section>
+
+
+
 
             <section class="ticket-actions">
                 <select class="form-control-sm t-status-select"
@@ -184,4 +200,5 @@
 <script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
 <script type="module" src="~/js/services/comments-services.js"></script>
 <script type="module" src="~/js/services/tickets-services.js"></script>
+<script type="module" src="~/js/services/create-ticket-validation.js"></script>
 }

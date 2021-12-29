@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\STS.Common\STS.Common.csproj" />
+    <ProjectReference Include="..\STS.Messaging\STS.Messaging.csproj" />
     <ProjectReference Include="..\STS.Services\STS.Services.csproj" />
   </ItemGroup>
 

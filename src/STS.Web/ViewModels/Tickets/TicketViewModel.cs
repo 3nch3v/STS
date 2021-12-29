@@ -1,32 +1,20 @@
-﻿using STS.Web.ViewModels.Common;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using STS.Web.ViewModels.Common;
 
 namespace STS.Web.ViewModels.Tickets
 {
-    public class TicketViewModel
+    public class TicketViewModel : BaseTicketViewModel
     {
-        public int Id { get; set; }
-
-        public string Title { get; set; }
-
         public string Content { get; set; }
 
-        public string PriorityName { get; set; }
-
         public int StatusId { get; set; }
-
-        public string StatusName { get; set; }
 
         public int DepartmentId { get; set; }
 
         public string DepartmentName { get; set; }
 
         public string AssignedToId { get; set; }
-
-        public string AssignedToUserName { get; set; }
-
-        public DateTime CreatedOn { get; set; }
 
         public string EmployeeId { get; set; }
 

@@ -10,7 +10,6 @@ using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tasks;
 
-
 namespace STS.Web.Controllers
 {
     public class TasksController : Controller

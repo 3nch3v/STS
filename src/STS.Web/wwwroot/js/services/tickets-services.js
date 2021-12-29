@@ -1,5 +1,7 @@
 ﻿import { getTicketId, getRequestToken } from './util.js';
 import { editTicket } from '../data/data.js';
+import getTitleView from '../views/edit-ticket-title-view.js';
+import getContentView from '../views/edit-ticket-content-view.js';
 
 const status = document.querySelector('span.status');
 const statusSelect = document.querySelector('.t-status-select');
@@ -13,14 +15,9 @@ departmentSelect.addEventListener('change', changeDepartment);
 statusSelect.addEventListener('change', changeStatus);
 assignToSelect.addEventListener('change', changeEmplyee)
 
-if (editTicketTitleBtn != null) {
-    editTicketTitleBtn.addEventListener('click', editTitle)
-}
-if (editTicketContentBtn != null) {
-    editTicketContentBtn.addEventListener('click', editContent)
-}
-
+if (editTicketContentBtn) editTicketContentBtn.addEventListener('click', editContent)
 if (assignToMeBtn) assignToMeBtn.addEventListener('click', assignToMe)
+if (editTicketTitleBtn) editTicketTitleBtn.addEventListener('click', editTitle)
 
 async function changeDepartment() {
     const ticketId = getTicketId();
@@ -74,76 +71,64 @@ export function changeStatusIcon(statusName) {
 
 async function editTitle(event) {
     event.preventDefault();
-
-    const titleSection = document.querySelector('.t-title-section');
-    const pTitle = document.querySelector('.ticket-title')
-
-    const ticketId = getTicketId();
-    const token = getRequestToken();
-    const currTitle = pTitle.textContent;
-
-    const input = document.createElement('input');
-    input.setAttribute('type', 'text');
-    input.style.backgroundColor = "black";
-    input.style.borderColor = "lightgoldenrodyellow";
-    input.style.color = "white";
-    input.autofocus = true;
-    input.value = currTitle;
-    input.addEventListener('blur', request);
-    input.classList.add('form-control');
-
-    pTitle.remove();
-    editTicketTitleBtn.remove();
-    titleSection.appendChild(input);
+    const currTitle = document.querySelector('.ticket-title').textContent;
+    renderTitle(currTitle, false, true);
 
     async function request() {
-        pTitle.textContent = input.value;
-        input.remove();
-        titleSection.appendChild(pTitle);
-        document.querySelector('.edit-title-section').appendChild(editTicketTitleBtn);
+        const input = document.querySelector('.title-edit-input').value;
+        if (input.length < 2 || input.length > 100) {
+            renderTitle(input, false, false);
+            return;
+        }
 
-        if (currTitle !== input.value) {
-            await editTicket(token, { id: ticketId, title: pTitle.textContent });
+        if (currTitle !== input) {
+            const ticketId = getTicketId();
+            const token = getRequestToken();
+            await editTicket(token, { id: ticketId, title: input });
+            renderTitle(input, true, true);
+        } else {
+            renderTitle(input, true, true);
         }
     }
+
+    function renderTitle(title, isTitleView, isInputValid) {
+        titlePartialView(title, isTitleView, request, isInputValid)
+    }
+}
+
+function titlePartialView(title, isTitleView, request, isInputValid) {
+    getTitleView(title, isTitleView, request, isInputValid, editTitle);
 }
 
 async function editContent(event) {
     event.preventDefault();
-
-    const contentSection = document.querySelector('.ticket-content');
-    const pTicketContent = document.querySelector('.ticket-content p')
-
-    const ticketId = getTicketId();
-    const token = getRequestToken();
-    const currContent = pTicketContent.textContent;
-
-    const textarea = document.createElement('textarea');
-    textarea.style.backgroundColor = "black";
-    textarea.style.borderColor = "lightgoldenrodyellow";
-    textarea.style.color = "white";
-    textarea.autofocus = true;
-    textarea.value = currContent;
-    textarea.rows = Math.round(currContent.length / 70);
-    textarea.classList.add('form-control');
-    textarea.addEventListener('blur', request);
-
-    pTicketContent.remove();
-    editTicketContentBtn.remove();
-
-    contentSection.appendChild(textarea);
+    const currContent = document.querySelector('.ticket-content').textContent;
+    renderContent(currContent, false, true);
 
     async function request() {
+        const input = document.querySelector('.content-edit-ta').value;
+        if (input.length < 5 || input.length > 2000) {
+            renderContent(input, false, false);
+            return;
+        }
 
-        pTicketContent.textContent = textarea.value;
-        textarea.remove();
-        contentSection.appendChild(pTicketContent);
-        document.querySelector('.edit-content-section').appendChild(editTicketContentBtn);
-
-        if (currContent !== textarea.value) {
-            await editTicket(token, { id: ticketId, content: pTicketContent.textContent });
+        if (currContent !== input) {
+            const ticketId = getTicketId();
+            const token = getRequestToken();
+            await editTicket(token, { id: ticketId, content: input });
+            renderContent(input, true, true);
+        } else {
+            renderContent(input, true, true);
         }
     }
+
+    function renderContent(content, isContentView, isInputValid) {
+        contentPatialView(content, isContentView, request, isInputValid)
+    }
+}
+
+function contentPatialView(content, isTitleView, request, isInputValid) {
+    getContentView(content, isTitleView, request, isInputValid, editContent);
 }
 
 function changeTextContent(element, value) {
