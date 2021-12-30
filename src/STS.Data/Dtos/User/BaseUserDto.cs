@@ -1,6 +1,6 @@
-﻿namespace STS.Web.ViewModels.Common
+﻿namespace STS.Data.Dtos.User
 {
-    public class EmployeesViewModel
+    public class BaseUserDto
     {
         public string Id { get; set; }
 

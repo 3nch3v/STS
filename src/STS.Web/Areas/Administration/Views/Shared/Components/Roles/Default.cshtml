@@ -1,0 +1,9 @@
+﻿@using STS.Web.ViewModels.Admin;
+@model IEnumerable<RoleViewModel>;
+
+@foreach (var role in Model)
+{
+    <p>@role.Id -> @role.Name </p>
+
+}
+    <a>Add role</a>

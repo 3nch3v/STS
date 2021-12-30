@@ -49,7 +49,7 @@ namespace STS.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<EmployeeTask> GetAll(string userId)
+        public IEnumerable<EmployeeTask> GetAll(string userId)   //DTO
         {
             var tasks = dbContext.EmployeesTasks
                .Where(x => x.EmployeeId == userId)
@@ -65,7 +65,7 @@ namespace STS.Services
                .FirstOrDefault();
         }
 
-        public IEnumerable<EmployeeTask> GetOpenTasks(string userId)
+        public IEnumerable<EmployeeTask> GetOpenTasks(string userId)   //DTO
         {
             return dbContext.EmployeesTasks
                .Where(x => x.EmployeeId == userId)

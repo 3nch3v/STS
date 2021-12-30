@@ -1,6 +1,6 @@
-﻿namespace STS.Web.ViewModels.Tickets
+﻿namespace STS.Data.Dtos.Department
 {
-    public class BaseViewModel
+    public class DepartmentBaseDto
     {
         public int Id { get; set; }
 

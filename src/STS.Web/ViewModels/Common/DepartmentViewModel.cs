@@ -1,4 +1,4 @@
-﻿namespace STS.Web.ViewModels.Tickets
+﻿namespace STS.Web.ViewModels.Common
 {
     public class DepartmentViewModel : BaseViewModel
     {

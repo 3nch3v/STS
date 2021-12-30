@@ -1,0 +1,10 @@
+﻿@using STS.Web.ViewModels.Admin;
+@model IEnumerable<DepartmentStatisticViewModel>;
+
+@foreach (var department in Model)
+{
+    <p>@department.Name -> @department.ActiveTicketsCount -> @department.EmployeesCount</p>
+    <p>Tasks: @department.ActiveTasksCount</p>
+
+}
+    <a>Add department</a>

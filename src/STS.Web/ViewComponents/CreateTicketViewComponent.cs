@@ -1,9 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+
+using AutoMapper;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using STS.Services.Contracts;
+using STS.Web.ViewModels.Common;
 using STS.Web.ViewModels.Tickets;
-using System.Collections.Generic;
 
 namespace STS.Web.ViewComponents
 {
@@ -25,7 +29,7 @@ namespace STS.Web.ViewComponents
             var inputDto = new TicketInputModel
             {
                 Priorities = mapper.Map<List<PriorityViewModel>>(commonService.GetPriorities()),
-                Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartments()),
+                Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartmentsBase()),
             };
 
             return View(inputDto);

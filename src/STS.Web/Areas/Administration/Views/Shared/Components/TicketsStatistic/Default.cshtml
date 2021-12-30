@@ -1,0 +1,12 @@
+﻿@model Dictionary<string, Dictionary<string, int>>;
+
+@foreach (var (status, kvp) in Model)
+{
+    <p>@status =></p>
+    <ul>
+        @foreach (var (department, count) in kvp)
+        {
+            <li>@department: @count</li>
+        }
+    </ul>
+}

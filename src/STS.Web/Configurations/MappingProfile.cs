@@ -1,9 +1,18 @@
 ﻿using AutoMapper;
+
 using STS.Data.Dtos;
+using STS.Data.Dtos.Department;
+using STS.Data.Dtos.Role;
+using STS.Data.Dtos.Ticket;
+using STS.Data.Dtos.User;
+
 using STS.Data.Models;
+using STS.Web.ViewModels.Admin;
+using STS.Web.ViewModels.Comment;
 using STS.Web.ViewModels.Common;
 using STS.Web.ViewModels.Tasks;
 using STS.Web.ViewModels.Tickets;
+using STS.Web.ViewModels.User;
 
 namespace STS.Web.Configurations
 {
@@ -13,16 +22,25 @@ namespace STS.Web.Configurations
         {
             CreateMap<Status, StatusViewModel>();
             CreateMap<Priority, PriorityViewModel>(); 
-            CreateMap<Department, DepartmentViewModel>(); 
+            CreateMap<DepartmentBaseDto, DepartmentViewModel>(); 
+
             CreateMap<TicketInputModel, Ticket>();
-            CreateMap<Ticket, TicketListViewModel>();
+            CreateMap<TicketListingDto, BaseTicketViewModel>();
             CreateMap<Ticket, TicketViewModel>();
+            CreateMap<TicketEditModel, TicketDto>();
+
             CreateMap<Comment, CommentViewModel>();
             CreateMap<CommentInputModel, Comment>();
+
             CreateMap<EmployeeTask, BaseTaskViewModel>();
-            CreateMap<ApplicationUser, EmployeesViewModel>();
-            CreateMap<TicketEditModel, TicketDto>();
-            
+
+            CreateMap<BaseUserDto, BaseUserViewModel>();
+            CreateMap<UserInputModel, UserInputDto>();
+            CreateMap<UserDto, UserViewModel>();
+
+            CreateMap<DepartmentStatisticDto, DepartmentStatisticViewModel>();
+            CreateMap<RoleDto, RoleViewModel>();
+
         }
     }
 }

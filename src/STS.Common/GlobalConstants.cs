@@ -2,6 +2,10 @@
 {
     public static class GlobalConstants
     {
+        public const int PasswordMinLength = 6;
+
+        public const int PasswordMaxLength = 128;
+
         public const int EmployeeNameMaxLength = 50;
 
         public const int EmployeePositionNameMaxLength = 50;
@@ -27,6 +31,8 @@
         public const int PriorityNameMaxLength = 20;
 
         public const int DepartmentNameMaxLength = 50;
+
+        public const int RoleNameMaxLength = 50;
 
         public const int TicketsPerPage = 12;
 

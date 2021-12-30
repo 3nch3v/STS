@@ -7,6 +7,7 @@ using AutoMapper;
 
 using STS.Data;
 using STS.Data.Dtos;
+using STS.Data.Dtos.Ticket;
 using STS.Data.Models;
 using STS.Services.Contracts;
 
@@ -40,18 +41,26 @@ namespace STS.Services
                 .FirstOrDefault();
         }
 
-        public IEnumerable<Ticket> GetAll(string userId, int page, int ticketsPerPage, string keyword)
+        public IEnumerable<TicketListingDto> GetAll(string userId, int page, int ticketsPerPage, string keyword)
         {
             Func<Ticket, bool> filter = GetFilter(userId, keyword);
 
             return dbContext.Tickets
                 .Where(filter)
+                .Select(x => new TicketListingDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    PriorityName = x.Priority.Name,
+                    StatusName = x.Status.Name,
+                    AssignedToUserName = x.AssignedTo?.UserName,
+                    CreatedOn = x.CreatedOn,
+                })
                 .OrderByDescending(x => x.CreatedOn)
-                .ThenByDescending(x => x.PriorityId)
                 .Skip((page - 1) * ticketsPerPage)
                 .Take(ticketsPerPage)
                 .ToList();
-        }                                  
+        }
 
         public async Task CreateAsync<T>(string userId, T ticketDto)
         {
@@ -69,32 +78,32 @@ namespace STS.Services
 
             var ticketInput = mapper.Map<TicketDto>(ticketDto);
 
-            if (ticketInput.Title != null 
+            if (ticketInput.Title != null
                 && dbTicket.Title != ticketInput.Title)
             {
                 dbTicket.Title = ticketInput.Title;
             }
-            if (ticketInput.Content != null 
+            if (ticketInput.Content != null
                 && dbTicket.Content != ticketInput.Content)
             {
                 dbTicket.Content = ticketInput.Content;
             }
-            if (ticketInput.AssignedToId != null 
-                &&  dbTicket.AssignedToId != ticketInput.AssignedToId)
+            if (ticketInput.AssignedToId != null
+                && dbTicket.AssignedToId != ticketInput.AssignedToId)
             {
                 dbTicket.AssignedToId = ticketInput.AssignedToId;
             }
-            if (ticketInput.StatusId != null 
+            if (ticketInput.StatusId != null
                 && dbTicket.StatusId != ticketInput.StatusId)
             {
                 dbTicket.StatusId = (int)ticketInput.StatusId;
             }
-            if (ticketInput.PriorityId != null 
+            if (ticketInput.PriorityId != null
                 && dbTicket.PriorityId != ticketInput.PriorityId)
             {
                 dbTicket.PriorityId = (int)ticketInput.PriorityId;
             }
-            if (ticketInput.DepartmentId != null 
+            if (ticketInput.DepartmentId != null
                 && dbTicket.DepartmentId != ticketInput.DepartmentId)
             {
                 dbTicket.DepartmentId = (int)ticketInput.DepartmentId;
@@ -176,7 +185,7 @@ namespace STS.Services
             if (keyword == "answers")
             {
                 Func<Ticket, bool> newAnswers = ticket => ((ticket.DepartmentId == userDepartmentId
-                                                                && ticket.AssignedToId == userId) 
+                                                                && ticket.AssignedToId == userId)
                                                           || ticket.EmployeeId == userId)
                                                        && ticket.Status.Name.ToLower() == "open"
                                                        && (ticket.Status.Name.ToLower() != "closed"
@@ -204,7 +213,7 @@ namespace STS.Services
                 return solved;
             }
 
-            if (keyword == "all" || keyword == null) 
+            if (keyword == "all" || keyword == null)
             {
                 Func<Ticket, bool> all = ticket => ticket.DepartmentId == userDepartmentId
                                             && ticket.Status.Name.ToLower() != "closed"

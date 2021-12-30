@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using STS.Data.Dtos.Ticket;
 using STS.Data.Models;
 
 namespace STS.Services.Contracts
@@ -13,7 +13,7 @@ namespace STS.Services.Contracts
 
         Dictionary<string, int> GetCategoriesTicketsCount(string userId);
 
-        IEnumerable<Ticket> GetAll(string userId, int page, int ticketsPerPage, string keyword);
+        IEnumerable<TicketListingDto> GetAll(string userId, int page, int ticketsPerPage, string keyword);
 
         Task CreateAsync<T>(string userId, T ticketDto);
 

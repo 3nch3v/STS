@@ -12,6 +12,7 @@ using AutoMapper;
 using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tickets;
+using STS.Web.ViewModels.User;
 using STS.Web.ViewModels.Common;
 
 using static STS.Common.GlobalConstants;
@@ -58,8 +59,8 @@ namespace STS.Web.Controllers
 
                 var ticketDto = mapper.Map<TicketViewModel>(ticket);
                 ticketDto.Statuses = mapper.Map<List<StatusViewModel>>(commonService.GetStatuses());
-                ticketDto.Employees = mapper.Map<List<EmployeesViewModel>>(commonService.GetEmployees(departmentId));
-                ticketDto.Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartments());
+                ticketDto.Employees = mapper.Map<List<BaseUserViewModel>>(commonService.GetEmployeesBase(departmentId));
+                ticketDto.Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartmentsBase());
                 ticketDto.LoggedInUserId = userId;
 
                 return View(ticketDto);
@@ -84,7 +85,7 @@ namespace STS.Web.Controllers
             {
                 Page = page,
                 TicketsCount = ticketService.GetTicketsCount(userId, keyword),
-                Tickets = mapper.Map<List<TicketListViewModel>>(tickets),
+                Tickets = mapper.Map<List<BaseTicketViewModel>>(tickets),
             };
 
             return View(ticketsDtos);

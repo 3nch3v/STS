@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+using STS.Web.ViewModels.Common;
+
 using static STS.Common.GlobalConstants;
 
 namespace STS.Web.ViewModels.Tickets

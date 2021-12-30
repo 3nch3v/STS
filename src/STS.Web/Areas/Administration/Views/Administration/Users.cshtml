@@ -1,0 +1,8 @@
+﻿@using STS.Web.ViewModels.User;
+@model UsersViewModel;
+
+
+@foreach (var user in Model.Users)
+{
+    <p>@user.FullName // @user.Email @user.UserName @user.DepartmentName @user.Position @user.PhoneNumber @string.Join(", ", user.Roles)</p>
+}

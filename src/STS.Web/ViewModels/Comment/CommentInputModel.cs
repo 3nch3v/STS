@@ -2,7 +2,7 @@
 
 using static STS.Common.GlobalConstants;
 
-namespace STS.Web.ViewModels.Tickets
+namespace STS.Web.ViewModels.Comment
 {
     public class CommentInputModel
     {

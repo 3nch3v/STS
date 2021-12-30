@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using STS.Data.Models;
 using STS.Messaging;
 using STS.Services.Contracts;
-using STS.Web.ViewModels.Tickets;
+using STS.Web.ViewModels.Comment;
 
 namespace STS.Web.Controllers
 {

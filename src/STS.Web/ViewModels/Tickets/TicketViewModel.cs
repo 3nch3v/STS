@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 
+using STS.Web.ViewModels.Comment;
 using STS.Web.ViewModels.Common;
+using STS.Web.ViewModels.User;
 
 namespace STS.Web.ViewModels.Tickets
 {
@@ -30,6 +32,6 @@ namespace STS.Web.ViewModels.Tickets
 
         public ICollection<StatusViewModel> Statuses { get; set; }
 
-        public ICollection<EmployeesViewModel> Employees { get; set; }
+        public ICollection<BaseUserViewModel> Employees { get; set; }
     }
 }

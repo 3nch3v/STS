@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using System.Threading.Tasks;
+
+using AutoMapper;
+
 using STS.Data;
 using STS.Data.Models;
 using STS.Services.Contracts;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace STS.Services
 {
@@ -32,8 +34,10 @@ namespace STS.Services
         {
             var comment = mapper.Map<Comment>(commentDto);
             comment.UserId = userId;
+
             var ticket = ticketService.GetById(comment.TicketId);
             ticket.StatusId = commonService.GetStatusId(status);
+
             await dbContext.Comments.AddAsync(comment);
             await dbContext.SaveChangesAsync();
 
