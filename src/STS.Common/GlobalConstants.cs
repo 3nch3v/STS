@@ -30,7 +30,11 @@
 
         public const int PriorityNameMaxLength = 20;
 
+        public const int DepartmentNameMinLength = 2;
+
         public const int DepartmentNameMaxLength = 50;
+
+        public const int RoleNameMinLength = 2;
 
         public const int RoleNameMaxLength = 50;
 

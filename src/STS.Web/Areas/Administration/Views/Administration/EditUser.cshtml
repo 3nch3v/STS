@@ -1,22 +1,23 @@
 ﻿@using STS.Web.ViewModels.User
-@model UserInputModel
+@model UserEditModel
 
-<form method="post" asp-area="Administartion" asp-controller="Administration" asp-action="CreateUser">
+<form method="post" asp-area="Administartion" asp-controller="Administration" asp-action="EditUser">
+    <input asp-for="Id" value="@Model.Id" type="hidden"/>
     <div class="form-group">
         <label asp-for="Role">Role:</label>
-        <select asp-for="Role" 
+        <select asp-for="Role"
                 asp-items="Model.SystemRoles
+                    .Where(x => x.Name != Model.Role)
                     .Select(t => new SelectListItem(t.Name, t.Name))">
-            <option value="" selected>Please select</option>
+            <option value="@Model.Role" selected>@Model.Role</option>
         </select>
         <span asp-validation-for="Role" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="DepartmentId">Department:</label>
-        <select asp-for="DepartmentId" 
+        <select asp-for="DepartmentId"
                 asp-items="Model.Departments
                     .Select(t => new SelectListItem(t.Name, t.Id.ToString()))">
-            <option value="" selected>Please select</option>
         </select>
         <span asp-validation-for="DepartmentId" class="text-danger"></span>
     </div>
@@ -29,11 +30,6 @@
         <label asp-for="Email">Email:</label>
         <input asp-for="Email">
         <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="Password">Password:</label>
-        <input asp-for="Password">
-        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="FirstName">FirstName:</label>
@@ -55,5 +51,5 @@
         <input asp-for="PhoneNumber">
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
-    <button type="submit">Register</button>
+    <button type="submit">Save</button>
 </form>

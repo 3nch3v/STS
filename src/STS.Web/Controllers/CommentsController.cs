@@ -46,7 +46,7 @@ namespace STS.Web.Controllers
             try
             {
                 var user = await userManager.GetUserAsync(User);
-                var result = await commentService.Create(comment, user.Id);
+                var result = await commentService.CreateAsync(comment, user.Id);
 
                 if (comment.sendEmail)
                 {
@@ -84,7 +84,7 @@ namespace STS.Web.Controllers
 
             try
             {
-                var result = await commentService.Delete(id);
+                var result = await commentService.DeleteAsync(id);
                 return Ok(result);
             }
             catch(Exception)

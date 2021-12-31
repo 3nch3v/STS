@@ -14,12 +14,12 @@ namespace STS.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly IUserService userService;
+        private readonly IAdminService userService;
         private readonly IMapper mapper;
         private readonly ApplicationDbContext dbContext;
 
         public TaskService(
-            IUserService userService,
+            IAdminService userService,
             IMapper mapper,
             ApplicationDbContext dbContext)
         {

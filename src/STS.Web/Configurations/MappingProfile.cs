@@ -22,7 +22,9 @@ namespace STS.Web.Configurations
         {
             CreateMap<Status, StatusViewModel>();
             CreateMap<Priority, PriorityViewModel>(); 
-            CreateMap<DepartmentBaseDto, DepartmentViewModel>(); 
+            CreateMap<DepartmentBaseDto, DepartmentViewModel>();
+            CreateMap<RoleDto, RoleViewModel>();
+            CreateMap<DepartmentStatisticDto, DepartmentStatisticViewModel>();
 
             CreateMap<TicketInputModel, Ticket>();
             CreateMap<TicketListingDto, BaseTicketViewModel>();
@@ -32,14 +34,14 @@ namespace STS.Web.Configurations
             CreateMap<Comment, CommentViewModel>();
             CreateMap<CommentInputModel, Comment>();
 
-            CreateMap<EmployeeTask, BaseTaskViewModel>();
-
             CreateMap<BaseUserDto, BaseUserViewModel>();
             CreateMap<UserInputModel, UserInputDto>();
+            CreateMap<UserEditModel, UserEditDto>();
             CreateMap<UserDto, UserViewModel>();
+            CreateMap<ApplicationUser, UserEditModel>();
 
-            CreateMap<DepartmentStatisticDto, DepartmentStatisticViewModel>();
-            CreateMap<RoleDto, RoleViewModel>();
+            CreateMap<EmployeeTask, BaseTaskViewModel>();
+
 
         }
     }

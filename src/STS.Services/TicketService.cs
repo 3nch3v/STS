@@ -17,13 +17,13 @@ namespace STS.Services
     {
         private static string[] ticketsNavCategories = { "my", "to me", "answers", "new", "all", "history" };
 
-        private readonly IUserService userService;
+        private readonly IAdminService userService;
         private readonly ICommonService commonService;
         private readonly IMapper mapper;
         private readonly ApplicationDbContext dbContext;
 
         public TicketService(
-            IUserService userService,
+            IAdminService userService,
             ICommonService commonService,
             IMapper mapper,
             ApplicationDbContext dbContext)

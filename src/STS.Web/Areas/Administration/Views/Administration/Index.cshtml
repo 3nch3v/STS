@@ -8,16 +8,6 @@
     
     <br>
     <br>
-
-     <section>
-        <h3>Tasts statistic</h3>
-
-        @*task vc*@
-
-    </section>
-    
-    <br>
-    <br>
     
     <section>
         <h3>Departmenst</h3>
@@ -37,10 +27,14 @@
 
     <section>
         <h3>Search for an user by username, email, department or full name</h3>
-        <section>
-            <label for="search">Search for user</label>
-            <input type="text" name="" search"">
-        </section>
-        <a>Create user</a>
+
+        <a asp-area="Administartion" asp-controller="Administration" asp-action="CreateUser">Create user</a>
+        <br>
+
+         <a asp-area="Administartion" asp-controller="Administration" asp-action="EditUser" asp-route-id="422e95e2-1708-477b-ac56-376a7f3f329e">Edit user</a>
+
+        <br>
+        <a asp-area="Administartion" asp-controller="Administration" asp-action="Users">Search for users</a>
+
     </section>
 </article>

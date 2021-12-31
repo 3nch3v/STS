@@ -5,9 +5,9 @@ namespace STS.Services.Contracts
 {
     public interface ICommentService
     {
-        Task<Comment> Create<T>(T commentDto, string userId);
+        Task<Comment> CreateAsync<T>(T commentDto, string userId);
 
-        Task<bool> Delete(int id);
+        Task<bool> DeleteAsync(int id);
 
         Comment GetById(int id);
     }

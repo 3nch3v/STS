@@ -7,4 +7,9 @@
     <p>Tasks: @department.ActiveTasksCount</p>
 
 }
-    <a>Add department</a>
+
+<form method="post" asp-area="Administration" asp-controller="Administration" asp-action="CreateDepartment">
+    <label for="departmentName">Add new department:</label>
+    <input type="text" id="departmentName" name="departmentName" required>
+    <button type="submit">Create</button>
+</form>

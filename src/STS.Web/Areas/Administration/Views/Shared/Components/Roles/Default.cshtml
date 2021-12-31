@@ -6,4 +6,9 @@
     <p>@role.Id -> @role.Name </p>
 
 }
-    <a>Add role</a>
+
+<form method="post" asp-area="Administration" asp-controller="Administration" asp-action="CreateRole">
+    <label for="roleName">Add new role:</label>
+    <input type="text" id="roleName" name="roleName" required>
+    <button type="submit">Create</button>
+</form>

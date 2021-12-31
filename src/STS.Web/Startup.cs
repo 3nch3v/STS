@@ -61,7 +61,7 @@ namespace STS.Web
 
             // Application services
             services.AddTransient<ITicketService, TicketService>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<ITaskService, TaskService>();
             services.AddTransient<ICommonService, CommonService>();
             services.AddTransient<ICommentService, CommentService>();

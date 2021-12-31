@@ -23,14 +23,14 @@ namespace STS.Web.Controllers
     {
         private readonly ITicketService ticketService;
         private readonly ICommonService commonService;
-        private readonly IUserService userService;
+        private readonly IAdminService userService;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
 
         public TicketsController(
             ITicketService ticketService,
             ICommonService commonService,
-            IUserService userService,
+            IAdminService userService,
             IMapper mapper,
             UserManager<ApplicationUser> userManager)
         {

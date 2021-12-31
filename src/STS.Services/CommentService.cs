@@ -30,7 +30,7 @@ namespace STS.Services
             this.dbContext = dbContext;
         }
 
-        public async Task<Comment> Create<T>(T commentDto, string userId)
+        public async Task<Comment> CreateAsync<T>(T commentDto, string userId)
         {
             var comment = mapper.Map<Comment>(commentDto);
             comment.UserId = userId;
@@ -44,7 +44,7 @@ namespace STS.Services
             return comment;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var comment = GetById(id);
             dbContext.Comments.Remove(comment);
