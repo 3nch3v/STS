@@ -8,11 +8,9 @@ namespace STS.Services.Contracts
 {
     public interface IAdminService
     {
-        int GetDepartmentId(string userId);
-
         ApplicationUser GetUserById(string id);
 
-        Task<IEnumerable<UserDto>> GetUsers();
+        Task DeleteUserAsync(string userId);
 
         Task RegisterUserAsync<T>(T userInput);
 
@@ -22,6 +20,8 @@ namespace STS.Services.Contracts
 
         Task CreateRoleAsync(string roleName);
 
-        Task<IEnumerable<string>> GetUserRoles(string id);
+        Task<IEnumerable<string>> GetUserRolesAsync(string id);
+
+        Task<IEnumerable<UserDto>> GetUsersAsync(int page, int usersPerPage, string searchTerm);
     }
 }

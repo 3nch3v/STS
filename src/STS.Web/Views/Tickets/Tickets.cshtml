@@ -76,24 +76,24 @@
                     @if (Model.HasPreviousPage)
                     {
                         <li>
-                            <a asp-action="Tickets" asp-route-page="@Model.PreviousPage" asp-route-keyword="@this.ViewData["keyword"]">Previous</a>
+                            <a asp-controller="Tickets" asp-action="Tickets" asp-route-page="@Model.PreviousPage" asp-route-keyword="@this.ViewData["keyword"]">Previous</a>
                         </li>
                         <li>
-                            <a asp-action="Tickets" asp-route-page="@(Model.Page - 1)" asp-route-keyword="@this.ViewData["keyword"]">@(Model.Page - 1)</a>
+                            <a asp-controller="Tickets" asp-action="Tickets" asp-route-page="@(Model.Page - 1)" asp-route-keyword="@this.ViewData["keyword"]">@(Model.Page - 1)</a>
                         </li>
                     }
 
                     <li>
-                        <a asp-action="Tickets" asp-route-page="@Model.Page" asp-route-keyword="@this.ViewData["keyword"]">@Model.Page</a>
+                        <a asp-controller="Tickets" asp-action="Tickets" asp-route-page="@Model.Page" asp-route-keyword="@this.ViewData["keyword"]">@Model.Page</a>
                     </li>
 
                     @if (Model.HasNextPage)
                     {
                         <li>
-                            <a asp-action="Tickets" asp-route-page="@(Model.Page + 1)" asp-route-keyword="@this.ViewData["keyword"]">@(Model.Page + 1)</a>
+                            <a asp-controller="Tickets" asp-action="Tickets" asp-route-page="@(Model.Page + 1)" asp-route-keyword="@this.ViewData["keyword"]">@(Model.Page + 1)</a>
                         </li>
                         <li>
-                            <a asp-action="Tickets" asp-route-page="@Model.NextPage" asp-route-keyword="@this.ViewData["keyword"]">Next</a>
+                            <a asp-controller="Tickets" asp-action="Tickets" asp-route-page="@Model.NextPage" asp-route-keyword="@this.ViewData["keyword"]">Next</a>
                         </li>
                     }
 

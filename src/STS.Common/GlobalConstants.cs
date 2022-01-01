@@ -22,6 +22,8 @@
 
         public const int CommentMaxLength = 2000;
 
+        public const int TaskDescriptionMinLength = 5;
+
         public const int TaskDescriptionMaxLength = 1000;
 
         public const int ReplyTaskContentMaxLength = 1000;
@@ -40,9 +42,13 @@
 
         public const int TicketsPerPage = 12;
 
+        public const int UsersPerPage = 12;
+
         public const int DefaultPageNumber = 1;
 
         public const int TasksSideBarCount = 12;
+
+        public const int TasksPerPage = 12;
 
         public const string SystemName = "STS";
 

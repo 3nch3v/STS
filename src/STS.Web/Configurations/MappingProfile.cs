@@ -3,6 +3,7 @@
 using STS.Data.Dtos;
 using STS.Data.Dtos.Department;
 using STS.Data.Dtos.Role;
+using STS.Data.Dtos.Task;
 using STS.Data.Dtos.Ticket;
 using STS.Data.Dtos.User;
 
@@ -40,9 +41,11 @@ namespace STS.Web.Configurations
             CreateMap<UserDto, UserViewModel>();
             CreateMap<ApplicationUser, UserEditModel>();
 
-            CreateMap<EmployeeTask, BaseTaskViewModel>();
-
-
+            CreateMap<BaseTaskDto, TaskLinstingViewModel>();
+            CreateMap<TaskInputModel, EmployeeTask>();
+            CreateMap<BaseTaskDto, BaseTaskViewModel>(); // another Dto
+            CreateMap<BaseTaskDto, TaskViewModel>(); // another Dto
+            
         }
     }
 }

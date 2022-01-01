@@ -9,6 +9,8 @@ using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tasks;
 
+using static STS.Common.GlobalConstants;
+
 namespace STS.Web.ViewComponents
 {
     public class TasksSideBarViewComponent : ViewComponent
@@ -32,9 +34,9 @@ namespace STS.Web.ViewComponents
             var user = Request.HttpContext.User;
             var userId = userManager.GetUserId(user);
 
-            var tasks = new TasksViewModel
+            var tasks = new TasksSideBarViewModel
             {
-                Tasks = mapper.Map<List<BaseTaskViewModel>>(taskService.GetOpenTasks(userId)),
+                Tasks = mapper.Map<IEnumerable<BaseTaskViewModel>>(taskService.GetAll(userId, false, true, DefaultPageNumber, null, null)),
             };
 
             return View(tasks);

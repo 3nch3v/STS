@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +22,7 @@ namespace STS.Web.Controllers
     {
         private readonly ITicketService ticketService;
         private readonly ICommonService commonService;
-        private readonly IAdminService userService;
+        private readonly IAdminService adminService;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
 
@@ -36,7 +35,7 @@ namespace STS.Web.Controllers
         {
             this.ticketService = ticketService;
             this.commonService = commonService;
-            this.userService = userService;
+            this.adminService = userService;
             this.mapper = mapper;
             this.userManager = userManager;
         }
@@ -52,25 +51,16 @@ namespace STS.Web.Controllers
                 return NotFound();
             }
 
-            try
-            {
-                var userId = userManager.GetUserId(User);
-                var departmentId = userService.GetDepartmentId(userId);
+            var userId = userManager.GetUserId(User);
+            var departmentId = commonService.GetDepartmentId(userId);
 
-                var ticketDto = mapper.Map<TicketViewModel>(ticket);
-                ticketDto.Statuses = mapper.Map<List<StatusViewModel>>(commonService.GetStatuses());
-                ticketDto.Employees = mapper.Map<List<BaseUserViewModel>>(commonService.GetEmployeesBase(departmentId));
-                ticketDto.Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartmentsBase());
-                ticketDto.LoggedInUserId = userId;
+            var ticketDto = mapper.Map<TicketViewModel>(ticket);
+            ticketDto.Statuses = mapper.Map<List<StatusViewModel>>(commonService.GetStatuses());
+            ticketDto.Employees = mapper.Map<List<BaseUserViewModel>>(commonService.GetEmployeesBase(departmentId));
+            ticketDto.Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartmentsBase());
+            ticketDto.LoggedInUserId = userId;
 
-                return View(ticketDto);
-            }
-            catch (Exception)
-            {
-                return StatusCode(
-                  StatusCodes.Status500InternalServerError,
-                  "Requested resource could not be delivered.");
-            }
+            return View(ticketDto);
         }
 
         [HttpGet]
@@ -104,17 +94,9 @@ namespace STS.Web.Controllers
 
             var userId = userManager.GetUserId(User);
 
-            try
-            {
-                await ticketService.CreateAsync(userId, ticket);
-                return RedirectToAction(nameof(Tickets));
-            }
-            catch (Exception)
-            {
-                return StatusCode(
-                   StatusCodes.Status500InternalServerError,
-                   "Ticket could not be created.");
-            }
+            await ticketService.CreateAsync(userId, ticket);
+
+            return RedirectToAction(nameof(Tickets));
         }
 
         [Authorize]
@@ -134,17 +116,9 @@ namespace STS.Web.Controllers
                 return BadRequest();
             }
 
-            try
-            {
-                await ticketService.DeleteAsync(id);
-                return RedirectToAction(nameof(Tickets));
-            }
-            catch (Exception)
-            {
-                return StatusCode(
-                   StatusCodes.Status500InternalServerError,
-                   "Item could not be deleted.");
-            }
+            await ticketService.DeleteAsync(id);
+
+            return RedirectToAction(nameof(Tickets));
         }
     }
 }

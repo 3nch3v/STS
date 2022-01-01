@@ -17,18 +17,15 @@ namespace STS.Services
     {
         private static string[] ticketsNavCategories = { "my", "to me", "answers", "new", "all", "history" };
 
-        private readonly IAdminService userService;
         private readonly ICommonService commonService;
         private readonly IMapper mapper;
         private readonly ApplicationDbContext dbContext;
 
         public TicketService(
-            IAdminService userService,
             ICommonService commonService,
             IMapper mapper,
             ApplicationDbContext dbContext)
         {
-            this.userService = userService;
             this.commonService = commonService;
             this.mapper = mapper;
             this.dbContext = dbContext;
@@ -161,7 +158,7 @@ namespace STS.Services
 
         private Func<Ticket, bool> GetFilter(string userId, string keyword)
         {
-            var userDepartmentId = userService.GetDepartmentId(userId);
+            var userDepartmentId = commonService.GetDepartmentId(userId);
 
             if (keyword == "my")
             {

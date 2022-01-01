@@ -1,0 +1,9 @@
+﻿@using STS.Web.ViewModels.Tasks;
+@model TasksViewModel;
+
+<h1>Employee</h1>
+
+@foreach (var task in Model.Tasks)
+{
+    <p>@task.Id =>  @task.PriorityName => @task.Title => @task.StatusName => @task.ManagerUserName => @task.Deadline</p>
+}

@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
+using STS.Web.ViewModels.Common;
+using STS.Web.ViewModels.User;
 
 using static STS.Common.GlobalConstants;
 
@@ -8,20 +12,22 @@ namespace STS.Web.ViewModels.Tasks
     public class TaskInputModel
     {
         [Required]
-        [MaxLength(TitleMaxLength)]
+        [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]
         public string Title { get; set; }
 
         [Required]
-        [MaxLength(TaskDescriptionMaxLength)]
+        [StringLength(TaskDescriptionMaxLength, MinimumLength = TaskDescriptionMinLength)]
         public string Description { get; set; }
 
         public DateTime Deadline { get; set; }
 
         public int PriorityId { get; set; }
 
-        public int StatusId { get; set; }
-
         [Required]
         public string EmployeeId { get; set; }
+
+        public IEnumerable<PriorityViewModel> Priorities { get; set; }
+
+        public IEnumerable<BaseUserViewModel> Employees { get; set; }
     }
 }

@@ -1,12 +1,12 @@
-﻿@using STS.Web.ViewModels.Tickets
-@model TicketInputModel
+﻿@using STS.Web.ViewModels.Tasks
+@model TaskInputModel
 
 @{
-    ViewData["Title"] = "Create Ticket";
+    ViewData["Title"] = "Create Task";
 }
 
 <article class="c-wrapper">
-    <form asp-controller="Tickets" asp-action="Create" class="col-md-12 offser-md-8">
+    <form asp-area="Administration" asp-controller="Management" asp-action="Create" method="post" class="col-md-12 offser-md-8">
         <section class="select-group">
             <div class="p-select">
                 <label asp-for="PriorityId">Priority</label>
@@ -18,15 +18,15 @@
                 </select>
                 <span asp-validation-for="PriorityId" class="text-danger"></span>
             </div>
-            <div >
-                <label asp-for="DepartmentId">Department</label>
+            <div class="p-select">
+                <label asp-for="EmployeeId">Employee</label>
                 <select 
                     class="form-control-sm" 
-                    asp-for="DepartmentId" 
-                    asp-items="Model.Departments.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"
+                    asp-for="EmployeeId" 
+                    asp-items="Model.Employees.Select(t => new SelectListItem(t.UserName, t.Id))"
                 >
                 </select>
-                <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
         </section>
         <div class="form-group t-tile">
@@ -36,9 +36,14 @@
 
         </div>
         <div class="form-group t-description">
-            <label asp-for="Content">Description</label>
-            <textarea asp-for="Content" class="form-control" rows="10" required></textarea>
-            <span asp-validation-for="Content" class="text-danger"></span>
+            <label asp-for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="10" required></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group t-description">
+            <label asp-for="Deadline">Deadline</label>
+            <input type="datetime-local" asp-for="Deadline" min="@DateTime.Now" class="form-control" required>
+            <span asp-validation-for="Deadline" class="text-danger"></span>
         </div>
         <div class="c-form-btns">
             <button type="submit" class="c-btn">Create</button>

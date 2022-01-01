@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using STS.Data;
+using STS.Data.Dtos.Task;
 using STS.Data.Models;
 using STS.Services.Contracts;
 
@@ -14,27 +15,39 @@ namespace STS.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly IAdminService userService;
+        private int tasksCount = 0;
+        private readonly string openStatus = "open";
+
         private readonly IMapper mapper;
+        private readonly ICommonService commonService;
         private readonly ApplicationDbContext dbContext;
 
         public TaskService(
-            IAdminService userService,
             IMapper mapper,
+            ICommonService commonService,
             ApplicationDbContext dbContext)
         {
-            this.userService = userService;
             this.mapper = mapper;
+            this.commonService = commonService;
             this.dbContext = dbContext;
         }
+
+        public int GetCount() => tasksCount;
+
+        public EmployeeTask GetById(int id)
+        {
+            return dbContext.EmployeesTasks
+               .Where(x => x.Id == id)
+               .FirstOrDefault();
+        }  //DTO TODO
 
         public async Task CreateAsync<T>(string userId, T taskDto)
         {
             var task = mapper.Map<EmployeeTask>(taskDto);
             task.ManagerId = userId;
+            task.StatusId = commonService.GetStatusId(openStatus);
 
             await dbContext.EmployeesTasks.AddAsync(task);
-
             await dbContext.SaveChangesAsync();
         }
 
@@ -44,35 +57,78 @@ namespace STS.Services
                .Where(x => x.Id == id)
                .FirstOrDefault();
 
-            dbContext.EmployeesTasks.Remove(task);
+            task.IsDeleted = true;
 
             await dbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<EmployeeTask> GetAll(string userId)   //DTO
+        public IEnumerable<BaseTaskDto> GetAll(
+            string userId,
+            bool isManager,
+            bool isTaskActive,
+            int page,
+            string keyword,
+            string employeeId)
         {
-            var tasks = dbContext.EmployeesTasks
-               .Where(x => x.EmployeeId == userId)
+            string searchTerm = keyword == null ? null : keyword.Trim().ToLower();
+            var tasksQuery = dbContext.EmployeesTasks.AsQueryable();
+
+            if (isManager)
+            {
+                tasksQuery = tasksQuery
+                    .Where(task => task.ManagerId == userId)
+                    .AsQueryable();
+
+                if (employeeId != null)
+                {
+                    tasksQuery = tasksQuery
+                        .Where(task => task.EmployeeId == employeeId)
+                        .AsQueryable();
+                }
+            }
+            else
+            {
+                tasksQuery = tasksQuery
+                    .Where(task => task.EmployeeId == userId)
+                    .AsQueryable();
+            }
+
+            if (isTaskActive)
+            {
+                tasksQuery = tasksQuery
+                    .Where(task => task.Status.Name.ToLower() != "closed"
+                                && task.Status.Name.ToLower() != "solved")
+                    .AsQueryable();
+            }
+
+            if (keyword != null)
+            {
+                tasksQuery = tasksQuery
+                    .Where(task => task.Title.ToLower().Contains(searchTerm)
+                                || task.Description.ToLower().Contains(searchTerm)
+                                || task.Employee.UserName.ToLower().Contains(searchTerm))
+                    .AsQueryable();
+            }
+
+            tasksCount = tasksQuery.Count();
+
+            var tasks = tasksQuery
+               .Select(task => new BaseTaskDto
+               {
+                   Id = task.Id,
+                   Title = task.Title,
+                   Deadline = task.Deadline,
+                   EmployeeUserName = task.Employee.UserName,
+                   ManagerUserName = task.Manager.UserName,
+                   StatusName = task.Status.Name,
+                   PriorityName = task.Priority.Name,
+               })
+               .OrderBy(x => x.Deadline)
+               .Skip((page - 1) * TasksPerPage)
+               .Take(TasksPerPage)
                .ToList();
 
             return tasks;
-        }
-
-        public EmployeeTask GetById(int id)
-        {
-            return dbContext.EmployeesTasks
-               .Where(x => x.Id == id)
-               .FirstOrDefault();
-        }
-
-        public IEnumerable<EmployeeTask> GetOpenTasks(string userId)   //DTO
-        {
-            return dbContext.EmployeesTasks
-               .Where(x => x.EmployeeId == userId)
-               .OrderBy(x => x.Deadline)
-               .ThenByDescending(x => x.PriorityId)
-               .Take(TasksSideBarCount)
-               .ToList();
-        }
+        } 
     }
 }

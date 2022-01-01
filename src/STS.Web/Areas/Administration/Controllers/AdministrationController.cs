@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 using AutoMapper;
 
+using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Admin;
 using STS.Web.ViewModels.Common;
 using STS.Web.ViewModels.User;
 
 using static STS.Common.GlobalConstants;
-using Microsoft.AspNetCore.Identity;
-using STS.Data.Models;
 
 namespace STS.Web.Areas.Administration.Controllers
 {
@@ -85,7 +85,7 @@ namespace STS.Web.Areas.Administration.Controllers
                 adminService.GetUserById(id));
             userData.Departments = departments;
             userData.SystemRoles = roles;
-            userData.Role = string.Join("", await adminService.GetUserRoles(id));
+            userData.Role = string.Join("", await adminService.GetUserRolesAsync(id));
 
             return View(userData);
         }
@@ -134,21 +134,31 @@ namespace STS.Web.Areas.Administration.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Route("/[controller]/Users")]
-        public async Task<IActionResult> Users()
+        public async Task<IActionResult> DeleteUser(string userId)
         {
-            //all users
-            //user per department
-            // search for user with email, username or id
+            var user = adminService.GetUserById(userId);
 
-            var users = await adminService.GetUsers();
+            if (user == null)
+            {
+                return BadRequest();
+            }
 
-            var usersDto = new UsersViewModel
+            await adminService.DeleteUserAsync(userId);
+
+            return RedirectToAction(nameof(Users));
+        }
+
+        [Route("/[controller]/Users")]
+        public async Task<IActionResult> Users(string searchTerm = "all", int page = DefaultPageNumber)
+        {
+            var users = await adminService.GetUsersAsync(page, UsersPerPage, searchTerm);
+
+            var usersDtos = new UsersViewModel
             {
                 Users = mapper.Map<IEnumerable<UserViewModel>>(users),
             };
 
-            return View(usersDto);
+            return View(usersDtos);
         }
 
         private (IEnumerable<DepartmentViewModel>, IEnumerable<RoleViewModel>) GetDepartmentsAndRoles()

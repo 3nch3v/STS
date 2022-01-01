@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -34,9 +35,9 @@ namespace STS.Services
 
         public async Task CreateDepartmentAsync(string departmentName)
         {
-            var department = new Department() 
-            { 
-                Name = departmentName, 
+            var department = new Department()
+            {
+                Name = departmentName,
             };
 
             await dbContext.Departments.AddAsync(department);
@@ -53,41 +54,6 @@ namespace STS.Services
             }
 
             await dbContext.SaveChangesAsync();
-        }
-
-        public int GetDepartmentId(string userId)
-        {
-            var user = dbContext.Users
-                .Where(x => x.Id == userId)
-                .FirstOrDefault();
-
-            return user.DepartmentId;
-        }
-
-        public async Task<IEnumerable<UserDto>> GetUsers()
-        {
-            var users = dbContext.Users
-                .Select(u => new UserDto
-                {
-                    Id = u.Id,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Email = u.Email,
-                    UserName = u.UserName,
-                    Position = u.Position,
-                    PhoneNumber = u.PhoneNumber,
-                    DepartmentId = u.DepartmentId,
-                    DepartmentName = u.Department.Name,
-                })
-                .ToList();
-
-            foreach (var user in users)
-            {
-                var currUser = await userManager.FindByIdAsync(user.Id);
-                user.Roles = await userManager.GetRolesAsync(currUser);
-            }
-
-            return users;
         }
 
         public async Task RegisterUserAsync<T>(T userInput)
@@ -126,7 +92,7 @@ namespace STS.Services
             var user = GetUserById(userDto.Id);
 
             if (user.UserName != userDto.UserName)
-            { 
+            {
                 user.UserName = userDto.UserName;
             }
 
@@ -161,10 +127,10 @@ namespace STS.Services
             }
 
             var role = await roleManager.FindByNameAsync(userDto.Role);
-            
+
             if (!user.Roles.Any(r => r.RoleId == role.Id))
             {
-                foreach (var (roleId, userId) in user.Roles.Select(x => ( x.RoleId, x.UserId)))
+                foreach (var (roleId, userId) in user.Roles.Select(x => (x.RoleId, x.UserId)))
                 {
                     var currRole = await roleManager.FindByIdAsync(roleId);
                     await userManager.RemoveFromRoleAsync(user, currRole.Name);
@@ -176,14 +142,72 @@ namespace STS.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<string>> GetUserRoles(string id)
+        public async Task<IEnumerable<UserDto>> GetUsersAsync(int page, int usersPerPage, string searchTerm)
+        {
+            Func<ApplicationUser, bool> filter = GetUsersFilter(searchTerm.Trim());
+
+            var users = dbContext.Users
+                .Where(filter)
+                .Select(u => new UserDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    UserName = u.UserName,
+                    Position = u.Position,
+                    PhoneNumber = u.PhoneNumber,
+                    DepartmentId = u.DepartmentId,
+                    DepartmentName = u.Department.Name,
+                })
+                .Skip((page - 1) * usersPerPage)
+                .Take(usersPerPage)
+                .ToList();
+
+            foreach (var user in users)
+            {
+                var currUser = await userManager.FindByIdAsync(user.Id);
+                user.Roles = await userManager.GetRolesAsync(currUser);
+            }
+
+            return users;
+        }
+
+        public async Task<IEnumerable<string>> GetUserRolesAsync(string id)
         {
             return await userManager.GetRolesAsync(GetUserById(id));
+        }
+
+        public async Task DeleteUserAsync(string userId)
+        {
+            var user = GetUserById(userId);
+            user.IsDeleted = true;
+
+            await dbContext.SaveChangesAsync();
         }
 
         public ApplicationUser GetUserById(string id)
         {
             return dbContext.Users.FirstOrDefault(x => x.Id == id);
+        }
+
+        private Func<ApplicationUser, bool> GetUsersFilter(string searchTerm)
+        {
+            if (searchTerm.ToLower() == "all" || searchTerm.ToLower() == "")
+            {
+                Func<ApplicationUser, bool> all = user => user.IsDeleted == false;
+                return all;
+            }
+
+            Func<ApplicationUser, bool> searchFilter = user
+                => user.Email.ToLower() == searchTerm.ToLower()
+                || user.UserName == searchTerm.ToLower()
+                || user.Department.Name.ToLower() == searchTerm.ToLower()
+                || user.FirstName.ToLower() == searchTerm.ToLower()
+                || user.LastName.ToLower() == searchTerm.ToLower()
+                || user.FirstName.ToLower() + ' ' + user.LastName.ToLower() == searchTerm.ToLower();
+
+            return searchFilter;
         }
     }
 }

@@ -13,16 +13,16 @@ using STS.Web.ViewModels.Comment;
 
 namespace STS.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Comments")]
     [ApiController]
-    public class CommentsController : ControllerBase
+    public class CommentsApiController : ControllerBase
     {
         private readonly ICommentService commentService;
         private readonly ITicketService ticketService;
         private readonly IEmailSender emailSender;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public CommentsController(
+        public CommentsApiController(
             ICommentService commentService,
             ITicketService ticketService,
             IEmailSender emailSender,

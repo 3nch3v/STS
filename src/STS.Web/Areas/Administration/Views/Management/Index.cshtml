@@ -1,0 +1,166 @@
+﻿@using STS.Web.ViewModels.Tasks;
+@model TasksViewModel;
+
+<h1>Manager</h1>
+
+<article>
+
+    <section>
+        <button class="create-task-btn" title="Create a new task...">New Task</button>
+    </section>
+
+    <section>
+        <form method="post" asp-area="Administration" asp-controller="Management" asp-action="Index">
+            <div>
+                <input name="keyword"
+                       type="text"
+                       value="@this.ViewData["keyword"]">
+            </div>
+            <div class="p-select">
+                <label for="EmployeeId">Employee</label>
+                <select class="form-control-sm"
+                        for="EmployeeId"
+                        name="EmployeeId"
+                        asp-items="Model.Employees.Select(t => new SelectListItem(t.UserName, t.Id))">
+                        <option value="" selected="selected">Please select</option>
+                </select>
+            </div>
+            <div>
+                <input 
+                       id="isActive"
+                       name="isActive"
+                       type="checkbox"
+                       value="true" />
+                <label for="isActive"> Only active tasks</label>
+            </div>
+
+            <div>
+                <button type="submit">Search</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="tickets-wrapper">
+        <section class="tickets-list">
+            @if (Model.Tasks.Count() > 0)
+            {
+                <div class="tickets-table">
+                    <header class="tickets-table-header">
+                        <div class="t-num-status">Status</div>
+                        <div class="t-num-priority">Prioriry</div>
+                        <div class="t-num-title">Title</div>
+                        <div class="t-num-created">Deadline</div>
+                        <div class="t-num-assigned">Assigned to</div>
+                    </header>
+
+                    @foreach (var task in Model.Tasks)
+                    {
+                        <a class="tickets-table-row" asp-action="Task" asp-route-id="@task.Id">
+                            <div>
+                                <span class="status @task.StatusName.ToLower().Replace(" ", "")">@task.StatusName</span>
+                                </div>
+                            <div>
+                                <span class="priority @task.PriorityName.ToLower().Replace(" ", "")">
+                                    @task.PriorityName
+                                </span>
+                            </div>
+                            <div>@task.Title</div>
+                            <div>@task.Deadline.ToString("dd/MM/yy")</div>
+                            <div>@task.EmployeeUserName</div>
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No Tasks Currently Available</p>
+            }
+        </section>
+
+        @if (Model.PagesCount > 1)
+        {
+            <nav class="page-nav">
+                <ul class="page-nav-list">
+
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li>
+                            <a asp-area="Administration"
+                                asp-controller="Management"
+                                asp-action="Index"
+                                asp-route-page="@Model.PreviousPage"
+                                asp-route-isActive="@Model.OnlyActive"
+                                asp-route-keyword="@Model.Keyword"
+                                asp-route-employeeId="@Model.EmployeeId"
+                            >
+                                Previous
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-area="Administration"
+                                asp-controller="Management"
+                                asp-action="Index"
+                                asp-route-page="@(Model.Page - 1)"
+                                asp-route-isActive="@Model.OnlyActive"
+                                asp-route-keyword="@Model.Keyword"
+                                asp-route-employeeId="@Model.EmployeeId"
+                            >
+                                @(Model.Page - 1)
+                            </a>
+                        </li>
+                    }
+
+                    <li>
+                        <a asp-area="Administration" 
+                           asp-controller="Management" 
+                           asp-action="Index" 
+                           asp-route-page="@Model.Page"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword"
+                           asp-route-employeeId="@Model.EmployeeId"
+                        >
+                            @Model.Page
+                        </a>
+                    </li>
+
+                    @if (Model.HasNextPage)
+                    {
+                        <li>
+                            <a asp-area="Administration"
+                               asp-controller="Management" 
+                               asp-action="Index" 
+                               asp-route-page="@(Model.Page + 1)"
+                               asp-route-isActive="@Model.OnlyActive"
+                               asp-route-keyword="@Model.Keyword"
+                               asp-route-employeeId="@Model.EmployeeId"
+                            >
+                                @(Model.Page + 1)
+                        </a>
+                        </li>
+                        <li>
+                            <a asp-area="Administration" 
+                               asp-controller="Management" 
+                               asp-action="Index" 
+                               asp-route-page="@Model.NextPage"
+                               asp-route-isActive="@Model.OnlyActive"
+                               asp-route-keyword="@Model.Keyword"
+                               asp-route-employeeId="@Model.EmployeeId"
+                            >
+                                Next
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </nav>
+        }
+    </section>
+</article>
+
+<dialog class="create-task-dialog">
+    <vc:create-task></vc:create-task>
+</dialog>
+
+@section Scripts {
+<script type="module" src="~/js/services/create-task-dialog.js"></script>
+} 

@@ -23,5 +23,7 @@ namespace STS.Services.Contracts
         Dictionary<string, Dictionary<string, int>> GetTicketsStatistic();
 
         int GetStatusId(string status);
+
+        int GetDepartmentId(string userId);
     }
 }

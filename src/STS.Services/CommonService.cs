@@ -135,5 +135,15 @@ namespace STS.Services
 
             return byStatus;
         }
+
+        public int GetDepartmentId(string userId)
+        {
+            var user = dbContext.Users
+                .Where(x => x.Id == userId)
+                .FirstOrDefault();
+
+            return user.DepartmentId;
+        }
+
     }
 }
