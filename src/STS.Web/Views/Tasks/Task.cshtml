@@ -1,0 +1,18 @@
+﻿@using STS.Web.ViewModels.Tasks;
+@model TaskViewModel;
+
+<h1>Ticket details</h1>
+<p>@Model.Id</p>
+<h2>@Model.Title</h2>
+<p>@Model.Description</p>
+<p>@Model.Deadline</p>
+<p>@Model.StatusName</p>
+<p>@Model.PriorityName</p>
+<p>@Model.ManagerUserName</p>
+
+@foreach (var coment in Model.Comments)
+{
+    <p>--------------- Comment with Id @coment.Id</p>
+    <p>@coment.Content</p>
+    <p>@coment.UserUserName</p>
+}

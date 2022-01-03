@@ -14,7 +14,7 @@
             <div>
                 <input name="keyword"
                        type="text"
-                       value="@this.ViewData["keyword"]">
+                       value="@Model.Keyword">
             </div>
             <div class="p-select">
                 <label for="EmployeeId">Employee</label>
@@ -154,6 +154,11 @@
                 </ul>
             </nav>
         }
+    </section>
+
+    <section>
+        <h5>Next expiring tasks</h5>
+        <vc:tasks-side-bar is-manager=true></vc:tasks-side-bar>
     </section>
 </article>
 

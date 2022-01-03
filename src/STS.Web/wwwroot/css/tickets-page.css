@@ -1,21 +1,101 @@
-﻿.tickets-container {
-    width: 100%;
+﻿.ticket-search {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: start;
+    margin: 25px;
 }
 
-.tickets-nav {
-    min-width: 15%;
+.tickets-page-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: start;
+    gap: 20px;
 }
 
 .tickets-wrapper {
-    min-width: 60%;
+    flex-grow: 1;
+    flex-shrink: 1;
 }
 
-.tasks-review {
-    min-width: 25%;
+/*nav*/
+
+.tickets-nav {
+    border-radius: 8px;
+    background-color: #30363D;
+}
+
+.tickets-nav ul {
+    margin:0;
+    padding: 5px;
+    padding-top: 15px;
+    padding-left: 15px;
+    list-style-type: none;
+}
+
+.tickets-nav ul li {
+    margin-bottom: 15px;
+}
+
+.tickets-nav ul li a {
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.tickets-nav ul li a:hover,
+.tickets-table-row:hover,
+.tasks-vc-row:hover {
+    text-decoration: none;
+    color: #39A6FF;
+}
+
+.t-count {
+    margin-left: 10px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    border: 2px solid #666;
+    text-align: center;
+    font: 14px Arial, sans-serif;
+}
+
+/*table*/
+.tickets-table-row,
+.tickets-table-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.table-t-title {
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+
+.tickets-table {
+    width: 100%;
+}
+
+.table-priority,
+.table-assigned-to,
+.table-date{
+    width: 1px;
+    white-space: nowrap;
+}
+
+.table-ticket-number {
+    width: 45px;
+}
+
+.table-status {
+    width: 110px;
+}
+
+.table-t-title {
+    white-space: pre-wrap;
 }
 
 .tickets-table,
@@ -30,85 +110,30 @@
     display: table-row;
 }
 
-.tickets-list {
-    border-left: solid 1px white;
-    border-right: solid 1px white;
-}
-
-.tickets-nav ul,
-.tickets-list,
-.tasks-review {
-    padding: 0 20px 20px 20px;
-    list-style: none;
-    list-style-type: none;
-}
-
-.tickets-nav ul li a {
-    font-size: 20px;
-}
-
-.tickets-nav ul li a:hover,
-.tickets-table-row:hover,
-.tasks-vc-row:hover {
-    text-decoration: none;
-    color: papayawhip;
-}
-
-
 .tickets-table-header div,
 .tickets-table-row div,
 .tasks-vc-row div {
     display: table-cell;
-    padding: 5px;
-}
-
-.tickets-table .tickets-table-row:nth-child(odd) {
-    background: #332e2e;
+    padding: 8px;
 }
 
 .tickets-table-header {
     font-weight: bold;
     text-align: left;
+    color: #8B949E;
 }
 
-.t-num-title {
-    width: 45%;
+
+.tickets-table .tickets-table-row:nth-child(odd) {
+    background: #30363D;
 }
 
-.ticket-search-art {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 25px;
+.page-nav-list {
+    margin-bottom: 20px;
 }
 
-.search-input-field {
-    padding: 4px;
-    background-color: black;
-    border-radius: 6px;
-    color: white;
-    border-color: lightgoldenrodyellow;
-}
-
-.show-create-btn,
-.search-btn,
-.t-comment-btn {
-    border-radius: 6px;
-    padding: 6px 20px;
-    color: white;
-    background-color: dimgrey;
-    font-weight: bold;
-}
-
-.show-create-btn {
-    margin-left: 20px;
-}
-
-.search-btn {
-    margin-right: 20px;
-}
-
-.t-comment-btn {
-    margin-top: 15px;
+.page-nav-list li a {
+    color: #C2CAD2;    
 }
 
 p .no-task {
@@ -126,10 +151,132 @@ p .no-task {
 }
 
 p.daily-tasks {
-    font-weight: bold;
-    font-size: 18px
+    font-size: 18px;
+    color: #8B949E;
 }
 
-.page-nav-list {
-    margin-bottom: 10px;
+.search-input-field {
+    background-color: #30363D;
+    color: #C2CAD2;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+    border-color: #30363D;
+    padding: 6px;
 }
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+    .tickets-page-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: start;
+        gap: 20px;
+        border: 1px solid white; /*remove*/
+    }
+
+    .tickets-table,
+    .tickets-table-header,
+    .table-body,
+    .tickets-table-header div,
+    .tickets-table-row div,
+    .tickets-table-row {
+        display: block;
+    }
+      
+    .tickets-table-header div{
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .tickets-table-row {
+        border: 1px solid #30363D;
+    }
+
+    .tickets-table-row div {
+        border: none;
+        position: relative;
+        padding-left: 120px;
+    }
+
+    .tickets-table-row div:before {
+        position: absolute;     
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+    }
+
+        .tickets-table-row div:nth-of-type(1):before {
+            content: "#";
+        }
+
+        .tickets-table-row div:nth-of-type(2):before {
+            content: "Status";
+        }
+
+        .tickets-table-row div:nth-of-type(3):before {
+            content: "Priority";
+        }
+
+        .tickets-table-row div:nth-of-type(4):before {
+            content: "Title";
+        }
+
+        .tickets-table-row div:nth-of-type(5):before {
+            content: "Crated on";
+        }
+
+        .tickets-table-row div:nth-of-type(6):before {
+            content: "Assigned to";
+        }         	
+}
+
+.ticket-search {
+    margin: 0px 0px 20px 0px;
+}
+
+.show-create-btn {
+    border-radius: 10px;
+    padding: 6px 20px;
+    color: #C2CAD2;
+    background-color: #30363D;
+    border-color: #30363D;
+    font-size: 18px;
+}
+
+.search-btn {
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+    border-color: #13233A;
+    padding: 4px 10px;
+    color: #C2CAD2;
+    background-color: #30363D;
+    font-size: 18px;
+    height: 36px;
+}
+
+
+
+
+
+/*.t-comment-btn {
+    border-radius: 8px;
+    border-color: #13233A;
+    padding: 6px 20px;
+    color: #C2CAD2;
+    background-color: #30363D;
+    font-size: 18px;  
+}
+.show-create-btn {
+    margin-left: 20px;
+}
+.search-btn {
+    margin-right: 20px;
+}
+.t-comment-btn {
+    margin-top: 15px;
+}
+*/

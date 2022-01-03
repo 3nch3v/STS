@@ -41,11 +41,15 @@ namespace STS.Web.Configurations
             CreateMap<UserDto, UserViewModel>();
             CreateMap<ApplicationUser, UserEditModel>();
 
-            CreateMap<BaseTaskDto, TaskLinstingViewModel>();
+            CreateMap<TaskListingDto, TaskLinstingViewModel>();
             CreateMap<TaskInputModel, EmployeeTask>();
-            CreateMap<BaseTaskDto, BaseTaskViewModel>(); // another Dto
-            CreateMap<BaseTaskDto, TaskViewModel>(); // another Dto
-            
+            CreateMap<BaseTaskDto, BaseTaskViewModel>();
+            CreateMap<TaskListingDto, TaskViewModel>();
+            CreateMap<TaskDto, TaskViewModel>();
+
+            CreateMap<ReplyTask, ReplayTaskDto>();
+            CreateMap<ReplayTaskDto, ReplayTaskViewModel>();
+
         }
     }
 }

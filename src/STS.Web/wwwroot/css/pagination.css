@@ -10,7 +10,7 @@ ul.page-nav-list li {
 }
 
 ul.page-nav-list li a {
-    color: white;
+    color: #8B949E;
     float: left;
     padding: 8px 16px;
     text-decoration: none;
@@ -18,5 +18,5 @@ ul.page-nav-list li a {
 }
 
 ul.page-nav-list li a:hover:not(.active) {
-    background-color: grey;
+    background-color: #30363D;
 }

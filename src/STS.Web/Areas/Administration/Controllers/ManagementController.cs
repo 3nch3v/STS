@@ -59,20 +59,20 @@ namespace STS.Web.Areas.Administration.Controllers
             return View(tasks);
         }
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            var task = taskService.GetById(id);
-            var userId = userManager.GetUserId(User);
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var task = taskService.GetById(id);
+        //    var userId = userManager.GetUserId(User);
 
-            if (task == null || task.ManagerId != userId)
-            {
-                return BadRequest();
-            }
+        //    if (task == null || task.ManagerId != userId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            await taskService.DeleteAsync(id);
+        //    await taskService.DeleteAsync(id);
 
-            return RedirectToAction(nameof(Index));
-        }
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         [HttpPost]
         public async Task<IActionResult> Create(TaskInputModel taskInput)

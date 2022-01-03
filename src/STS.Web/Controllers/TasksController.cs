@@ -29,20 +29,36 @@ namespace STS.Web.Controllers
             this.userManager = userManager;
         }
 
-        [HttpGet]
-        [Route("/[controller]")]
-        public IActionResult Index()
+        public IActionResult Index(bool isActive, string keyword, int page = DefaultPageNumber)
         {
             var userId = userManager.GetUserId(User);
-
-            var tasks = taskService.GetAll(userId, false, true, DefaultPageNumber, null, null);
+            var tasks = taskService.GetAll(userId, false, isActive, page, keyword, null);
 
             var tasksDto = new TasksViewModel
             {
+                Keyword = keyword,
+                OnlyActive = isActive,
+                Page = page,
+                TasksCount = taskService.GetCount(),
                 Tasks = mapper.Map<List<TaskLinstingViewModel>>(tasks),
             };
 
             return View(tasksDto);
+        }
+
+        public IActionResult Task(int id)
+        {
+            var currUser = userManager.GetUserId(User);
+            var taskDto = taskService.GetById(id);
+
+            if (taskDto.EmployeeId != currUser)
+            {
+                return BadRequest();
+            }
+
+            var task = mapper.Map<TaskViewModel>(taskDto);
+
+            return View(task);
         }
     }
 }

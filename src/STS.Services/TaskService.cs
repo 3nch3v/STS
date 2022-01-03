@@ -34,12 +34,31 @@ namespace STS.Services
 
         public int GetCount() => tasksCount;
 
-        public EmployeeTask GetById(int id)
+        public TaskDto GetById(int id)
         {
             return dbContext.EmployeesTasks
                .Where(x => x.Id == id)
+               .Select(x => new TaskDto
+               { 
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                    Deadline = x.Deadline,
+                    StatusName = x.Status.Name,
+                    PriorityName = x.Priority.Name,
+                    ManagerUserName = x.Manager.UserName,
+                    EmployeeId = x.EmployeeId,
+                    Comments = x.Comments
+                        .Select(c => new ReplayTaskDto
+                        {
+                            Id = c.Id,
+                            Content = c.Content,
+                            UserUserName = c.User.UserName,
+                        })
+                        .ToList(),
+               })
                .FirstOrDefault();
-        }  //DTO TODO
+        }
 
         public async Task CreateAsync<T>(string userId, T taskDto)
         {
@@ -62,7 +81,7 @@ namespace STS.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<BaseTaskDto> GetAll(
+        public IEnumerable<TaskListingDto> GetAll(
             string userId,
             bool isManager,
             bool isTaskActive,
@@ -113,7 +132,7 @@ namespace STS.Services
             tasksCount = tasksQuery.Count();
 
             var tasks = tasksQuery
-               .Select(task => new BaseTaskDto
+               .Select(task => new TaskListingDto
                {
                    Id = task.Id,
                    Title = task.Title,
@@ -123,12 +142,46 @@ namespace STS.Services
                    StatusName = task.Status.Name,
                    PriorityName = task.Priority.Name,
                })
-               .OrderBy(x => x.Deadline)
+               .OrderByDescending(x => x.Deadline)
                .Skip((page - 1) * TasksPerPage)
                .Take(TasksPerPage)
                .ToList();
 
             return tasks;
-        } 
+        }
+
+        public IEnumerable<BaseTaskDto> GetSideBarTasks(string userId, bool isManager)
+        {
+            var tasksQuery = dbContext.EmployeesTasks.AsQueryable();
+
+            if (isManager)
+            {
+                tasksQuery = tasksQuery
+                    .Where(task => task.ManagerId == userId)
+                    .AsQueryable();
+            }
+            else
+            {
+                tasksQuery = tasksQuery
+                    .Where(task => task.EmployeeId == userId)
+                    .AsQueryable();
+            }
+
+            var tasks = tasksQuery
+                    .Where(task => task.Status.Name.ToLower() != "closed"
+                                && task.Status.Name.ToLower() != "solved")
+                     .Select(task => new BaseTaskDto
+                     {
+                         Id = task.Id,
+                         Title = task.Title,
+                         Deadline = task.Deadline,
+                         PriorityName = task.Priority.Name,
+                     })
+                    .OrderBy(x => x.Deadline)
+                    .Take(TasksPerPage)
+                    .ToList();
+
+            return tasks;
+        }
     }
 }

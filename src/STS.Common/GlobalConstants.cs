@@ -40,7 +40,7 @@
 
         public const int RoleNameMaxLength = 50;
 
-        public const int TicketsPerPage = 12;
+        public const int TicketsPerPage = 15;
 
         public const int UsersPerPage = 12;
 

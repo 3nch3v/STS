@@ -3,22 +3,50 @@
 <nav class="tickets-nav">
     <ul>
         <li>
-            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="my">My tickets (@Model["my"])</a>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="my">
+                My tickets
+                <span class="t-count">@Model["my"]</span>
+            </a>
         </li>
         <li>
-            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="to me">Assigned to me (@Model["to me"])</a>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="to me">
+                Assigned to me 
+                <span class="t-count">
+                    @Model["to me"]
+                </span>
+            </a>
         </li>
         <li>
-            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="answers">New answers (@Model["answers"])</a>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="answers">
+                New answers 
+                <span class="t-count">
+                    @Model["answers"]
+                </span>
+            </a>
         </li>
         <li>
-            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="new">New tickets (@Model["new"])</a>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="new">
+                New tickets 
+                <span class="t-count">
+                    @Model["new"]
+                </span>
+            </a>
         </li>
         <li>
-            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="all">All tickets (@Model["all"])</a>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="all">
+                All tickets 
+                <span class="t-count">
+                    @Model["all"]
+                </span>
+            </a>
         </li>
         <li>
-            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="history">History (@Model["history"])</a>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="history">
+                History 
+                <span class="t-count">
+                    @Model["history"]
+                </span>
+            </a>
         </li>
     </ul>
 </nav>

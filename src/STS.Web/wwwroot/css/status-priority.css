@@ -1,44 +1,49 @@
 ﻿.status,
-.priority,
-.search-btn {
+.priority {
     border-radius: 6px;
     text-align: center;
     font-weight: bold;
-    padding: 3px 6px;
+    padding: 1px 4px;
+    color: white;
 }
 
-    .status.urgent,
-    .priority.urgent,
-    .priority.high {
-        background-color: orangered;
-    }
+.priority.urgent {
+    background-color: orangered;
+}
 
-    .priority.urgent {
-        background-color: mediumvioletred;
-    }
+.status.solved,
+.status.closed {
+    background-color: #7E7060;
+}
 
-    .status.open {
-        background-color: forestgreen;
-    }
+.priority.low {
+    background-color: #027675;
+}
 
-    .status.solved,
-    .status.closed,
-    .priority.low {
-        background-color: darkgrey;
-    }
+.status.open {
+    background-color: forestgreen;
+}
 
-    .status.onhold {
-        background-color: cornflowerblue;
-    }
+.status.onhold {
+    background-color: cornflowerblue;
+}
 
-    .status.pending {
-        background-color: goldenrod;
-    }
+.status.pending {
+    background-color: #928629;
+}
 
-    .status.inprogress {
-        background-color: goldenrod;
-    }
+.status.inprogress {
+    background-color: #541743;
+}
 
-    .priority.medium {
-        background-color: yellowgreen;
-    }
+.priority.medium {
+    background-color: #F75431;
+}
+
+.priority.high {
+    background-color: #C10037;
+}
+
+.priority.urgent {
+    background-color: #8B0C3C;
+}

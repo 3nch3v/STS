@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Administration\Views\Shared\Components\ExpiringTasks\**" />
     <Compile Remove="Views\Shared\Components\Ticket\**" />
+    <Content Remove="Areas\Administration\Views\Shared\Components\ExpiringTasks\**" />
     <Content Remove="Views\Shared\Components\Ticket\**" />
+    <EmbeddedResource Remove="Areas\Administration\Views\Shared\Components\ExpiringTasks\**" />
     <EmbeddedResource Remove="Views\Shared\Components\Ticket\**" />
+    <None Remove="Areas\Administration\Views\Shared\Components\ExpiringTasks\**" />
     <None Remove="Views\Shared\Components\Ticket\**" />
   </ItemGroup>
 

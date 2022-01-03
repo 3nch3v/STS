@@ -5,7 +5,7 @@ import getContentView from '../views/edit-ticket-content-view.js';
 
 const status = document.querySelector('span.status');
 const statusSelect = document.querySelector('.t-status-select');
-const assignToSelect = document.querySelector('.t-assign-select');
+const assignToSelect = document.querySelector('.t-employee-select');
 const departmentSelect = document.querySelector('.t-department-select');
 const assignToMeBtn = document.querySelector('.assign-to-me-btn');
 const editTicketTitleBtn = document.querySelector('.edit-t-title');

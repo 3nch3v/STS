@@ -1,4 +1,77 @@
-﻿.ticket,
+﻿.ticket-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: start;
+    gap: 20px;
+}
+
+.ticket-wrapper {
+    flex-shrink: 1;
+    flex-basis: 60%;
+}
+
+.t-title-section,
+.ticket-details-title,
+.ticket-footer,
+.ticket-actions,
+.ticket-actions div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.ticket-actions {
+    margin-bottom: 15px;
+}
+
+.ticket-footer,
+.ticket-actions {
+    justify-content: space-between;
+}
+
+.t-status-select,
+.t-department-select,
+.t-employee-select,
+.assign-to-me-btn,
+.t-delete-btn {
+    background-color: #30363D;
+    color: #C2CAD2;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 18px;
+}
+
+.t-status-select,
+.t-department-select,
+.assign-to-me-btn {
+    margin-right: 10px
+}
+
+.assign-to-me-btn:hover,
+.t-delete-btn:hover {
+    color: #58A6FF;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.username,
+.date {
+    color: #58A6FF;
+}
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+    .ticket-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: start;
+    }
+}
+
+/*.ticket,
 .ticket-wrapper,
 .comment-wrapper,
 .t-title-section-edited {
@@ -55,10 +128,7 @@
     border-top: 1px solid grey;
 }
 
-.username,
-.date {
-    color: red;
-}
+
 
 .comment-wrapper,
 .comment-dialog {
@@ -93,4 +163,4 @@
     background-color: black;
     border-color: lightgoldenrodyellow;
     color: white;
-}
+}*/

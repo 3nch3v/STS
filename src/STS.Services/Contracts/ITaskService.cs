@@ -10,13 +10,15 @@ namespace STS.Services.Contracts
     {
         int GetCount();
 
-        EmployeeTask GetById(int id);
+        TaskDto GetById(int id);
 
         Task CreateAsync<T>(string userId, T task);
 
         Task DeleteAsync(int id);
 
-        IEnumerable<BaseTaskDto> GetAll(
+        IEnumerable<BaseTaskDto> GetSideBarTasks(string userId, bool isManager);
+
+        IEnumerable<TaskListingDto> GetAll(
             string userId, 
             bool isManager, 
             bool isTaskActive, 

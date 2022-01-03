@@ -9,7 +9,7 @@
     string[] keys = new string[] { "my", "to me", "answers", "new", "all", "history" };
 }
 
-<article class="ticket-search-art">
+<article class="ticket-search">
     <section>
         <button class="show-create-btn" title="Create a new ticket...">New Ticket</button>
     </section>
@@ -19,15 +19,16 @@
                    name="keyword"
                    type="text"
                    value="@(!keys.Contains(this.ViewData["keyword"]) ? this.ViewData["keyword"] : null)"
+                   placeholder="Search..."
                    required
                    minlength=2 />
-            <button class="search-btn" type="submit">Search</button>
+            <button class="search-btn" type="submit">Go</button>
         </form>
     </section>
 </article>
 
-<article class="tickets-container">
-    <section>
+<article class="tickets-page-container">
+    <section class="tickets-nav-section">
         <vc:tickets-nav-bar></vc:tickets-nav-bar>
     </section>
 
@@ -36,31 +37,40 @@
             @if (Model.TicketsCount > 0)
             {
                 <div class="tickets-table">
+
                     <header class="tickets-table-header">
-                        <div class="t-num-header">Ticket</div>
-                        <div class="t-num-status">Status</div>
-                        <div class="t-num-priority">Prioriry</div>
-                        <div class="t-num-title">Title</div>
-                        <div class="t-num-created">Date</div>
-                        <div class="t-num-assigned">Assigned to</div>
+
+                        <div class="table-ticket-number">Ticket</div>
+                        <div class="table-status">Status</div>
+                        <div class="table-priority">Prioriry</div>
+                        <div class="table-t-title">Title</div>
+                        <div class="table-assigned-to">Assigned to</div>
+                        <div class="table-date">Date</div>
                     </header>
 
-                    @foreach (var ticket in Model.Tickets)
-                    {
-                        <a class="tickets-table-row" asp-action="Ticket" asp-route-id="@ticket.Id" data-ticket-id="@ticket.Id">
-                            <div>@ticket.Id</div>
-                            <div><span class="status @ticket.StatusName.ToLower().Replace(" ", "")">@ticket.StatusName</span></div>
-                            <div><span class="priority @ticket.PriorityName.ToLower().Replace(" ", "")">@ticket.PriorityName</span></div>
-                            <div>@(ticket.Title.Length < 45 ? ticket.Title : $"{ticket.Title.Substring(0, 45)}...")</div>
-                            <div>@ticket.CreatedOn.ToString("dd/MM/yy")</div>
-                            <div>
-                                @(ticket.AssignedToUserName == null
-                        ? "unassigned"
-                        : ticket.AssignedToUserName )
-                            </div>
-                        </a>
-                    }
-                </div>
+     
+                        @foreach (var ticket in Model.Tickets)
+                        {
+                            <a class="tickets-table-row" asp-action="Ticket" asp-route-id="@ticket.Id" data-ticket-id="@ticket.Id">
+                                <div class="ticket-id">@ticket.Id</div>
+                                <div>
+                                    <span class="status @ticket.StatusName.ToLower().Replace(" ", "")">@ticket.StatusName</span>
+                                </div>
+                                <div>
+                                    <span class="priority @ticket.PriorityName.ToLower().Replace(" ", "")">@ticket.PriorityName</span>
+                                </div>
+                                <div class="table-t-title">@ticket.Title</div>
+                                <div>
+                                    @(ticket.AssignedToUserName == null
+                                        ? "unassigned"
+                                        : ticket.AssignedToUserName )
+                                </div>
+                                  <div>@ticket.CreatedOn.ToString("dd/MM/yy")</div>
+                            </a>
+                        }
+
+                    </div>
+
             }
             else
             {
@@ -102,17 +112,18 @@
         }
     </section>
 
-    <aside class="tasks-review">
+   @* <aside class="tasks-review">
         <p class="daily-tasks">Daily tasks</p>
-        <vc:tasks-side-bar></vc:tasks-side-bar>
-    </aside>
+        <vc:tasks-side-bar is-manager=false></vc:tasks-side-bar>
+    </aside>*@
 </article>
+
 
 <dialog class="create-dialog">
     <vc:create-ticket></vc:create-ticket>
 </dialog>
 
 @section Scripts {
-    <script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
-    <script type="module" src="~/js/services/create-ticket-validation.js"></script>
+<script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
+<script type="module" src="~/js/services/create-ticket-validation.js"></script>
 }
