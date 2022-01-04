@@ -27,12 +27,12 @@ namespace STS.Web.ViewComponents
             this.userManager = userManager;
         }
 
-        public IViewComponentResult Invoke(bool isManager)
+        public IViewComponentResult Invoke(bool isManager, int tasksCount)
         {
             var user = Request.HttpContext.User;
             var userId = userManager.GetUserId(user);
 
-            var tasksDtos = taskService.GetSideBarTasks(userId, isManager);
+            var tasksDtos = taskService.GetSideBarTasks(userId, isManager, tasksCount);
 
             var tasks = new TasksSideBarViewModel
             {

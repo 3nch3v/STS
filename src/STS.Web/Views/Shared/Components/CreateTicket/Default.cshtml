@@ -1,11 +1,7 @@
 ﻿@using STS.Web.ViewModels.Tickets
 @model TicketInputModel
 
-@{
-    ViewData["Title"] = "Create Ticket";
-}
-
-<article class="c-wrapper">
+<article class="create-form-wrapper">
     <form asp-controller="Tickets" asp-action="Create" class="col-md-12 offser-md-8">
         <section class="select-group">
             <div class="p-select">
@@ -15,16 +11,18 @@
                     asp-for="PriorityId" 
                     asp-items="Model.Priorities.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"
                 >
+                    <option value="" selected="selected" >Please select</option>
                 </select>
                 <span asp-validation-for="PriorityId" class="text-danger"></span>
             </div>
-            <div >
+            <div>
                 <label asp-for="DepartmentId">Department</label>
                 <select 
                     class="form-control-sm" 
                     asp-for="DepartmentId" 
                     asp-items="Model.Departments.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"
                 >
+                    <option value="" selected="selected" >Please select</option>
                 </select>
                 <span asp-validation-for="DepartmentId" class="text-danger"></span>
             </div>

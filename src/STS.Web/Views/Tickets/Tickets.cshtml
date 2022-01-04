@@ -28,6 +28,7 @@
 </article>
 
 <article class="tickets-page-container">
+
     <section class="tickets-nav-section">
         <vc:tickets-nav-bar></vc:tickets-nav-bar>
     </section>
@@ -37,9 +38,7 @@
             @if (Model.TicketsCount > 0)
             {
                 <div class="tickets-table">
-
                     <header class="tickets-table-header">
-
                         <div class="table-ticket-number">Ticket</div>
                         <div class="table-status">Status</div>
                         <div class="table-priority">Prioriry</div>
@@ -48,29 +47,26 @@
                         <div class="table-date">Date</div>
                     </header>
 
-     
-                        @foreach (var ticket in Model.Tickets)
-                        {
-                            <a class="tickets-table-row" asp-action="Ticket" asp-route-id="@ticket.Id" data-ticket-id="@ticket.Id">
-                                <div class="ticket-id">@ticket.Id</div>
-                                <div>
-                                    <span class="status @ticket.StatusName.ToLower().Replace(" ", "")">@ticket.StatusName</span>
-                                </div>
-                                <div>
-                                    <span class="priority @ticket.PriorityName.ToLower().Replace(" ", "")">@ticket.PriorityName</span>
-                                </div>
-                                <div class="table-t-title">@ticket.Title</div>
-                                <div>
-                                    @(ticket.AssignedToUserName == null
-                                        ? "unassigned"
-                                        : ticket.AssignedToUserName )
-                                </div>
-                                  <div>@ticket.CreatedOn.ToString("dd/MM/yy")</div>
-                            </a>
-                        }
-
-                    </div>
-
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <a class="tickets-table-row" asp-action="Ticket" asp-route-id="@ticket.Id" data-ticket-id="@ticket.Id">
+                            <div class="ticket-id">@ticket.Id</div>
+                            <div>
+                                <span class="status @ticket.StatusName.ToLower().Replace(" ", "")">@ticket.StatusName</span>
+                            </div>
+                            <div>
+                                <span class="priority @ticket.PriorityName.ToLower().Replace(" ", "")">@ticket.PriorityName</span>
+                            </div>
+                            <div class="table-t-title">@ticket.Title</div>
+                            <div>
+                                @(ticket.AssignedToUserName == null
+                        ? "unassigned"
+                        : ticket.AssignedToUserName )
+                            </div>
+                            <div>@ticket.CreatedOn.ToString("dd/MM/yy")</div>
+                        </a>
+                    }
+                </div>
             }
             else
             {
@@ -86,38 +82,56 @@
                     @if (Model.HasPreviousPage)
                     {
                         <li>
-                            <a asp-controller="Tickets" asp-action="Tickets" asp-route-page="@Model.PreviousPage" asp-route-keyword="@this.ViewData["keyword"]">Previous</a>
+                            <a asp-controller="Tickets" 
+                               asp-action="Tickets" 
+                               asp-route-page="@Model.PreviousPage" 
+                               asp-route-keyword="@this.ViewData["keyword"]">
+                                    Previous
+                            </a>
                         </li>
                         <li>
-                            <a asp-controller="Tickets" asp-action="Tickets" asp-route-page="@(Model.Page - 1)" asp-route-keyword="@this.ViewData["keyword"]">@(Model.Page - 1)</a>
+                            <a asp-controller="Tickets"
+                               asp-action="Tickets" 
+                               asp-route-page="@(Model.Page - 1)" 
+                               asp-route-keyword="@this.ViewData["keyword"]">
+                                    @(Model.Page - 1)
+                            </a>
                         </li>
                     }
 
                     <li>
-                        <a asp-controller="Tickets" asp-action="Tickets" asp-route-page="@Model.Page" asp-route-keyword="@this.ViewData["keyword"]">@Model.Page</a>
+                        <a asp-controller="Tickets" 
+                           asp-action="Tickets" 
+                           asp-route-page="@Model.Page" 
+                           asp-route-keyword="@this.ViewData["keyword"]">
+                                @Model.Page
+                        </a>
                     </li>
 
                     @if (Model.HasNextPage)
                     {
                         <li>
-                            <a asp-controller="Tickets" asp-action="Tickets" asp-route-page="@(Model.Page + 1)" asp-route-keyword="@this.ViewData["keyword"]">@(Model.Page + 1)</a>
+                            <a asp-controller="Tickets"
+                               asp-action="Tickets" 
+                               asp-route-page="@(Model.Page + 1)" 
+                               asp-route-keyword="@this.ViewData["keyword"]">
+                                    @(Model.Page + 1)
+                            </a>
                         </li>
                         <li>
-                            <a asp-controller="Tickets" asp-action="Tickets" asp-route-page="@Model.NextPage" asp-route-keyword="@this.ViewData["keyword"]">Next</a>
+                            <a asp-controller="Tickets" 
+                               asp-action="Tickets" 
+                               asp-route-page="@Model.NextPage" 
+                               asp-route-keyword="@this.ViewData["keyword"]">
+                                    Next
+                            </a>
                         </li>
                     }
-
                 </ul>
             </nav>
         }
     </section>
-
-   @* <aside class="tasks-review">
-        <p class="daily-tasks">Daily tasks</p>
-        <vc:tasks-side-bar is-manager=false></vc:tasks-side-bar>
-    </aside>*@
 </article>
-
 
 <dialog class="create-dialog">
     <vc:create-ticket></vc:create-ticket>

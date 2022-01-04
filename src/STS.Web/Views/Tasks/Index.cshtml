@@ -1,105 +1,144 @@
 ﻿@using STS.Web.ViewModels.Tasks;
+@using static STS.Common.GlobalConstants;
 @model TasksViewModel;
 
-<h1>Employee</h1>
+@{
+    this.ViewData["Title"] = "My tasks";
+}
 
-<section>
-    <form method="post" asp-controller="Tasks" asp-action="Index">
-        <div>
-            <input name="keyword"
-                   type="text"
-                   value="@Model.Keyword">
-        </div>
-        <div>
-            <input id="isActive"
-                   name="isActive"
-                   type="checkbox"
-                   value="true" />
-            <label for="isActive"> Only active tasks</label>
-        </div>
-        <div>
-            <button type="submit">Show</button>
-        </div>
-    </form>
-</section>
+<article class="tasks-wrapper">
+    <section class="tasks-side-bar-section">
 
-<section>
-    <section>
-        @foreach (var task in Model.Tasks)
-        {
-            <a asp-controller="Tasks" asp-action="Task" asp-route-id="@task.Id">
-                <p>@task.Id =>  @task.PriorityName => @task.Title => @task.StatusName => @task.ManagerUserName => @task.Deadline</p>
-            </a>
-        }
+        <section class="search-task-section">
+            <form method="post" asp-controller="Tasks" asp-action="Index">
+                <div>
+                    <input name="keyword"
+                           type="text"
+                           value="@Model.Keyword"
+                           class="search-input-field">
+                </div>
+                <div>
+                    <input id="isActive"
+                           name="isActive"
+                           type="checkbox"
+                           value="true">
+                    <label class="checkbox-label" for="isActive"> Only active</label>
+                    <button type="submit" class="tasks-search-btn">Go</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="expiring-side-bar">
+            <h5 class="expiring-title">Expiring tasks</h5>
+            <vc:tasks-side-bar is-manager=false tasks-count=TasksSideBarCount></vc:tasks-side-bar>
+        </section>
     </section>
 
-    <section>
-        @if (Model.PagesCount > 1)
-        {
-            <nav class="page-nav">
-                <ul class="page-nav-list">
+    <section class="tasks-table-wrapper">
+        <section class="tasks-table">
+            @if (Model.TasksCount > 0)
+            {
+                <div class="tickets-table">
 
-                    @if (Model.HasPreviousPage)
+                    <header class="tickets-table-header">
+                        <div class="table-task-number">Task</div>
+                        <div class="table-status">Status</div>
+                        <div class="table-priority">Prioriry</div>
+                        <div class="table-t-title">Title</div>
+                        <div class="table-assigned-to">Manager</div>
+                        <div class="task-deadline">Deadline</div>
+                    </header>
+
+                    @foreach (var task in Model.Tasks)
                     {
-                        <li>
-                            <a asp-controller="Tasks"
-                       asp-action="Index"
-                       asp-route-page="@Model.PreviousPage"
-                       asp-route-isActive="@Model.OnlyActive"
-                       asp-route-keyword="@Model.Keyword">
-                                Previous
-                            </a>
-                        </li>
-                        <li>
-                            <a asp-controller="Tasks"
-                       asp-action="Index"
-                       asp-route-page="@(Model.Page - 1)"
-                       asp-route-isActive="@Model.OnlyActive"
-                       asp-route-keyword="@Model.Keyword">
-                                @(Model.Page - 1)
-                            </a>
-                        </li>
-                    }
-
-                    <li>
-                        <a asp-controller="Tasks"
-                       asp-action="Index"
-                       asp-route-page="@Model.Page"
-                       asp-route-isActive="@Model.OnlyActive"
-                       asp-route-keyword="@Model.Keyword">
-                            @Model.Page
+                        <a class="tickets-table-row"
+                            asp-controller="Tasks"
+                            asp-action="Task"
+                            asp-route-id="@task.Id"
+                        >
+                            <div>@task.Id</div>
+                            <div>
+                                <span class="status @task.StatusName.ToLower().Replace(" ", "")">@task.StatusName</span>
+                            </div>
+                            <div>
+                                <span class="priority @task.PriorityName.ToLower().Replace(" ", "")">@task.PriorityName</span>
+                            </div>
+                            <div class="table-t-title">@task.Title</div>
+                            <div>@task.ManagerUserName </div>
+                            <div>@task.Deadline.ToString("dd/MM/yy hh:MM")</div>
                         </a>
-                    </li>
-
-                    @if (Model.HasNextPage)
-                    {
-                        <li>
-                            <a asp-controller="Tasks"
-                       asp-action="Index"
-                       asp-route-page="@(Model.Page + 1)"
-                       asp-route-isActive="@Model.OnlyActive"
-                       asp-route-keyword="@Model.Keyword">
-                                @(Model.Page + 1)
-                            </a>
-                        </li>
-                        <li>
-                            <a asp-controller="Tasks"
-                       asp-action="Index"
-                       asp-route-page="@Model.NextPage"
-                       asp-route-isActive="@Model.OnlyActive"
-                       asp-route-keyword="@Model.Keyword">
-                                Next
-                            </a>
-                        </li>
                     }
+                </div>
+            }
+            else
+            {
+                <p>Take a Coffee. You have no pendding tasks.</p>
+            }
+        </section>
 
-                </ul>
-            </nav>
-        }
+        <section class="pagination">
+            @if (Model.PagesCount > 1)
+            {
+                <nav class="page-nav">
+                    <ul class="page-nav-list">
+
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li>
+                                <a asp-controller="Tasks"
+                           asp-action="Index"
+                           asp-route-page="@Model.PreviousPage"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword">
+                                    Previous
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-controller="Tasks"
+                           asp-action="Index"
+                           asp-route-page="@(Model.Page - 1)"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword">
+                                    @(Model.Page - 1)
+                                </a>
+                            </li>
+                        }
+
+                        <li>
+                            <a asp-controller="Tasks"
+                           asp-action="Index"
+                           asp-route-page="@Model.Page"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword">
+                                @Model.Page
+                            </a>
+                        </li>
+
+                        @if (Model.HasNextPage)
+                        {
+                            <li>
+                                <a asp-controller="Tasks"
+                           asp-action="Index"
+                           asp-route-page="@(Model.Page + 1)"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword">
+                                    @(Model.Page + 1)
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-controller="Tasks"
+                           asp-action="Index"
+                           asp-route-page="@Model.NextPage"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword">
+                                    Next
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </nav>
+            }
+        </section>
     </section>
-</section>
-
-<section>
-    <h3>Next expiring tasks</h3>
-    <vc:tasks-side-bar is-manager=false></vc:tasks-side-bar>
-</section>
+</article>

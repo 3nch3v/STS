@@ -1,0 +1,72 @@
+﻿.tasks-wrapper,
+.m-tasks-wrapper {
+    margin: auto auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: start;
+    gap: 25px;
+    color: #39A6FF;
+}
+
+.tasks-side-bar-section,
+.manager-search-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+}
+
+.tasks-side-bar-section {
+    gap: 20px;
+}
+
+.tasks-wrapper,
+.m-tasks-wrapper {
+    margin: 50px;
+}
+
+.tasks-table-wrapper {
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-basis: 1px;
+}
+
+.search-task-section {
+    padding: 20px 20px 0 20px;
+    border-radius: 8px;
+    background-color: #010409;
+}
+
+.search-task-section form div {
+    margin-bottom: 10px;
+}
+
+.checkbox-label {
+    margin-right: 15px;
+    font-size: 18px;
+}
+
+.expiring-title {
+    margin-left: 7px;
+    color: #8B949E;
+}
+
+.task-deadline {
+    width: 125px;
+    white-space: nowrap;
+}
+
+.tasks-table {
+    margin-bottom: 25px;
+}
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+    .tasks-wrapper,
+    .m-tasks-wrapper {
+        margin: 0;
+    }
+}

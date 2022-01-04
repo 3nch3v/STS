@@ -16,13 +16,16 @@ body {
     margin-bottom: 60px;
     background-color: #0D1117;
     color: white;
-    width: 80%;
+
 }
 
+.main {
+    width: 90%;
+    margin: auto auto;
+}
 .site-footer {
     position: absolute;
     bottom: 0;
-    max-width: 80%;
     width: 100%;
     white-space: nowrap;
     line-height: 60px;

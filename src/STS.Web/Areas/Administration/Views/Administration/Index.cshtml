@@ -1,40 +1,34 @@
-﻿<h1>Welcome to Admin panel</h1>
+﻿@{
+    this.ViewData["Title"] = "Admin panel";
+}
 
-<article>
-    <section>
-        <h3>Tickets statistic</h3>
+<h3 class="admin-greeting">Welcome to Admin panel</h3>
+
+<article class="admin-wrapper">
+    <section class="admin-stat-section">
+        <h5 class="t-stat-title">Tickets statistic</h5>
         <vc:tickets-statistic></vc:tickets-statistic>
     </section>
-    
-    <br>
-    <br>
-    
-    <section>
-        <h3>Departmenst</h3>
+
+    <section class="admin-user-section">
+        <h5 class="user-title">Users</h5>
+        <a class="create-user-btn" asp-area="Administartion" asp-controller="Administration" asp-action="CreateUser">
+            Create user
+        </a>
+        <a class="users-btn" asp-area="Administartion" asp-controller="Administration" asp-action="Users">
+            Users Explorer
+        </a>
+    </section>
+
+    <section class="admin-dep-section">
+        <h5 class="dep-title">Departments</h5>
         <vc:departments></vc:departments>
     </section>
 
-    <br>
-    <br>
-
-    <section>
-        <h3>Roles</h3>
+    <section class="admin-roles-section">
+        <h5 class="t-stat-title">Roles</h5>
         <vc:roles></vc:roles>
     </section>
 
-    <br>
-    <br>
 
-    <section>
-        <h3>Search for an user by username, email, department or full name</h3>
-
-        <a asp-area="Administartion" asp-controller="Administration" asp-action="CreateUser">Create user</a>
-        <br>
-
-         <a asp-area="Administartion" asp-controller="Administration" asp-action="EditUser" asp-route-id="422e95e2-1708-477b-ac56-376a7f3f329e">Edit user</a>
-
-        <br>
-        <a asp-area="Administartion" asp-controller="Administration" asp-action="Users">Search for users</a>
-
-    </section>
 </article>

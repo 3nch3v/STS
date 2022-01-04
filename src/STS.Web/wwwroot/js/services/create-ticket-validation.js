@@ -1,4 +1,4 @@
-﻿const createTicketForm = document.querySelector('.c-wrapper form');
+﻿const createTicketForm = document.querySelector('.create-form-wrapper form');
 const title = createTicketForm.querySelector('input#Title');
 const content = createTicketForm.querySelector('textarea#Content');
 const titleWrapper = createTicketForm.querySelector('div.t-tile');

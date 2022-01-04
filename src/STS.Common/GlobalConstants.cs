@@ -46,9 +46,9 @@
 
         public const int DefaultPageNumber = 1;
 
-        public const int TasksSideBarCount = 12;
+        public const int TasksSideBarCount = 10;
 
-        public const int TasksPerPage = 12;
+        public const int TasksPerPage = 15;
 
         public const string SystemName = "STS";
 

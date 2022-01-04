@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 
 using STS.Data.Dtos.Task;
-using STS.Data.Models;
 
 namespace STS.Services.Contracts
 {
@@ -16,7 +15,7 @@ namespace STS.Services.Contracts
 
         Task DeleteAsync(int id);
 
-        IEnumerable<BaseTaskDto> GetSideBarTasks(string userId, bool isManager);
+        IEnumerable<BaseTaskDto> GetSideBarTasks(string userId, bool isManager, int tasksCount);
 
         IEnumerable<TaskListingDto> GetAll(
             string userId, 

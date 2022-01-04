@@ -1,0 +1,77 @@
+﻿.admin-wrapper,
+.ticket-stat-wrapper,
+.dep-count,
+.department-stat {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: 20px;
+}
+
+.admin-user-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-user-section a:hover {
+    text-decoration: none;
+    color: #39A6FF;
+}
+
+.admin-stat-section,
+.dep-count,
+.admin-user-section,
+.admin-dep-section,
+.admin-roles-section {
+    background-color: black;
+    border-radius: 8px;
+}
+
+.ticket-stat-wrapper,
+.admin-user-section,
+.admin-dep-section {
+    padding: 15px;
+}
+
+.dep-count {
+    justify-content: space-between;
+}
+
+.ticket-stat-wrapper.stat-status {
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-basis: 1%;
+}
+
+.stat-status,
+.departments-wrapper {
+    padding: 15px;
+    background-color: #30363D;
+    border-radius: 8px;
+}
+
+.dep-count,
+.departments-wrapper {
+    background-color: #30363D;
+    color: #C2CAD2;
+}
+
+.t-stat-title,
+.admin-greeting,
+.user-title,
+.dep-title {
+    text-align: center;
+    color: #C2CAD2;
+}
+
+.t-stat-title {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.admin-greeting,
+.create-user-btn,
+.dep-title {
+    margin-bottom: 15px;
+}

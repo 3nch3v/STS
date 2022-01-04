@@ -17,10 +17,10 @@
 .tickets-wrapper {
     flex-grow: 1;
     flex-shrink: 1;
+    width: 80%;
 }
 
 /*nav*/
-
 .tickets-nav {
     border-radius: 8px;
     background-color: #30363D;
@@ -86,7 +86,8 @@
     white-space: nowrap;
 }
 
-.table-ticket-number {
+.table-ticket-number, 
+.table-task-number {
     width: 45px;
 }
 
@@ -165,6 +166,14 @@ p.daily-tasks {
 }
 
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+
+    body {
+        width: 100%;
+    }
+
+    .tickets-wrapper {
+        width: 100%;
+    }
     .tickets-page-container {
         display: flex;
         flex-direction: column;
@@ -172,7 +181,6 @@ p.daily-tasks {
         justify-content: space-between;
         align-items: start;
         gap: 20px;
-        border: 1px solid white; /*remove*/
     }
 
     .tickets-table,
@@ -209,36 +217,43 @@ p.daily-tasks {
         white-space: nowrap;
     }
 
-        .tickets-table-row div:nth-of-type(1):before {
-            content: "#";
-        }
-
-        .tickets-table-row div:nth-of-type(2):before {
-            content: "Status";
-        }
-
-        .tickets-table-row div:nth-of-type(3):before {
-            content: "Priority";
-        }
-
-        .tickets-table-row div:nth-of-type(4):before {
-            content: "Title";
-        }
-
-        .tickets-table-row div:nth-of-type(5):before {
-            content: "Crated on";
-        }
-
-        .tickets-table-row div:nth-of-type(6):before {
-            content: "Assigned to";
-        }         	
+    .tickets-table-row div:nth-of-type(1):before {
+        content: "#";
+    }
+    
+    .tickets-table-row div:nth-of-type(2):before {
+        content: "Status";
+    }
+    
+    .tickets-table-row div:nth-of-type(3):before {
+        content: "Priority";
+    }
+    
+    .tickets-table-row div:nth-of-type(4):before {
+        content: "Title";
+    }
+    
+    .tickets-table-row div:nth-of-type(5):before {
+        content: "Crated on";
+    }
+    
+    .tickets-table-row div:nth-of-type(6):before {
+        content: "Assigned to";
+    }         	
 }
 
 .ticket-search {
     margin: 0px 0px 20px 0px;
 }
 
-.show-create-btn {
+.show-create-btn,
+.t-comment-btn,
+.c-btn,
+.cancel-btn,
+.cancel-c-btn,
+.create-task-btn,
+.create-user-btn,
+.users-btn {
     border-radius: 10px;
     padding: 6px 20px;
     color: #C2CAD2;
@@ -247,7 +262,8 @@ p.daily-tasks {
     font-size: 18px;
 }
 
-.search-btn {
+.search-btn, 
+.tasks-search-btn {
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
     border-color: #13233A;
@@ -257,26 +273,3 @@ p.daily-tasks {
     font-size: 18px;
     height: 36px;
 }
-
-
-
-
-
-/*.t-comment-btn {
-    border-radius: 8px;
-    border-color: #13233A;
-    padding: 6px 20px;
-    color: #C2CAD2;
-    background-color: #30363D;
-    font-size: 18px;  
-}
-.show-create-btn {
-    margin-left: 20px;
-}
-.search-btn {
-    margin-right: 20px;
-}
-.t-comment-btn {
-    margin-top: 15px;
-}
-*/

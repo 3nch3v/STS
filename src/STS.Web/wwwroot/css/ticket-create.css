@@ -1,49 +1,49 @@
-﻿.select-group {
+﻿.create-dialog,
+.comment-dialog {
+    margin: auto auto;
+    border-radius: 8px;
+    width: 800px;
+    color: #8B949E;
+    border: 1px solid #39A6FF;
+}
+
+.select-group {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: flex-start;
     align-items: start;
 }
 
-.p-select {
-    margin-right: 20px
+.create-form-wrapper,
+.comment-wrapper {
+    background-color: #0C0F15;
+    padding: 20px;
+}
+
+.c-form-btns {
+    display: flex;
+    justify-content: space-between;
 }
 
 .select-group div select,
 .t-tile input,
-.t-description textarea {
-    background-color: black;
-    color: white;
+.t-description textarea,
+.form-control.comment-ta {
+    background-color: #30363D;
+    color: #C2CAD2;
+    border-radius: 6px;
+    font-size: 18px;
+    border: 1px solid #39A6FF;
 }
 
 .select-group div select:focus,
 .t-tile input:focus,
 .t-description textarea:focus{
-    background-color: dimgrey;
-    color: white;
+    background-color: #2B3037;
+    color: #C2CAD2;
 }
 
-.create-dialog,
-.comment-dialog {
-    padding: 10px 5px;
-    background-color: #1E1E1E;
-    border-radius: 6px;
-    border-color: lightgoldenrodyellow;
-    color: white;
-    width: 600px;
-}
-
-.c-form-btns {
-    display: flex;
-    justify-content: space-between;  
-}
-
-.c-btn,
-.cancel-btn,
-.cancel-c-btn {
-    border-radius: 6px;
-    padding: 6px 20px;
-    color: white;
-    background-color: dimgrey;
-    font-weight: bold;
+.select-group div {
+    margin: 5px 20px;
 }

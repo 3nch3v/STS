@@ -150,17 +150,17 @@ namespace STS.Services
             return tasks;
         }
 
-        public IEnumerable<BaseTaskDto> GetSideBarTasks(string userId, bool isManager)
+        public IEnumerable<BaseTaskDto> GetSideBarTasks(string userId, bool isManager, int tasksCount)
         {
             var tasksQuery = dbContext.EmployeesTasks.AsQueryable();
 
             if (isManager)
             {
                 tasksQuery = tasksQuery
-                    .Where(task => task.ManagerId == userId)
-                    .AsQueryable();
+                   .Where(task => task.ManagerId == userId)
+                   .AsQueryable();
             }
-            else
+            else 
             {
                 tasksQuery = tasksQuery
                     .Where(task => task.EmployeeId == userId)
@@ -178,7 +178,7 @@ namespace STS.Services
                          PriorityName = task.Priority.Name,
                      })
                     .OrderBy(x => x.Deadline)
-                    .Take(TasksPerPage)
+                    .Take(tasksCount)
                     .ToList();
 
             return tasks;

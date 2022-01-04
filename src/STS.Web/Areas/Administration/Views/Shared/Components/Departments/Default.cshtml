@@ -1,15 +1,22 @@
 ﻿@using STS.Web.ViewModels.Admin;
 @model IEnumerable<DepartmentStatisticViewModel>;
 
-@foreach (var department in Model)
-{
-    <p>@department.Name -> @department.ActiveTicketsCount -> @department.EmployeesCount</p>
-    <p>Tasks: @department.ActiveTasksCount</p>
+<article class="departments-wrapper">
+    @foreach (var department in Model)
+    {
+        // make it as table
+        <section class="department-stat">
+            <p>@department.Name</p>
+            <p>Emplyees: @department.EmployeesCount</p>
+            <p>Active tickets: @department.ActiveTicketsCount</p>
+            <p>Tasks: @department.ActiveTasksCount</p>
+        </section>
 
-}
+    }
 
-<form method="post" asp-area="Administration" asp-controller="Administration" asp-action="CreateDepartment">
-    <label for="departmentName">Add new department:</label>
-    <input type="text" id="departmentName" name="departmentName" required>
-    <button type="submit">Create</button>
-</form>
+    <form method="post" asp-area="Administration" asp-controller="Administration" asp-action="CreateDepartment">
+        <label for="departmentName">New department:</label>
+        <input type="text" id="departmentName" name="departmentName" required>
+        <button type="submit">Create</button>
+    </form>
+</article>

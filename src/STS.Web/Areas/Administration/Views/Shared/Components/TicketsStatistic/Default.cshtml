@@ -1,12 +1,20 @@
 ﻿@model Dictionary<string, Dictionary<string, int>>;
 
-@foreach (var (status, kvp) in Model)
-{
-    <p>@status =></p>
-    <ul>
-        @foreach (var (department, count) in kvp)
-        {
-            <li>@department: @count</li>
-        }
-    </ul>
-}
+<article class="ticket-stat-wrapper">
+    @foreach (var (status, kvp) in Model.OrderByDescending(x => x.Value.Count()))
+    {
+        <section class="stat-status">
+            <div>
+                <p class="status @status.Replace(" ", "").ToLower()">@status</p>
+            </div>
+
+            @foreach (var (department, count) in kvp)
+            {
+                <div class="dep-count">
+                    <p class="dep-stat">@department: </p>
+                    <p class="t-count">@count</p>
+                </div>
+            }
+        </section>
+    }
+</article>
