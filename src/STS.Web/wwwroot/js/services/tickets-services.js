@@ -71,7 +71,7 @@ export function changeStatusIcon(statusName) {
 
 async function editTitle(event) {
     event.preventDefault();
-    const currTitle = document.querySelector('.ticket-title').textContent;
+    const currTitle = document.querySelector('.ticket-title').textContent.trim();
     renderTitle(currTitle, false, true);
 
     async function request() {
@@ -102,7 +102,7 @@ function titlePartialView(title, isTitleView, request, isInputValid) {
 
 async function editContent(event) {
     event.preventDefault();
-    const currContent = document.querySelector('.ticket-content').textContent;
+    const currContent = document.querySelector('.ticket-content').textContent.trim();
     renderContent(currContent, false, true);
 
     async function request() {

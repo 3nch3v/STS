@@ -20,9 +20,8 @@
                    name="keyword"
                    type="text"
                    required
-                   minlength=2 
-                   placeholder="Search..."
-            />
+                   minlength=2
+                   placeholder="Search..." />
             <button class="search-btn" type="submit">Search</button>
         </form>
     </section>
@@ -85,7 +84,6 @@
             <section class="ticket-details">
 
                 <section class="ticket-details-title">
-
                     <section class="tile-status-priority">
                         <span class="status @Model.StatusName.ToLower().Replace(" ", "")">@Model.StatusName</span>
                         <span class="priority @Model.PriorityName.ToLower().Replace(" ", "")">@Model.PriorityName</span>
@@ -103,8 +101,10 @@
                                 }
                             </p>
                         </section>
+                         <section class='t-title-section-edited'></section>
                     </section>
-                    <section class='t-title-section-edited'> </section>
+
+                   
                 </section>
 
                 <section class="ticket-body-section">
@@ -132,15 +132,8 @@
                     </div>
                     <div>
                         <p class="assigned-to-username">
-                            @if (Model.AssignedToUserName == null)
-                            {
-                                <span>unassigned</span>
-                            }
-                            else
-                            {
-                                <span>Assigned to </span>
-                                <span class="username">@Model.AssignedToUserName</span>
-                            }
+                            <span>@(Model.AssignedToUserName == null ? "unassigned" : "Assigned to")</span>
+                            <span class="username">@(Model.AssignedToUserName == null ? null : Model.AssignedToUserName)</span>
                         </p>
                     </div>
                 </section>

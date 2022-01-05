@@ -1,5 +1,6 @@
 ﻿.ticket-container,
-.comment-actions {
+.comment-actions,
+.task-info {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -22,7 +23,8 @@
 .ticket-details-title,
 .ticket-footer,
 .ticket-actions,
-.ticket-actions div {
+.ticket-actions div,
+.task-s-p-d {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -30,12 +32,15 @@
 }
 
 .ticket-details,
-.t-comment {   
+.t-comment,
+.task-details,
+.task-comments-wrapper {
     padding: 15px;
     padding-bottom: 0;
     border-radius: 8px;
     margin-bottom: 8px;
     background-color: #30363D;
+    color: #C2CAD2;
 }
 
 .ticket-actions {
@@ -46,8 +51,11 @@
     width: 100%;
     flex-grow: 1;
     flex-shrink: 1;
-    margin: 10px;
-    margin-top: 0px;
+}
+
+.t-title,
+.t-title p {
+    margin-bottom: 0;
 }
 
 .ticket-footer,
@@ -124,9 +132,42 @@
 }
 
 .t-title-section {
+    color: #C2CAD2;
     width: 80%;
 }
 
 .t-comment-btn {
     margin-bottom: 25px;
+}
+
+.form-control.title-edit-input,
+.form-control.content-edit-ta {
+    background-color: #0D1117;
+    color: #C2CAD2;
+    border-color: #30363D;
+}
+
+.err-msg {
+    color: red;
+}
+
+.form-control.content-edit-ta {
+    margin: 20px 0;
+}
+
+.ticket-content {
+    margin-bottom: 20px;
+}
+
+.t-title-section-edited{
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 80%;
+}
+
+.form-control.title-edit-input {
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 100%;
+    margin-bottom: 10px;
 }

@@ -10,6 +10,7 @@ using STS.Services.Contracts;
 using STS.Web.ViewModels.Tasks;
 
 using static STS.Common.GlobalConstants;
+using STS.Web.ViewModels.Common;
 
 namespace STS.Web.Controllers
 {
@@ -17,15 +18,18 @@ namespace STS.Web.Controllers
     {
         private readonly IMapper mapper;
         private readonly ITaskService taskService;
+        private readonly ICommonService commonService;
         private readonly UserManager<ApplicationUser> userManager;
 
         public TasksController(
             IMapper mapper, 
-            ITaskService taskService, 
+            ITaskService taskService,
+            ICommonService commonService,
             UserManager<ApplicationUser> userManager)
         {
             this.mapper = mapper;
             this.taskService = taskService;
+            this.commonService = commonService;
             this.userManager = userManager;
         }
 
@@ -57,6 +61,7 @@ namespace STS.Web.Controllers
             }
 
             var task = mapper.Map<TaskViewModel>(taskDto);
+            task.Statuses = mapper.Map<List<StatusViewModel>>(commonService.GetStatuses());
 
             return View(task);
         }

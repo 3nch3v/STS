@@ -1,8 +1,14 @@
 ﻿import { html, render } from '../node_modules/lit-html/lit-html.js';
 
-const titleTemplate = (content, isContentView, requestFunc, isInputValid, editTitle, rows) => html`
+const ticketContentTemplate = (content, isContentView, requestFunc, isInputValid, editContent, rows) => html`
     ${isContentView
-        ? html`<p class="ticket-content">${content}</p>`
+    ? html`<p class="ticket-content">${content}
+                ${isContentView
+                    ? html`<a @click="${editContent}" class="edit-t-content" href="javascript.void(0)">
+                                <i class="fa fa-edit"></i>
+                           </a>`
+            : null }
+          </p>`
         : html`<textarea
                     class="form-control content-edit-ta"
                     @blur="${requestFunc}"
@@ -13,27 +19,14 @@ const titleTemplate = (content, isContentView, requestFunc, isInputValid, editTi
 
     ${isInputValid
         ? null
-        : html`<p>Ticket content should be between 5 and 2000 characters.</p>`
+        : html`<p class="err-msg">Ticket content should be between 5 and 2000 characters.</p>`
     }
-
-${
-    isContentView
-        ? html`
-            <section class="edit-content-section">
-                <a @click="${editTitle}" class="edit-t-content-2" href="javascript.void(0)">
-                    <i class="fa fa-edit"></i>
-                </a>
-            </section>
-            `
-        : null
-}
-
 `;
 
-export default function getContentView(content, isContentView, requestFunc, isInputValid, editTitle) {
+export default function getContentView(content, isContentView, requestFunc, isInputValid, editContent) {
     const container = document.querySelector(".t-content-section-edited");
     const oldView = document.querySelector(".ticket-body-section");
     oldView.replaceChildren();
-    const rows = Math.round(content.length / 70);
-    render(titleTemplate(content, isContentView, requestFunc, isInputValid, editTitle, rows), container);
+    const rows = Math.round(content.length / 100);
+    render(ticketContentTemplate(content, isContentView, requestFunc, isInputValid, editContent, rows), container);
 };

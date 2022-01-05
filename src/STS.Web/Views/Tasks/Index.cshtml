@@ -4,35 +4,11 @@
 
 @{
     this.ViewData["Title"] = "My tasks";
+    this.ViewData["Keyword"] = @Model.Keyword;
 }
 
-<article class="tasks-wrapper">
-    <section class="tasks-side-bar-section">
-
-        <section class="search-task-section">
-            <form method="post" asp-controller="Tasks" asp-action="Index">
-                <div>
-                    <input name="keyword"
-                           type="text"
-                           value="@Model.Keyword"
-                           class="search-input-field">
-                </div>
-                <div>
-                    <input id="isActive"
-                           name="isActive"
-                           type="checkbox"
-                           value="true">
-                    <label class="checkbox-label" for="isActive"> Only active</label>
-                    <button type="submit" class="tasks-search-btn">Go</button>
-                </div>
-            </form>
-        </section>
-
-        <section class="expiring-side-bar">
-            <h5 class="expiring-title">Expiring tasks</h5>
-            <vc:tasks-side-bar is-manager=false tasks-count=TasksSideBarCount></vc:tasks-side-bar>
-        </section>
-    </section>
+<article class="tasks-wrapper"> 
+    <partial name="_TaskSideBar" view-data=this.ViewData />
 
     <section class="tasks-table-wrapper">
         <section class="tasks-table">
@@ -52,9 +28,9 @@
                     @foreach (var task in Model.Tasks)
                     {
                         <a class="tickets-table-row"
-                            asp-controller="Tasks"
-                            asp-action="Task"
-                            asp-route-id="@task.Id"
+                           asp-controller="Tasks"
+                           asp-action="Task"
+                           asp-route-id="@task.Id"
                         >
                             <div>@task.Id</div>
                             <div>
@@ -86,31 +62,31 @@
                         {
                             <li>
                                 <a asp-controller="Tasks"
-                           asp-action="Index"
-                           asp-route-page="@Model.PreviousPage"
-                           asp-route-isActive="@Model.OnlyActive"
-                           asp-route-keyword="@Model.Keyword">
-                                    Previous
+                                   asp-action="Index"
+                                   asp-route-page="@Model.PreviousPage"
+                                   asp-route-isActive="@Model.OnlyActive"
+                                   asp-route-keyword="@Model.Keyword">
+                                            Previous
                                 </a>
                             </li>
                             <li>
                                 <a asp-controller="Tasks"
-                           asp-action="Index"
-                           asp-route-page="@(Model.Page - 1)"
-                           asp-route-isActive="@Model.OnlyActive"
-                           asp-route-keyword="@Model.Keyword">
-                                    @(Model.Page - 1)
+                                   asp-action="Index"
+                                   asp-route-page="@(Model.Page - 1)"
+                                   asp-route-isActive="@Model.OnlyActive"
+                                   asp-route-keyword="@Model.Keyword">
+                                            @(Model.Page - 1)
                                 </a>
                             </li>
                         }
 
                         <li>
                             <a asp-controller="Tasks"
-                           asp-action="Index"
-                           asp-route-page="@Model.Page"
-                           asp-route-isActive="@Model.OnlyActive"
-                           asp-route-keyword="@Model.Keyword">
-                                @Model.Page
+                               asp-action="Index"
+                               asp-route-page="@Model.Page"
+                               asp-route-isActive="@Model.OnlyActive"
+                               asp-route-keyword="@Model.Keyword">
+                                    @Model.Page
                             </a>
                         </li>
 
@@ -118,20 +94,20 @@
                         {
                             <li>
                                 <a asp-controller="Tasks"
-                           asp-action="Index"
-                           asp-route-page="@(Model.Page + 1)"
-                           asp-route-isActive="@Model.OnlyActive"
-                           asp-route-keyword="@Model.Keyword">
-                                    @(Model.Page + 1)
+                                   asp-action="Index"
+                                   asp-route-page="@(Model.Page + 1)"
+                                   asp-route-isActive="@Model.OnlyActive"
+                                   asp-route-keyword="@Model.Keyword">
+                                            @(Model.Page + 1)
                                 </a>
                             </li>
                             <li>
                                 <a asp-controller="Tasks"
-                           asp-action="Index"
-                           asp-route-page="@Model.NextPage"
-                           asp-route-isActive="@Model.OnlyActive"
-                           asp-route-keyword="@Model.Keyword">
-                                    Next
+                                   asp-action="Index"
+                                   asp-route-page="@Model.NextPage"
+                                   asp-route-isActive="@Model.OnlyActive"
+                                   asp-route-keyword="@Model.Keyword">
+                                            Next
                                 </a>
                             </li>
                         }

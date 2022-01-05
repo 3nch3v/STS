@@ -1,23 +1,28 @@
 ﻿.tasks-wrapper,
 .m-tasks-wrapper,
-.admin-users-row {
-    margin: auto auto;
+.admin-users-row,
+.tasks-side-bar-section,
+.manager-search-form,
+.task-wrapper {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    flex-direction: row;
     align-items: start;
+}
+
+.tasks-wrapper,
+.m-tasks-wrapper,
+.admin-users-row,
+.task-wrapper {
+    margin: auto auto;
+    flex-direction: row;
     gap: 25px;
-    color: #39A6FF;
+    /*color: #39A6FF;*/
 }
 
 .tasks-side-bar-section,
 .manager-search-form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
     flex-direction: column;
-    align-items: start;
     gap: 10px;
 }
 
@@ -26,11 +31,14 @@
 }
 
 .tasks-wrapper,
-.m-tasks-wrapper {
+.m-tasks-wrapper,
+.task-wrapper {
     margin: 50px;
 }
 
-.tasks-table-wrapper {
+.tasks-table-wrapper,
+.task-details,
+.task-comments-wrapper {
     flex-shrink: 1;
     flex-grow: 1;
     flex-basis: 1px;
@@ -70,4 +78,8 @@
     .m-tasks-wrapper {
         margin: 0;
     }
+}
+
+.task-manager.username {
+    text-align: right;
 }

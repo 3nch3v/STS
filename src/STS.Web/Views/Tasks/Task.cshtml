@@ -1,18 +1,60 @@
 ﻿@using STS.Web.ViewModels.Tasks;
 @model TaskViewModel;
 
-<h1>Ticket details</h1>
-<p>@Model.Id</p>
-<h2>@Model.Title</h2>
-<p>@Model.Description</p>
-<p>@Model.Deadline</p>
-<p>@Model.StatusName</p>
-<p>@Model.PriorityName</p>
-<p>@Model.ManagerUserName</p>
-
-@foreach (var coment in Model.Comments)
-{
-    <p>--------------- Comment with Id @coment.Id</p>
-    <p>@coment.Content</p>
-    <p>@coment.UserUserName</p>
+@{
+    this.ViewData["Title"] = "Task details";
 }
+
+<article class="task-wrapper">
+
+    <partial name="_TaskSideBar" view-data=null />
+
+    <section class="task-details">
+        <section class="task-info">
+            <div class="task-s-p-d">
+                <p class="status @Model.StatusName.Replace(" ", "").ToLower()">@Model.StatusName</p>
+                <p class="priority @Model.PriorityName.Replace(" ", "").ToLower()">@Model.PriorityName</p>
+                <p class="deadline">@Model.Deadline</p>
+            </div>
+
+            <div>
+                <select class="task-status-select"
+                        asp-items="@Model.Statuses
+                                .Where(x => x.Name.ToLower() != Model.StatusName.ToLower())
+                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))"
+                        >
+                    <option selected="selected" value="@(Model.Statuses
+                                                            .Where(x => x.Name.ToLower() == Model.StatusName.ToLower())
+                                                            .Select(x => x.Id)
+                                                            .FirstOrDefault())">
+                        @Model.StatusName
+                    </option>
+                </select>
+            </div>
+        </section>
+
+        <h5>@Model.Title</h5>
+
+        <p>@Model.Description</p>
+
+        <p class="task-manager username">@Model.ManagerUserName</p>
+
+    </section>
+    <section class="task-comments-wrapper">
+        <h5>Comments:</h5>
+        @if (Model.Comments.Count() > 0)
+        {
+            @foreach (var coment in Model.Comments)
+            {
+                <p>--------------- Comment with Id @coment.Id</p>
+                <p>@coment.Content</p>
+                <p>@coment.UserUserName</p>
+            }
+        }
+        else
+        {
+            <p>No comments</p>
+        }
+    </section>
+</article>
+
