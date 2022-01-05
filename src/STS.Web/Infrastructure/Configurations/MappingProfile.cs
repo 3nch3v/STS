@@ -15,7 +15,7 @@ using STS.Web.ViewModels.Tasks;
 using STS.Web.ViewModels.Tickets;
 using STS.Web.ViewModels.User;
 
-namespace STS.Web.Configurations
+namespace STS.Web.Infrastructure.Configurations
 {
     public class MappingProfile : Profile
     {

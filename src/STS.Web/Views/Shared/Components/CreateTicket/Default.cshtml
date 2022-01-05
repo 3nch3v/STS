@@ -1,4 +1,5 @@
 ﻿@using STS.Web.ViewModels.Tickets
+@using static STS.Common.GlobalConstants;
 @model TicketInputModel
 
 <article class="create-form-wrapper">
@@ -10,6 +11,7 @@
                     class="form-control-sm" 
                     asp-for="PriorityId" 
                     asp-items="Model.Priorities.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"
+                    required
                 >
                     <option value="" selected="selected" >Please select</option>
                 </select>
@@ -21,6 +23,7 @@
                     class="form-control-sm" 
                     asp-for="DepartmentId" 
                     asp-items="Model.Departments.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"
+                    required
                 >
                     <option value="" selected="selected" >Please select</option>
                 </select>
@@ -29,13 +32,12 @@
         </section>
         <div class="form-group t-tile">
             <label asp-for="Title">Title</label>
-            <input asp-for="Title" class="form-control" required>
+            <input asp-for="Title" class="form-control" required  > @*minlength="@TitleMinLength" maxlength="@TitleMaxLength"*@
             <span asp-validation-for="Title" class="text-danger title-validation"></span>
-
         </div>
         <div class="form-group t-description">
             <label asp-for="Content">Description</label>
-            <textarea asp-for="Content" class="form-control" rows="10" required></textarea>
+            <textarea asp-for="Content" class="form-control" rows="10" required ></textarea> @*minlength="@CommentMinLength" maxlength="@ContentMaxLength"*@
             <span asp-validation-for="Content" class="text-danger"></span>
         </div>
         <div class="c-form-btns">

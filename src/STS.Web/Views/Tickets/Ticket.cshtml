@@ -1,4 +1,5 @@
 ﻿@using STS.Web.ViewModels.Tickets;
+@using static STS.Common.GlobalConstants;
 @model TicketViewModel;
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
@@ -19,7 +20,9 @@
                    name="keyword"
                    type="text"
                    required
-                   minlength=2 />
+                   minlength=2 
+                   placeholder="Search..."
+            />
             <button class="search-btn" type="submit">Search</button>
         </form>
     </section>
@@ -37,21 +40,21 @@
             <section class="ticket-actions">
                 <div>
                     <select class="t-status-select"
-                            asp-items="Model.Statuses
+                            asp-items="@Model.Statuses
                                 .Where(x => x.Name != Model.StatusName)
                                 .Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
                         <option selected="selected" value="@Model.StatusId">@Model.StatusName</option>
                     </select>
 
                     <select class="t-department-select"
-                            asp-items="Model.Departments
+                            asp-items="@Model.Departments
                                 .Where(x => x.Name != Model.DepartmentName)
                                 .Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
                         <option selected="selected" value="@Model.DepartmentId">@Model.DepartmentName</option>
                     </select>
 
                     <select class="t-employee-select"
-                            asp-items="Model.Employees
+                            asp-items="@Model.Employees
                                 .Where(x => x.UserName != Model.AssignedToUserName)
                                 .Select(x => new SelectListItem(x.UserName, x.Id))">
                         <option selected="selected" value="@Model.AssignedToId">@(Model.AssignedToUserName ?? "Select user")</option>
@@ -185,7 +188,7 @@
 
     <aside class="tasks-review">
         <p class="daily-tasks">Daily tasks</p>
-        <vc:tasks-side-bar is-manager=false></vc:tasks-side-bar>
+        <vc:tasks-side-bar is-manager=false tasks-count=TasksSideBarCount></vc:tasks-side-bar>
     </aside>
 
 </article>

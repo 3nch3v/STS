@@ -1,5 +1,6 @@
 ﻿.tasks-wrapper,
-.m-tasks-wrapper {
+.m-tasks-wrapper,
+.admin-users-row {
     margin: auto auto;
     display: flex;
     flex-wrap: wrap;

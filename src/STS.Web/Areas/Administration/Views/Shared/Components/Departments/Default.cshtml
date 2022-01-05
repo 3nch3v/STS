@@ -2,21 +2,32 @@
 @model IEnumerable<DepartmentStatisticViewModel>;
 
 <article class="departments-wrapper">
-    @foreach (var department in Model)
-    {
-        // make it as table
-        <section class="department-stat">
-            <p>@department.Name</p>
-            <p>Emplyees: @department.EmployeesCount</p>
-            <p>Active tickets: @department.ActiveTicketsCount</p>
-            <p>Tasks: @department.ActiveTasksCount</p>
+    <section class="depatments-table">
+        <section class="dep-table-head">
+            <div class="dep-name">Name</div>
+            <div class="">Emplyees</div>
+            <div class="">Active Tickets</div>
+            <div class="">Active Tasks</div>
         </section>
 
-    }
+        @foreach (var department in Model)
+        {
+            <section class="department-stat-row">
+                <div class="dep-name">@department.Name</div>
+                <div>
+                    <span class="dep-counts">@department.EmployeesCount</span>
+                </div>
+                <div>
+                    <span class="dep-counts">@department.ActiveTicketsCount</span>
+                </div>
+                <div><span class="dep-counts">@department.ActiveTasksCount</span></div>
+            </section>
+        }
+    </section>
 
     <form method="post" asp-area="Administration" asp-controller="Administration" asp-action="CreateDepartment">
-        <label for="departmentName">New department:</label>
-        <input type="text" id="departmentName" name="departmentName" required>
-        <button type="submit">Create</button>
+        <label class="create-dep-label" for="departmentName">New department:</label>
+        <input class="create-dep-input" type="text" id="departmentName" name="departmentName" required>
+        <button class="create-dep-btn" type="submit">Create</button>
     </form>
 </article>

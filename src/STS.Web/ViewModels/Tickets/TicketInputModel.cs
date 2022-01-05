@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+using STS.Web.Infrastructure.ValidationAttributes;
 using STS.Web.ViewModels.Common;
 
 using static STS.Common.GlobalConstants;
@@ -14,14 +15,15 @@ namespace STS.Web.ViewModels.Tickets
         public string Title { get; set; }
 
         [Required]
-        [StringLength(TitleMaxLength, MinimumLength = ContentMinLength)]
-        [MaxLength(ContentMaxLength)]
+        [StringLength(ContentMaxLength, MinimumLength = ContentMinLength)]
         public string Content { get; set; }
 
         public string AssignedToId { get; set; }
 
+        [PriorityId]
         public int PriorityId { get; set; }
 
+        [DepartmentId]
         public int DepartmentId { get; set; }
 
         public IEnumerable<PriorityViewModel> Priorities { get; set; }

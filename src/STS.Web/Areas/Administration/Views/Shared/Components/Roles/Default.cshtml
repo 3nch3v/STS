@@ -1,14 +1,18 @@
 ﻿@using STS.Web.ViewModels.Admin;
 @model IEnumerable<RoleViewModel>;
 
-@foreach (var role in Model)
-{
-    <p>@role.Id -> @role.Name </p>
+<article class="roles-wrapper">
+    @foreach (var role in Model)
+    {
+        <p>@role.Name </p>
 
-}
+    }
 
-<form method="post" asp-area="Administration" asp-controller="Administration" asp-action="CreateRole">
-    <label for="roleName">Add new role:</label>
-    <input type="text" id="roleName" name="roleName" required>
-    <button type="submit">Create</button>
-</form>
+    <form method="post" asp-area="Administration" asp-controller="Administration" asp-action="CreateRole">
+        <label class="create-dep-label" for="roleName">Add new role:</label>
+        <div>
+            <input class="create-dep-input" type="text" id="roleName" name="roleName" required>
+            <button class="create-dep-btn" type="submit">Create</button>
+        </div>
+    </form>
+</article>

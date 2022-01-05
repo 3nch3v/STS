@@ -36,7 +36,7 @@ async function assignToMe(event) {
     
     await editTicket(token, { id: ticketId, AssignedToId: myId });
 
-    changeTextContent('li .assigned-to-username', 'you');
+    changeTextContent('.assigned-to-username .username', 'you');
 }
 
 async function changeStatus() {
@@ -60,7 +60,7 @@ async function changeEmplyee() {
 
     await editTicket(token, { id: ticketId, assignedToId: assignToId });
 
-    changeTextContent('li .assigned-to-username', assignedToUsername);
+    changeTextContent('.assigned-to-username .username', assignedToUsername);
 }
 
 export function changeStatusIcon(statusName) {

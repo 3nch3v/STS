@@ -18,7 +18,7 @@ const isTitleValid = function () {
 
 const isContentValid = function () {
     return content.value.trim().length >= 5
-        && title.value.trim().length <= 2000;
+        && content.value.trim().length <= 2000;
 };
 
 function validateTicketInput(event) {
@@ -29,13 +29,19 @@ function validateTicketInput(event) {
             if (!titleWrapper.contains(titleError)) {
                 titleError = createErr('p', 'Ticket title should be between 2 and 100 characters.');
                 titleWrapper.appendChild(titleError);
-            }         
+            }
         }
-        if (isContentValid) {
+        else if (titleWrapper.contains(titleError)) {
+            titleWrapper.removeChild(titleError);
+        }
+
+        if (!isContentValid()) {
             if (!contentWrapper.contains(contentError)) {
                 contentError = createErr('p', 'Ticket content should be between 5 and 2000 characters.');
                 contentWrapper.appendChild(contentError);
             }    
+        } else if (contentWrapper.contains(contentError)) {
+            contentWrapper.removeChild(contentError);
         }
 
         return;

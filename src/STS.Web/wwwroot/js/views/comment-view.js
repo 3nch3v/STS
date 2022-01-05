@@ -9,7 +9,7 @@ export default function appendComment(token, comment) {
             <div class="comment-actions"> 
                 <div>
                     <span>
-                        From
+                        from
                         <span class="username">${comment.userUserName}</span>
                         on
                         <span class="date">${comment.createdOn}</span>
@@ -17,7 +17,7 @@ export default function appendComment(token, comment) {
                 </div>
                 <div>
                     <button
-                        class="c-del-btn"
+                        class="c-del-btn t-delete-btn"
                         title="Delete comment."
                         data-comment-id=${comment.id}
                         data-request-token=${token}

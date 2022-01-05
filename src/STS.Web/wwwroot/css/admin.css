@@ -7,6 +7,7 @@
     flex-wrap: wrap;
     align-items: start;
     gap: 20px;
+    justify-content: center;
 }
 
 .admin-user-section {
@@ -30,7 +31,8 @@
 
 .ticket-stat-wrapper,
 .admin-user-section,
-.admin-dep-section {
+.admin-dep-section, 
+.admin-roles-section {
     padding: 15px;
 }
 
@@ -45,7 +47,8 @@
 }
 
 .stat-status,
-.departments-wrapper {
+.departments-wrapper,
+.roles-wrapper {
     padding: 15px;
     background-color: #30363D;
     border-radius: 8px;
@@ -60,7 +63,8 @@
 .t-stat-title,
 .admin-greeting,
 .user-title,
-.dep-title {
+.dep-title, 
+.roles-wrapper {
     text-align: center;
     color: #C2CAD2;
 }
@@ -72,6 +76,61 @@
 
 .admin-greeting,
 .create-user-btn,
-.dep-title {
+.dep-title, 
+.t-stat-title {
     margin-bottom: 15px;
+}
+
+.depatments-table {
+    display: table;
+    margin-bottom: 25px;
+}
+
+.department-stat-row,
+.dep-table-head{
+    display: table-row;
+}
+
+.department-stat-row div,
+.dep-table-head div{
+    display: table-cell;
+    padding: 10px;
+}
+
+.dep-name {
+    border-right: 2px solid black;
+}
+
+.dep-counts {
+    padding: 8px 12px 8px 11px;
+}
+
+.dep-table-head,
+.create-dep-label {
+    color: #8B949E;
+}
+
+.create-dep-input {
+    background-color: black;
+    color: #C2CAD2;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+    border-color: #30363D;
+    padding: 6px;
+}
+
+.create-dep-btn {
+    border-radius: 10px;
+    padding: 6px 20px;
+    color: #C2CAD2;
+    background-color: black;
+    border-color: #30363D;
+    font-size: 18px;
+}
+
+.roles-wrapper form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: start;
 }

@@ -52,7 +52,8 @@
     color: #39A6FF;
 }
 
-.t-count {
+.t-count,
+.dep-counts {
     margin-left: 10px;
     border-radius: 50%;
     width: 36px;
