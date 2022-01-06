@@ -63,12 +63,6 @@ async function changeEmplyee() {
     changeTextContent('.assigned-to-username .username', assignedToUsername);
 }
 
-export function changeStatusIcon(statusName) {
-    status.classList.remove(...status.classList);
-    status.classList.add('status', statusName.toLowerCase().replace(/\s/g, ''));
-    status.textContent = statusName;
-}
-
 async function editTitle(event) {
     event.preventDefault();
     const currTitle = document.querySelector('.ticket-title').textContent.trim();
@@ -94,10 +88,6 @@ async function editTitle(event) {
     function renderTitle(title, isTitleView, isInputValid) {
         titlePartialView(title, isTitleView, request, isInputValid)
     }
-}
-
-function titlePartialView(title, isTitleView, request, isInputValid) {
-    getTitleView(title, isTitleView, request, isInputValid, editTitle);
 }
 
 async function editContent(event) {
@@ -127,10 +117,20 @@ async function editContent(event) {
     }
 }
 
+function titlePartialView(title, isTitleView, request, isInputValid) {
+    getTitleView(title, isTitleView, request, isInputValid, editTitle);
+}
+
 function contentPatialView(content, isTitleView, request, isInputValid) {
     getContentView(content, isTitleView, request, isInputValid, editContent);
 }
 
 function changeTextContent(element, value) {
     document.querySelector(element).textContent = `Assigned to ${value}`;
+}
+
+export function changeStatusIcon(statusName) {
+    status.classList.remove(...status.classList);
+    status.classList.add('status', statusName.toLowerCase().replace(/\s/g, ''));
+    status.textContent = statusName;
 }

@@ -1,15 +1,20 @@
-﻿@using STS.Web.ViewModels.Tasks;
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@using STS.Web.ViewModels.Tasks;
+
 @model TaskViewModel;
 
 @{
     this.ViewData["Title"] = "Task details";
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 <article class="task-wrapper">
 
     <partial name="_TaskSideBar" view-data=null />
 
-    <section class="task-details">
+    <section class="task-details" data-task-id="@Model.Id" data-request-token="@requestToken">
+
         <section class="task-info">
             <div class="task-s-p-d">
                 <p class="status @Model.StatusName.Replace(" ", "").ToLower()">@Model.StatusName</p>
@@ -21,12 +26,12 @@
                 <select class="task-status-select"
                         asp-items="@Model.Statuses
                                 .Where(x => x.Name.ToLower() != Model.StatusName.ToLower())
-                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))"
-                        >
-                    <option selected="selected" value="@(Model.Statuses
-                                                            .Where(x => x.Name.ToLower() == Model.StatusName.ToLower())
-                                                            .Select(x => x.Id)
-                                                            .FirstOrDefault())">
+                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
+                    <option class="status pending"
+                            selected="selected" value="@(Model.Statuses
+                                                                   .Where(x => x.Name.ToLower() == Model.StatusName.ToLower())
+                                                                   .Select(x => x.Id)
+                                                                   .FirstOrDefault())">
                         @Model.StatusName
                     </option>
                 </select>
@@ -34,27 +39,45 @@
         </section>
 
         <h5>@Model.Title</h5>
-
         <p>@Model.Description</p>
-
-        <p class="task-manager username">@Model.ManagerUserName</p>
+        <p class="task-manager username"><span class="from-user">from</span> @Model.ManagerUserName</p>
 
     </section>
     <section class="task-comments-wrapper">
-        <h5>Comments:</h5>
+        <section class="comments">
+            <h5>Comments:</h5>
         @if (Model.Comments.Count() > 0)
         {
             @foreach (var coment in Model.Comments)
             {
-                <p>--------------- Comment with Id @coment.Id</p>
-                <p>@coment.Content</p>
-                <p>@coment.UserUserName</p>
+                <section class="task-comment" data-task-Id="@coment.Id">
+                    <p class="task-content">@coment.Content</p>
+                    <p class="task-manager username comment"><span class="from-user">from</span> @coment.UserUserName</p>
+                </section>
             }
         }
         else
         {
             <p>No comments</p>
         }
+        </section>
+
+        <section class="task-comment-form-wrapper">
+            <form method="post" class="task-comment-form">
+                <div>
+                    <textarea for="content"
+                          name="comment"
+                          class="form-control comment-task-ta"
+                          rows="1"
+                          required></textarea>
+                <p class="comment-validation text-danger"></p>
+                </div>
+                <button type="button" class="c-btn task-btn">Post</button>
+            </form>
+        </section>
     </section>
 </article>
 
+@section Scripts{
+<script type="module" src="~/js/services/tasks-services.js"></script>
+}

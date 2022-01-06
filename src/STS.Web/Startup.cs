@@ -65,6 +65,8 @@ namespace STS.Web
             services.AddTransient<ITaskService, TaskService>();
             services.AddTransient<ICommonService, CommonService>();
             services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<IReplayTaskService, ReplayTaskService>();
+
             services.AddTransient<IEmailSender, NullMessageSender>();
         }
 

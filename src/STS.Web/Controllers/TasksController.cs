@@ -8,9 +8,9 @@ using AutoMapper;
 using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tasks;
+using STS.Web.ViewModels.Common;
 
 using static STS.Common.GlobalConstants;
-using STS.Web.ViewModels.Common;
 
 namespace STS.Web.Controllers
 {

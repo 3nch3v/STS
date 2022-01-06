@@ -11,6 +11,8 @@ namespace STS.Services.Contracts
 
         TaskDto GetById(int id);
 
+        Task<TaskDto> EditAsync<T>(T task);
+
         Task CreateAsync<T>(string userId, T task);
 
         Task DeleteAsync(int id);

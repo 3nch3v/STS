@@ -64,8 +64,8 @@ namespace STS.Services
             var ticket = mapper.Map<Ticket>(ticketDto);
             ticket.EmployeeId = userId;
             ticket.StatusId = commonService.GetStatusId("Open");
-            await dbContext.Tickets.AddAsync(ticket);
 
+            await dbContext.Tickets.AddAsync(ticket);
             await dbContext.SaveChangesAsync();
         }
 
@@ -108,6 +108,7 @@ namespace STS.Services
 
             await dbContext.SaveChangesAsync();
             var result = GetById(ticketId);
+
             return result;
         }
 

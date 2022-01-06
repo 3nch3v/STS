@@ -1,7 +1,9 @@
-﻿@using STS.Web.ViewModels.Tickets;
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@using STS.Web.ViewModels.Tickets;
 @using static STS.Common.GlobalConstants;
+
 @model TicketViewModel;
-@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
 @{
     ViewData["Title"] = Model.Title;

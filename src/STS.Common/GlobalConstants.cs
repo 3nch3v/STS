@@ -26,6 +26,8 @@
 
         public const int TaskDescriptionMaxLength = 1000;
 
+        public const int ReplyTaskContentMinLength = 2;
+
         public const int ReplyTaskContentMaxLength = 1000;
 
         public const int StatusNameMaxLength = 20;

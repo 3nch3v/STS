@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+using STS.Web.Infrastructure.ValidationAttributes;
 using STS.Web.ViewModels.Common;
 using STS.Web.ViewModels.User;
 
@@ -21,6 +22,7 @@ namespace STS.Web.ViewModels.Tasks
 
         public DateTime Deadline { get; set; }
 
+        [PriorityId]
         public int PriorityId { get; set; }
 
         [Required]

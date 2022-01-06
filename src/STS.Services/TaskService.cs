@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -68,6 +69,53 @@ namespace STS.Services
 
             await dbContext.EmployeesTasks.AddAsync(task);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<TaskDto> EditAsync<T>(T taskInput)
+        {
+            var taskDto = mapper.Map<TaskEditDto>(taskInput);
+            var task = dbContext.EmployeesTasks.FirstOrDefault(x => x.Id == taskDto.Id);
+
+            if (taskDto.Title != null 
+                && task.Title != taskDto.Title)
+            {
+                task.Title = taskDto.Title;
+            }
+
+            if (taskDto.Description != null
+                && task.Description != taskDto.Description)
+            {
+                task.Description = taskDto.Description;
+            }
+
+            if (taskDto.PriorityId != null
+                && task.PriorityId != taskDto.PriorityId)
+            {
+                task.PriorityId = (int)taskDto.PriorityId;
+            }
+
+            if (taskDto.StatusId != null
+              && task.StatusId != taskDto.StatusId)
+            {
+                task.StatusId = (int)taskDto.StatusId;
+            }
+
+            if (taskDto.EmployeeId != null
+              && task.EmployeeId != taskDto.EmployeeId)
+            {
+                task.EmployeeId = taskDto.EmployeeId;
+            }
+
+            if (taskDto.Deadline != null
+                && (DateTime.Compare((DateTime)taskDto.Deadline, task.Deadline) != 0))
+            {
+                task.Deadline = (DateTime)taskDto.Deadline;
+            }
+
+            await dbContext.SaveChangesAsync();
+
+            var result = GetById(task.Id);
+            return result;
         }
 
         public async Task DeleteAsync(int id)

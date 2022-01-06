@@ -49,7 +49,7 @@ namespace STS.Web.Controllers
             {
                 return StatusCode(
                    StatusCodes.Status422UnprocessableEntity,
-                   "Comment could not be updated.");
+                   "Ticket could not be updated.");
             }
 
             try
@@ -62,7 +62,7 @@ namespace STS.Web.Controllers
             {
                 return StatusCode(
                    StatusCodes.Status500InternalServerError,
-                   "Comment could not be updated.");
+                   "Ticket could not be updated.");
             }
         }
 
