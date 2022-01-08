@@ -15,7 +15,6 @@ namespace STS.Services
     {
         private const string statusClosed = "Closed";
         private const string statusSolved = "Solved";
-
         private readonly ApplicationDbContext dbContext;
 
         public CommonService(ApplicationDbContext dbContext)

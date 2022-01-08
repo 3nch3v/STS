@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Identity;
-
 using AutoMapper;
 
 using STS.Data;
@@ -12,10 +10,14 @@ using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Data.Dtos.User;
 
+using static STS.Common.GlobalConstants;
+
 namespace STS.Services
 {
     public class AdminService : IAdminService
     {
+        private int usersCount = 0;
+
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
@@ -32,6 +34,8 @@ namespace STS.Services
             this.roleManager = roleManager;
             this.dbContext = dbContext;
         }
+
+        public int GetUsersCount() => usersCount;
 
         public async Task CreateDepartmentAsync(string departmentName)
         {
@@ -65,7 +69,7 @@ namespace STS.Services
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
                 Position = userDto.Position,
-                UserName = userDto.Email,
+                UserName = userDto.UserName,
                 Email = userDto.Email,
                 DepartmentId = userDto.DepartmentId,
                 PhoneNumber = userDto.PhoneNumber,
@@ -89,11 +93,20 @@ namespace STS.Services
         public async Task EditUserAsync<T>(T userInput)
         {
             var userDto = mapper.Map<UserEditDto>(userInput);
-            var user = GetUserById(userDto.Id);
+            var user = await userManager.FindByIdAsync(userDto.Id);
+
+            if (user.Email != userDto.Email)
+            {
+                user.Email = userDto.Email;
+                user.NormalizedEmail = userDto.Email;
+                await userManager.UpdateAsync(user);
+            }
 
             if (user.UserName != userDto.UserName)
             {
                 user.UserName = userDto.UserName;
+                user.NormalizedUserName = userDto.UserName;
+                await userManager.UpdateAsync(user);
             }
 
             if (user.FirstName != userDto.FirstName)
@@ -104,11 +117,6 @@ namespace STS.Services
             if (user.LastName != userDto.LastName)
             {
                 user.LastName = userDto.LastName;
-            }
-
-            if (user.Email != userDto.Email)
-            {
-                user.Email = userDto.Email;
             }
 
             if (user.Position != userDto.Position)
@@ -142,35 +150,10 @@ namespace STS.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserDto>> GetUsersAsync(int page, int usersPerPage, string searchTerm)
+        public async Task ChangePasswordAsync(string userId, string currPassword, string newPassword) 
         {
-            Func<ApplicationUser, bool> filter = GetUsersFilter(searchTerm.Trim());
-
-            var users = dbContext.Users
-                .Where(filter)
-                .Select(u => new UserDto
-                {
-                    Id = u.Id,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Email = u.Email,
-                    UserName = u.UserName,
-                    Position = u.Position,
-                    PhoneNumber = u.PhoneNumber,
-                    DepartmentId = u.DepartmentId,
-                    DepartmentName = u.Department.Name,
-                })
-                .Skip((page - 1) * usersPerPage)
-                .Take(usersPerPage)
-                .ToList();
-
-            foreach (var user in users)
-            {
-                var currUser = await userManager.FindByIdAsync(user.Id);
-                user.Roles = await userManager.GetRolesAsync(currUser);
-            }
-
-            return users;
+            var user = await userManager.FindByIdAsync(userId);
+            await userManager.ChangePasswordAsync(user, currPassword, newPassword);
         }
 
         public async Task<IEnumerable<string>> GetUserRolesAsync(string id)
@@ -191,23 +174,54 @@ namespace STS.Services
             return dbContext.Users.FirstOrDefault(x => x.Id == id);
         }
 
-        private Func<ApplicationUser, bool> GetUsersFilter(string searchTerm)
+        public async Task<IEnumerable<UserDto>> GetUsersAsync(int page, string searchTerm, int? departmentId)
         {
-            if (searchTerm.ToLower() == "all" || searchTerm.ToLower() == "")
+            var usersQuery = dbContext.Users.AsQueryable();
+
+            if (departmentId != null)
             {
-                Func<ApplicationUser, bool> all = user => user.IsDeleted == false;
-                return all;
+                usersQuery = usersQuery
+                    .Where(user => user.DepartmentId == departmentId)
+                    .AsQueryable(); ;
             }
 
-            Func<ApplicationUser, bool> searchFilter = user
-                => user.Email.ToLower() == searchTerm.ToLower()
-                || user.UserName == searchTerm.ToLower()
-                || user.Department.Name.ToLower() == searchTerm.ToLower()
-                || user.FirstName.ToLower() == searchTerm.ToLower()
-                || user.LastName.ToLower() == searchTerm.ToLower()
-                || user.FirstName.ToLower() + ' ' + user.LastName.ToLower() == searchTerm.ToLower();
+            if (searchTerm != null)
+            {
+                usersQuery = usersQuery.Where(user => user.Email.ToLower() == searchTerm.ToLower()
+                                           || user.UserName == searchTerm.ToLower()
+                                           || user.Department.Name.ToLower() == searchTerm.ToLower()
+                                           || user.FirstName.ToLower() == searchTerm.ToLower()
+                                           || user.LastName.ToLower() == searchTerm.ToLower()
+                                           || user.FirstName.ToLower() + ' ' + user.LastName.ToLower() == searchTerm.ToLower()
+                                           || user.Position.ToLower() == searchTerm.ToLower());
+            }
 
-            return searchFilter;
+            usersCount = usersQuery.Count();
+
+            var users = usersQuery
+                .Select(u => new UserDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    UserName = u.UserName,
+                    Position = u.Position,
+                    PhoneNumber = u.PhoneNumber,
+                    DepartmentId = u.DepartmentId,
+                    DepartmentName = u.Department.Name,
+                })
+                .Skip((page - 1) * UsersPerPage)
+                .Take(UsersPerPage)
+                .ToList();
+
+            foreach (var user in users)
+            {
+                var currUser = await userManager.FindByIdAsync(user.Id);
+                user.Roles = await userManager.GetRolesAsync(currUser);
+            }
+
+            return users;
         }
     }
 }

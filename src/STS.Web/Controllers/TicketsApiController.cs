@@ -1,11 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-
 using AutoMapper;
 
 using STS.Data.Models;
@@ -14,8 +11,10 @@ using STS.Web.ViewModels.Tickets;
 
 namespace STS.Web.Controllers
 {
+
     [Route("api/Tickets")]
     [ApiController]
+    [Authorize]
     public class TicketsApiController : ControllerBase
     {
         private readonly ITicketService ticketService;
@@ -33,7 +32,6 @@ namespace STS.Web.Controllers
         }
 
         [HttpPut]
-        [Authorize]
         public async Task<ActionResult<TicketViewModel>> Edit([FromBody] TicketEditModel ticketDto)
         {
             var ticket = ticketService.GetById(ticketDto.Id);
@@ -43,51 +41,17 @@ namespace STS.Web.Controllers
                 return NotFound();
             }
 
-            var userId = userManager.GetUserId(User);
+            var currUserId = userManager.GetUserId(User);
 
-            if (!isRequestValid(ticketDto, userId, ticket.EmployeeId)) 
+            if (ticket.EmployeeId != currUserId) 
             {
-                return StatusCode(
-                   StatusCodes.Status422UnprocessableEntity,
-                   "Ticket could not be updated.");
+                return Unauthorized();
             }
 
-            try
-            {
-                var result = await ticketService.EditAsync(ticketDto.Id, ticketDto);
-                var response = mapper.Map<TicketViewModel>(result);
-                return Ok(response);
-            }
-            catch(Exception)
-            {
-                return StatusCode(
-                   StatusCodes.Status500InternalServerError,
-                   "Ticket could not be updated.");
-            }
-        }
+            var result = await ticketService.EditAsync(ticketDto.Id, ticketDto);
+            var response = mapper.Map<TicketViewModel>(result);
 
-        private bool isRequestValid(TicketEditModel ticketDto, string userId, string ticketEmployeeId)
-        {
-            if (userId == null ||
-                ((ticketDto.Title != null || ticketDto.Content != null)
-                  && ticketEmployeeId != userId))
-            {
-                return false;
-            }
-
-            if (ticketDto.Title != null && 
-                (ticketDto.Title.Length < 2 || ticketDto.Title.Length > 100))
-            {
-                return false;
-            }
-
-            if (ticketDto.Content != null &&
-               (ticketDto.Content.Length < 5 || ticketDto.Content.Length > 2000))
-            {
-                return false;
-            }
-
-            return true;
+            return Ok(response);
         }
     }
 }

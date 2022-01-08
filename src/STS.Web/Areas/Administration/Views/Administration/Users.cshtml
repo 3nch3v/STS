@@ -1,12 +1,139 @@
 ﻿@using STS.Web.ViewModels.User;
 @model UsersViewModel;
 
-
-@foreach (var user in Model.Users)
-{
-    <p>@user.FullName // @user.Email @user.UserName @user.DepartmentName @user.Position @user.PhoneNumber @string.Join(", ", user.Roles)</p>
+@{
+    ViewData["Title"] = "Users";
 }
 
-@*you have pagination*@
+<article class="admin-users">
+    <section class="user-search-section">
+        <form method="get" asp-area="Administration" asp-controller="Administration" asp-action="Users" class="manager-search-form">
+            <div>
+                <input name="keyword"
+                       type="text"
+                       value="@(Model.Keyword != null ? Model.Keyword : null)"
+                       class="search-input-field"
+                       placeholder="Search...">
+            </div>
 
-   <a asp-area="Administartion" asp-controller="Administration" asp-action="EditUser" asp-route-id="422e95e2-1708-477b-ac56-376a7f3f329e">Edit user</a>
+            <div class="p-select">
+                <select class="form-control-sm t-employee-select"
+                        for="DepartmentId"
+                        name="DepartmentId"
+                        asp-items="Model.Departments.Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
+                    <option value="" selected="selected">Please select</option>
+                </select>
+
+                <button class="tasks-search-btn" type="submit">Go</button>
+            </div>  
+        </form>
+    </section>
+
+    <section class="users-table">
+        <header class="users-talbe-header">
+            <div>Username</div>
+            <div>Email</div>
+            <div>Full Name</div>
+            <div>Department</div>
+            <div>Position</div>
+            <div>Roles</div>
+            <div>Phone Number</div>
+            <div></div>
+        </header>
+
+        @foreach (var user in Model.Users)
+        {
+            <div class="user-row">
+                <div>@user.UserName</div>
+                <div>@user.Email</div>
+                <div>@user.FullName</div>
+                <div>@user.DepartmentName</div>
+                <div>@user.Position</div>
+                <div>@string.Join(", ", user.Roles)</div>
+                <div>@user.PhoneNumber</div>
+                <div>
+                    <a class="user-edit-btn" asp-area="Administartion" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a asp-area="Administartion" asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@user.Id">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+        }
+    </section>
+    <section class="pagination">
+            @if (Model.PagesCount > 1)
+            {
+                <nav class="page-nav">
+                    <ul class="page-nav-list">
+
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li>
+                                <a asp-area="Administartion"
+                                   asp-controller="Administration"
+                                   asp-action="Users"
+                                   asp-route-page="@Model.PreviousPage"
+                                   asp-route-keyword="@Model.Keyword"
+                                   asp-route-departmentId="@Model.DepartmentId"
+                                >
+                                            Previous
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="Administartion"
+                                   asp-controller="Administration"
+                                   asp-action="Users"
+                                   asp-route-page="@(Model.Page - 1)"
+                                   asp-route-keyword="@Model.Keyword"
+                                   asp-route-departmentId="@Model.DepartmentId"
+                                >
+                                            @(Model.Page - 1)
+                                </a>
+                            </li>
+                        }
+
+                        <li>
+                            <a asp-area="Administartion"
+                               asp-controller="Administration"
+                               asp-action="Users"
+                               asp-route-page="@Model.Page"
+                               asp-route-keyword="@Model.Keyword"
+                               asp-route-departmentId="@Model.DepartmentId"
+                            >
+                                    @Model.Page
+                            </a>
+                        </li>
+
+                        @if (Model.HasNextPage)
+                        {
+                            <li>
+                                <a asp-area="Administartion"
+                                   asp-controller="Administration"
+                                   asp-action="Users"
+                                   asp-route-page="@(Model.Page + 1)"
+                                   asp-route-keyword="@Model.Keyword"
+                                   asp-route-departmentId="@Model.DepartmentId"
+                                >
+                                            @(Model.Page + 1)
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-area="Administartion"
+                                   asp-controller="Administration"
+                                   asp-action="Users"
+                                   asp-route-page="@Model.NextPage"
+                                   asp-route-keyword="@Model.Keyword"
+                                   asp-route-departmentId="@Model.DepartmentId"
+                                >
+                                            Next
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </nav>
+            }
+        </section>
+</article>

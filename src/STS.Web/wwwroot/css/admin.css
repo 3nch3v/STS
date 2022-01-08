@@ -15,10 +15,10 @@
     flex-direction: column;
 }
 
-.admin-user-section a:hover {
-    text-decoration: none;
-    color: #39A6FF;
-}
+    .admin-user-section a:hover {
+        text-decoration: none;
+        color: #39A6FF;
+    }
 
 .admin-stat-section,
 .dep-count,
@@ -31,7 +31,7 @@
 
 .ticket-stat-wrapper,
 .admin-user-section,
-.admin-dep-section, 
+.admin-dep-section,
 .admin-roles-section {
     padding: 15px;
 }
@@ -63,7 +63,7 @@
 .t-stat-title,
 .admin-greeting,
 .user-title,
-.dep-title, 
+.dep-title,
 .roles-wrapper {
     text-align: center;
     color: #C2CAD2;
@@ -76,7 +76,7 @@
 
 .admin-greeting,
 .create-user-btn,
-.dep-title, 
+.dep-title,
 .t-stat-title {
     margin-bottom: 15px;
 }
@@ -87,12 +87,12 @@
 }
 
 .department-stat-row,
-.dep-table-head{
+.dep-table-head {
     display: table-row;
 }
 
 .department-stat-row div,
-.dep-table-head div{
+.dep-table-head div {
     display: table-cell;
     padding: 10px;
 }
@@ -133,4 +133,99 @@
     flex-direction: column;
     flex-wrap: wrap;
     align-items: start;
+}
+
+.create-user-form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: start;
+    gap: 20px;
+    color: #C2CAD2;
+    padding: 20px;
+    margin: 30px auto 80px auto;
+    border: 1px solid #39A6FF;
+    border-radius: 8px;
+    background-color: black;
+    max-width: 400px;
+}
+
+.user-select-group div {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.inputs-div,
+.inputs-div div {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.inputs-div {
+    width: 100%;
+    margin: auto;
+}
+
+.inputs-div input {
+    color: #C2CAD2;
+    border-radius: 6px;
+    background-color: #30363D;
+    height: 32px;
+}
+
+.inputs-div input:focus {
+    color: #C2CAD2;
+}
+
+.user-select-group div select {
+    background-color: #30363D;
+    color: #C2CAD2;
+    border-radius: 6px;
+    font-size: 18px;
+    border: 1px solid #39A6FF;
+    padding: 5px;
+}
+
+.users-table {
+    color: #8B949E;
+    font-weight: bold;
+}
+
+.users-table .user-row:nth-child(odd) {
+    background: #30363D;
+}
+
+.user-row {
+    color: #C2CAD2;
+}
+
+.users-talbe-header div {
+    border-bottom: 2px solid #58A6FF;
+}
+
+.admin-users {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    justify-content: center;
+    margin: auto;
+}
+
+.user-search-section {
+    margin-top: 50px;
+}
+.user-search-section form {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    margin: auto;
+}
+
+.user-edit-btn {
+    margin-right: 10px;
 }

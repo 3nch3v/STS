@@ -101,20 +101,25 @@
 }
 
 .tickets-table,
-.task-vc-table {
+.task-vc-table,
+.users-table {
     display: table;
     border-collapse: collapse;
 }
 
 .tickets-table-row,
 .tickets-table-header,
-.tasks-vc-row {
+.tasks-vc-row,
+.users-talbe-header,
+.user-row {
     display: table-row;
 }
 
 .tickets-table-header div,
 .tickets-table-row div,
-.tasks-vc-row div {
+.tasks-vc-row div,
+.user-row div,
+.users-talbe-header div{
     display: table-cell;
     padding: 8px;
 }

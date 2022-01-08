@@ -1,9 +1,7 @@
-﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
-
-@using STS.Web.ViewModels.Tickets;
+﻿@using STS.Web.ViewModels.Tickets;
 @using static STS.Common.GlobalConstants;
-
 @model TicketViewModel;
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
 @{
     ViewData["Title"] = Model.Title;
@@ -65,18 +63,20 @@
                     @if (Model.AssignedToId != Model.LoggedInUserId)
                     {
                         <a href="javascript.void(0)"
-                       type="button"
-                       class="assign-to-me-btn"
-                       data-my-id="@Model.LoggedInUserId">
+                           type="button"
+                           class="assign-to-me-btn"
+                           data-my-id="@Model.LoggedInUserId"
+                        >
                             Assign to me
                         </a>
                     }
                     @if (Model.IsOwner)
                     {
                         <a asp-controller="Tickets"
-                       asp-action="Delete"
-                       asp-route-id="@Model.Id"
-                       class="t-delete-btn">
+                           asp-action="Delete"
+                           asp-route-id="@Model.Id"
+                           class="t-delete-btn"
+                        >
                             <i class="fa fa-trash fa-lg"></i>
                         </a>
                     }
@@ -172,8 +172,6 @@
                     </div>
                 </section>
             }
-
-
         </section>
 
         <section class="t-comment-btn-section">

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-
+using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 
 using STS.Services.Contracts;
@@ -14,6 +11,7 @@ namespace STS.Web.Controllers
 {
     [Route("api/tasks")]
     [ApiController]
+    [Authorize]
     public class TasksApiController : ControllerBase
     {
         private readonly ITaskService taskServie;
@@ -28,9 +26,13 @@ namespace STS.Web.Controllers
         }
 
         [HttpPut]
-        [Authorize]
         public async Task<ActionResult<TaskViewModel>> Edit([FromBody] TaskEditModel taskDto)
         {
+            if (!ModelState.IsValid)
+            { 
+                return BadRequest();
+            }
+
             var task = taskServie.GetById(taskDto.Id);
 
             if (task == null)
@@ -38,19 +40,10 @@ namespace STS.Web.Controllers
                 return NotFound();
             }
 
-            try
-            {
-                var result = await taskServie.EditAsync(taskDto);
-                var response = mapper.Map<TaskViewModel>(result);
+            var result = await taskServie.EditAsync(taskDto);
+            var response = mapper.Map<TaskViewModel>(result);
 
-                return Ok(response);
-            }
-            catch (Exception)
-            {
-                return StatusCode(
-                   StatusCodes.Status500InternalServerError,
-                   "Comment could not be updated.");
-            }
+            return Ok(response);
         }
     }
 }

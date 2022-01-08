@@ -19,7 +19,7 @@
         @if (User.IsInRole(AdministratorRoleName) || User.IsInRole(ManagerRoleName))
         {
             <li class="nav-item">
-                <a class="nav-link text-white" asp-area="Administration" asp-controller="Management" asp-action="Index">Management</a>
+                <a class="nav-link text-white" asp-area="" asp-controller="Tasks" asp-action="Management">Management</a>
             </li>
         }
         @if (User.IsInRole(AdministratorRoleName))

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 using AutoMapper;
 
 using STS.Data.Models;
@@ -16,6 +13,7 @@ namespace STS.Web.Controllers
 {
     [Route("api/replay")]
     [ApiController]
+    [Authorize]
     public class ReplayTaskApiController : ControllerBase
     {
         private readonly ITaskService taskServie;
@@ -35,9 +33,13 @@ namespace STS.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> Replay([FromBody] ReplayTaskInputModel replay)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var task = taskServie.GetById(replay.EmployeeTaskId);
 
             if (task == null)
@@ -45,20 +47,11 @@ namespace STS.Web.Controllers
                 return NotFound();
             }
 
-            try
-            {
-                var userId = userManager.GetUserId(User);
-                var result = await replayTaskService.ReplayTaskAsync(userId, replay);
-                var response = mapper.Map<ReplayTaskViewModel>(result);
+            var userId = userManager.GetUserId(User);
+            var result = await replayTaskService.ReplayTaskAsync(userId, replay);
+            var response = mapper.Map<ReplayTaskViewModel>(result);
 
-                return Ok(response);
-            }
-            catch (Exception)
-            {
-                return StatusCode(
-                   StatusCodes.Status500InternalServerError,
-                   "Comment could not be updated.");
-            }
+            return Ok(response);
         }
     }
 }

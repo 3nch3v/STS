@@ -4,6 +4,8 @@ namespace STS.Data.Dtos.Task
 {
     public class TaskDto : TaskListingDto
     {
+        public string ManagerId { get; set; }
+
         public string EmployeeId { get; set; }
 
         public string Description { get; set; }

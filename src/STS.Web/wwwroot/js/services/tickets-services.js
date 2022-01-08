@@ -126,7 +126,7 @@ function contentPatialView(content, isTitleView, request, isInputValid) {
 }
 
 function changeTextContent(element, value) {
-    document.querySelector(element).textContent = `Assigned to ${value}`;
+    document.querySelector(element).textContent = value;
 }
 
 export function changeStatusIcon(statusName) {

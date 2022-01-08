@@ -1,0 +1,30 @@
+﻿@using STS.Web.ViewModels.Tasks;
+@model ManagerTaskSearchViewModel;
+
+<section class="search-task-section">
+    <form method="post" asp-controller="Tasks" asp-action="Management" class="manager-search-form">
+        <div>
+            <input name="keyword"
+                   type="text"
+                   value="@Model.Keyword"
+                   class="search-input-field"
+                   placeholder="Search...">
+        </div>
+        <div class="p-select">
+            <select class="form-control-sm t-employee-select"
+                    for="EmployeeId"
+                    name="EmployeeId"
+                    asp-items="Model.Employees.Select(t => new SelectListItem(t.UserName, t.Id))">
+                <option value="" selected="selected">Select employee</option>
+            </select>
+        </div>
+        <div class="checkbox-btn-div">
+            <input id="isActive"
+                   name="isActive"
+                   type="checkbox"
+                   value="true">
+            <label class="checkbox-label" for="isActive"> Only active</label>
+            <button class="tasks-search-btn" type="submit">Go</button>
+        </div>
+    </form>
+</section>

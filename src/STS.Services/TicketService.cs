@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using STS.Data;
-using STS.Data.Dtos;
 using STS.Data.Dtos.Ticket;
 using STS.Data.Models;
 using STS.Services.Contracts;

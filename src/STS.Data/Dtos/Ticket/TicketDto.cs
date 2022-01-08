@@ -1,4 +1,4 @@
-﻿namespace STS.Data.Dtos
+﻿namespace STS.Data.Dtos.Ticket
 {
     public class TicketDto
     {

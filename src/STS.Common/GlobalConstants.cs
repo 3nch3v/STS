@@ -44,7 +44,7 @@
 
         public const int TicketsPerPage = 15;
 
-        public const int UsersPerPage = 12;
+        public const int UsersPerPage = 10;
 
         public const int DefaultPageNumber = 1;
 
@@ -59,6 +59,10 @@
         public const string EmployeeRoleName = "Employee";
 
         public const string ManagerRoleName = "Manager";
+
+        public const string EmailErrorMsg = "Email already exist";
+
+        public const string UsernameErrorMsg = "UserName already exist";
 
         public static class ErrorMessage
         {

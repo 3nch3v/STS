@@ -25,7 +25,15 @@ async function changeStatus() {
 async function replayTask() {
     const commentInput = document.querySelector('.comment-task-ta');
     const tasksComments = document.querySelector('.comments');
+    const errMsg = document.querySelector('.replay-validation');
     const comment = commentInput.value.trim();
+
+    if (comment.length < 2 || comment.length > 1000) {
+        errMsg.textContent = 'Task replay should be between 2 and 1000 characters.';
+        return;
+    } else {
+        errMsg.textContent = '';
+    }
 
     const token = taskData.dataset.requestToken;
     const taskId = taskData.dataset.taskId;

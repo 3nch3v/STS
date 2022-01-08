@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +11,7 @@ using STS.Web.ViewModels.Comment;
 
 namespace STS.Web.Controllers
 {
+    [Authorize]
     [Route("api/Comments")]
     [ApiController]
     public class CommentsApiController : ControllerBase
@@ -35,7 +34,6 @@ namespace STS.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult<CommentViewModel>> Create([FromBody] CommentInputModel comment)
         {
             if (!ModelState.IsValid)
@@ -43,56 +41,38 @@ namespace STS.Web.Controllers
                 return BadRequest();
             }
 
-            try
+            var user = await userManager.GetUserAsync(User);
+            var result = await commentService.CreateAsync(comment, user.Id);
+
+            if (comment.sendEmail)
             {
-                var user = await userManager.GetUserAsync(User);
-                var result = await commentService.CreateAsync(comment, user.Id);
-
-                if (comment.sendEmail)
-                {
-                    await SendEmail(comment, user);
-                }
-
-                var commentDto = new CommentViewModel
-                {
-                    Id = result.Id,
-                    Content = result.Content,
-                    CreatedOn = result.CreatedOn.ToString(),
-                    UserUserName = user.UserName,
-                };
-
-                return commentDto;
+                await SendEmail(comment, user);
             }
-            catch (Exception)
+
+            var commentDto = new CommentViewModel
             {
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    "Comment could not be created.");
-            }
+                Id = result.Id,
+                Content = result.Content,
+                CreatedOn = result.CreatedOn.ToString(),
+                UserUserName = user.UserName,
+            };
+
+            return commentDto;
         }
 
         [HttpDelete("{id:int}")]
-        [Authorize]
         public async Task<ActionResult<bool>> Delete(int id)
         {
             var comment = commentService.GetById(id);
 
             if (comment == null)
             {
-                return NotFound("Comment with the given id was not found");
+                return NotFound();
             }
 
-            try
-            {
-                var result = await commentService.DeleteAsync(id);
-                return Ok(result);
-            }
-            catch(Exception)
-            {
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError, 
-                    "Comment could not be deleted.");
-            }
+            var result = await commentService.DeleteAsync(id);
+
+            return Ok(result);
         }
         private async Task SendEmail(CommentInputModel comment, ApplicationUser user)
         {

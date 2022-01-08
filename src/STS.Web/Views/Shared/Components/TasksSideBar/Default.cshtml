@@ -1,22 +1,29 @@
 ﻿@using STS.Web.ViewModels.Tasks;
 @model TasksSideBarViewModel;
 
-@if (Model.Tasks.Count() > 0)
-{
-    <article class="task-vc-table">
-        @foreach (var task in Model.Tasks)
-        {
-            <a class="tasks-vc-row" asp-controller="Tasks" asp-action="Task" asp-route-id="@task.Id">
-                <div>
-                    <span class="priority @task.PriorityName.ToLower()">@task.PriorityName</span>
-                </div>
-                <div title="@task.Title">@(task.Title.Length < 15 ? task.Title : $"{task.Title.Substring(0, 15)}...")</div>
-                <div>@task.Deadline.ToString("MM/dd/yy")</div>
-            </a>
-        }
-    </article>
-}
-else
-{
-    <p class="no-task">No expiring tasks.</p>
-}
+<section class="expiring-side-bar">
+    <h5 class="expiring-title">Expiring tasks</h5>
+
+    @if (Model.Tasks.Count() > 0)
+    {
+        <article class="task-vc-table">
+            @foreach (var task in Model.Tasks)
+            {
+                <a class="tasks-vc-row" asp-controller="Tasks" asp-action="Task" asp-route-id="@task.Id">
+                    <div>
+                        <span class="priority @task.PriorityName.ToLower()">@task.PriorityName</span>
+                    </div>
+                    <div title="@task.Title">@(task.Title.Length < 15 
+                                                    ? task.Title 
+                                                    : $"{task.Title.Substring(0, 15)}...")
+                    </div>
+                    <div>@task.Deadline.ToString("MM/dd/yy")</div>
+                </a>
+            }
+        </article>
+    }
+    else
+    {
+        <p class="no-task">No expiring tasks.</p>
+    }
+</section>

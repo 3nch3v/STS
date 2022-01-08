@@ -11,20 +11,23 @@ namespace STS.Web.Infrastructure.ValidationAttributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var commonService = (ICommonService)validationContext.GetService(typeof(ICommonService));
-
             if (value != null)
             {
+                var commonService = (ICommonService)validationContext.GetService(typeof(ICommonService));
+
                 int id;
-                var isInt = int.TryParse(value.ToString(), out id);
+                var successfullyParsed = int.TryParse(value.ToString(), out id);
 
-                var statuses = commonService.GetStatuses()
-                    .Select(x => x.Id)
-                    .ToArray();
-
-                if (!statuses.Contains(id))
+                if (successfullyParsed)
                 {
-                    return new ValidationResult(this.GetErrorMessage);
+                    var statuses = commonService.GetStatuses()
+                        .Select(x => x.Id)
+                        .ToArray();
+
+                    if (!statuses.Contains(id))
+                    {
+                        return new ValidationResult(this.GetErrorMessage);
+                    }
                 }
             }
 

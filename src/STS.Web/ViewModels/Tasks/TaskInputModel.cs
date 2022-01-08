@@ -20,6 +20,7 @@ namespace STS.Web.ViewModels.Tasks
         [StringLength(TaskDescriptionMaxLength, MinimumLength = TaskDescriptionMinLength)]
         public string Description { get; set; }
 
+        [Deadline]
         public DateTime Deadline { get; set; }
 
         [PriorityId]

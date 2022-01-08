@@ -47,8 +47,10 @@ namespace STS.Services
                     Deadline = x.Deadline,
                     StatusName = x.Status.Name,
                     PriorityName = x.Priority.Name,
+                    ManagerId = x.ManagerId,
                     ManagerUserName = x.Manager.UserName,
                     EmployeeId = x.EmployeeId,
+                    EmployeeUserName = x.Employee.UserName,
                     Comments = x.Comments
                         .Select(c => new ReplayTaskDto
                         {

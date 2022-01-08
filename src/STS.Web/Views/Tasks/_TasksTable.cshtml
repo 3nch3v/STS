@@ -1,0 +1,50 @@
+﻿@{
+    bool isManager = User.IsInRole(AdministratorRoleName) || User.IsInRole(ManagerRoleName);
+    var actionKvp = this.Context.Request.RouteValues.FirstOrDefault(x => x.Key == "action");
+    var isManagementAction = actionKvp.Value.ToString() == "Management";
+}
+
+<section class="tasks-table">
+    @if (Model.TasksCount > 0)
+    {
+        <div class="tickets-table">
+
+            <header class="tickets-table-header">
+                <div class="table-task-number">Task</div>
+                <div class="table-status">Status</div>
+                <div class="table-priority">Prioriry</div>
+                <div class="table-t-title">Title</div>
+                <div class="table-assigned-to">Employee</div>
+                <div class="task-deadline">Deadline</div>
+            </header>
+
+            @foreach (var task in Model.Tasks)
+            {
+                <a class="tickets-table-row"
+                   asp-controller="Tasks"
+                   asp-action="Task"
+                   asp-route-id="@task.Id"
+                >
+                    <div>@task.Id</div>
+                    <div>
+                        <span class="status @task.StatusName.ToLower().Replace(" ", "")">@task.StatusName</span>
+                    </div>
+                    <div>
+                        <span class="priority @task.PriorityName.ToLower().Replace(" ", "")">@task.PriorityName</span>
+                    </div>
+                    <div class="table-t-title">@task.Title</div>
+                    <div>
+                        @(isManager && isManagementAction 
+                            ? task.EmployeeUserName 
+                            : task.ManagerUserName) 
+                    </div>
+                    <div>@task.Deadline.ToString("dd/MM/yy hh:MM")</div>
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <p>Take a Coffee. You have no pendding tasks.</p>
+    }
+</section>

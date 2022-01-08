@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+using STS.Web.Infrastructure.ValidationAttributes;
 using STS.Web.ViewModels.Admin;
 using STS.Web.ViewModels.Common;
 
@@ -34,6 +35,7 @@ namespace STS.Web.ViewModels.User
         [Required]
         public string Role { get; set; }
 
+        [DepartmentId]
         public int DepartmentId { get; set; }
 
         public string PhoneNumber { get; set; }

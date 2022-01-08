@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 
-using STS.Data.Dtos;
 using STS.Data.Dtos.Department;
 using STS.Data.Dtos.Role;
 using STS.Data.Dtos.Task;

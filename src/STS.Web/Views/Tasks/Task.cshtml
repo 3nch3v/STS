@@ -1,19 +1,64 @@
-﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
-
+﻿@using System.Security.Claims;
 @using STS.Web.ViewModels.Tasks;
-
 @model TaskViewModel;
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
 @{
     this.ViewData["Title"] = "Task details";
     var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+    bool isManager = User.IsInRole(AdministratorRoleName) || User.IsInRole(ManagerRoleName);
+    string currUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+    bool isOwnTask = Model.ManagerId == currUserId;
 }
 
 <article class="task-wrapper">
-
     <partial name="_TaskSideBar" view-data=null />
 
     <section class="task-details" data-task-id="@Model.Id" data-request-token="@requestToken">
+        <section class="task-actions">
+            <div>
+                <select class="task-status-select"
+                        asp-items="@Model.Statuses
+                                .Where(x => x.Name.ToLower() != Model.StatusName.ToLower())
+                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
+                    <option class="status pending"
+                            selected="selected"
+                            value="@(Model.Statuses
+                                          .Where(x => x.Name.ToLower() == Model.StatusName.ToLower())
+                                          .Select(x => x.Id)
+                                          .FirstOrDefault())">
+                        @Model.StatusName
+                    </option>
+                </select>
+
+                @if (isManager && isOwnTask)
+                {
+                    <select class="t-employee-select"
+                        asp-items="@Model.Employees
+                                .Where(x => x.UserName != Model.EmployeeUserName)
+                                .Select(x => new SelectListItem(x.UserName, x.Id))">
+                        <option selected="selected"
+                            value="@(Model.Employees
+                                            .FirstOrDefault(x => x.UserName == Model.EmployeeUserName)
+                                            .Id)">
+                            @Model.EmployeeUserName
+                        </option>
+                    </select>
+                }
+            </div>
+            @if (isManager && isOwnTask)
+            {
+                <div>
+                    <a asp-controller="Tasks"
+                       asp-action="Delete"
+                       asp-route-id="@Model.Id"
+                       class="t-delete-btn"
+                    >
+                        <i class="fa fa-trash fa-lg"></i>
+                    </a>
+                </div>
+            }
+        </section>
 
         <section class="task-info">
             <div class="task-s-p-d">
@@ -21,61 +66,15 @@
                 <p class="priority @Model.PriorityName.Replace(" ", "").ToLower()">@Model.PriorityName</p>
                 <p class="deadline">@Model.Deadline</p>
             </div>
-
-            <div>
-                <select class="task-status-select"
-                        asp-items="@Model.Statuses
-                                .Where(x => x.Name.ToLower() != Model.StatusName.ToLower())
-                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
-                    <option class="status pending"
-                            selected="selected" value="@(Model.Statuses
-                                                                   .Where(x => x.Name.ToLower() == Model.StatusName.ToLower())
-                                                                   .Select(x => x.Id)
-                                                                   .FirstOrDefault())">
-                        @Model.StatusName
-                    </option>
-                </select>
-            </div>
-        </section>
-
-        <h5>@Model.Title</h5>
-        <p>@Model.Description</p>
-        <p class="task-manager username"><span class="from-user">from</span> @Model.ManagerUserName</p>
-
-    </section>
-    <section class="task-comments-wrapper">
-        <section class="comments">
-            <h5>Comments:</h5>
-        @if (Model.Comments.Count() > 0)
-        {
-            @foreach (var coment in Model.Comments)
-            {
-                <section class="task-comment" data-task-Id="@coment.Id">
-                    <p class="task-content">@coment.Content</p>
-                    <p class="task-manager username comment"><span class="from-user">from</span> @coment.UserUserName</p>
-                </section>
-            }
-        }
-        else
-        {
-            <p>No comments</p>
-        }
-        </section>
-
-        <section class="task-comment-form-wrapper">
-            <form method="post" class="task-comment-form">
-                <div>
-                    <textarea for="content"
-                          name="comment"
-                          class="form-control comment-task-ta"
-                          rows="1"
-                          required></textarea>
-                <p class="comment-validation text-danger"></p>
-                </div>
-                <button type="button" class="c-btn task-btn">Post</button>
-            </form>
+            <section>
+                <h5>@Model.Title</h5>
+                <p>@Model.Description</p>
+                <p class="task-manager username"><span class="from-user">from</span> @Model.ManagerUserName</p>
+            </section>
         </section>
     </section>
+
+    <partial name="_TaskComments" model="Model"></partial>
 </article>
 
 @section Scripts{

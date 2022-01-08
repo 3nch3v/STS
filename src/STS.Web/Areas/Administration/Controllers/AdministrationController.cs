@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-
 using AutoMapper;
 
 using STS.Data.Models;
@@ -94,6 +93,8 @@ namespace STS.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUser(UserEditModel userInput)
         {
+            await ValidateEmailAndUserName(userInput);
+
             if (!ModelState.IsValid)
             {
                 var (departments, roles) = GetDepartmentsAndRoles();
@@ -134,28 +135,34 @@ namespace STS.Web.Areas.Administration.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> DeleteUser(string userId)
+        [Route("/[controller]/DeleteUser/{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
         {
-            var user = adminService.GetUserById(userId);
+            var user = adminService.GetUserById(id);
 
             if (user == null)
             {
                 return BadRequest();
             }
 
-            await adminService.DeleteUserAsync(userId);
+            await adminService.DeleteUserAsync(id);
 
             return RedirectToAction(nameof(Users));
         }
 
         [Route("/[controller]/Users")]
-        public async Task<IActionResult> Users(string searchTerm = "all", int page = DefaultPageNumber)
+        public async Task<IActionResult> Users(int? departmentId, string keyword, int page = DefaultPageNumber)
         {
-            var users = await adminService.GetUsersAsync(page, UsersPerPage, searchTerm);
+            var users = await adminService.GetUsersAsync(page, keyword, departmentId);
 
             var usersDtos = new UsersViewModel
             {
+                Page = page,
+                Keyword = keyword,
+                DepartmentId = departmentId,
+                UsersCount = adminService.GetUsersCount(),
                 Users = mapper.Map<IEnumerable<UserViewModel>>(users),
+                Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartmentsBase()),
             };
 
             return View(usersDtos);
@@ -169,6 +176,24 @@ namespace STS.Web.Areas.Administration.Controllers
             var roles = mapper.Map<IEnumerable<RoleViewModel>>(rolesDtos);
 
             return (departments, roles);
+        }
+
+        private async Task ValidateEmailAndUserName(UserEditModel userInput)
+        {
+            var existingEmail = await userManager.FindByEmailAsync(userInput.Email);
+            var existingUserName = await userManager.FindByNameAsync(userInput.UserName);
+
+            if (existingEmail != null
+                && existingEmail.Id != userInput.Id)
+            {
+                ModelState.AddModelError("Email", EmailErrorMsg); ;
+            }
+
+            if (existingUserName != null
+                && existingUserName.Id != userInput.Id)
+            {
+                ModelState.AddModelError("UserName", UsernameErrorMsg);
+            }
         }
     }
 }

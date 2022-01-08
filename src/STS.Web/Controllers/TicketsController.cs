@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-
 using AutoMapper;
 
 using STS.Data.Models;
@@ -18,6 +16,7 @@ using static STS.Common.GlobalConstants;
 
 namespace STS.Web.Controllers
 {
+    [Authorize]
     public class TicketsController : Controller
     {
         private readonly ITicketService ticketService;
@@ -41,7 +40,6 @@ namespace STS.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult Ticket(int id)
         {
             var ticket = ticketService.GetById(id);
@@ -64,7 +62,6 @@ namespace STS.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult Tickets(string keyword, int page = DefaultPageNumber)
         {
             this.TempData["keyword"] = keyword;
@@ -82,24 +79,19 @@ namespace STS.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Create(TicketInputModel ticket)
         {
             if(!ModelState.IsValid)
             {
-                return StatusCode(
-                  StatusCodes.Status422UnprocessableEntity,
-                  "Invalid input data.");
+                return BadRequest();
             }
 
             var userId = userManager.GetUserId(User);
-
             await ticketService.CreateAsync(userId, ticket);
 
             return RedirectToAction(nameof(Tickets));
         }
 
-        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var ticket = ticketService.GetById(id);

@@ -4,7 +4,8 @@
 .tasks-side-bar-section,
 .manager-search-form,
 .task-wrapper,
-.task-comment-form {
+.task-comment-form,
+.task-actions {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -77,7 +78,7 @@
 
 .task-manager.username {
     text-align: right;
-    margin-bottom: 0px;
+    margin-bottom: 10px;
 }
 
 .task-manager.username.comment {
@@ -90,7 +91,7 @@
 }
 
 .task-status-select {
-    background-color: black;
+    background-color: #30363D;
     color: #C2CAD2;
     padding: 4px 10px;
     border-radius: 6px;

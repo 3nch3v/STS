@@ -1,6 +1,5 @@
 ﻿.ticket-container,
-.comment-actions,
-.task-info {
+.comment-actions {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -33,14 +32,24 @@
 
 .ticket-details,
 .t-comment,
+.task-comments-wrapper,
 .task-details,
-.task-comments-wrapper {
+.task-info {
     padding: 15px;
     padding-bottom: 0;
     border-radius: 8px;
     margin-bottom: 8px;
     background-color: #30363D;
     color: #C2CAD2;
+}
+
+.task-details {
+    background-color: black;
+    padding: 15px;
+}
+
+.task-info {
+    margin-top: 10px;
 }
 
 .ticket-actions {
