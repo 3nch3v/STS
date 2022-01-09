@@ -22,7 +22,7 @@ const titleTemplate = (title, isTitleView, requestFunc, isInputValid, editTitle)
     }
     ${isInputValid
         ? null
-        : html`<p>Title should be between 2 and 100 characters.</p>`
+        : html`<p class="text-danger">Title should be between 2 and 100 characters.</p>`
     }
 `;
 

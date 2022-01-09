@@ -21,7 +21,7 @@
                         asp-items="@Model.Statuses
                                 .Where(x => x.Name.ToLower() != Model.StatusName.ToLower())
                                 .Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
-                    <option class="status pending"
+                    <option class="status"
                             selected="selected"
                             value="@(Model.Statuses
                                           .Where(x => x.Name.ToLower() == Model.StatusName.ToLower())
@@ -37,12 +37,7 @@
                         asp-items="@Model.Employees
                                 .Where(x => x.UserName != Model.EmployeeUserName)
                                 .Select(x => new SelectListItem(x.UserName, x.Id))">
-                        <option selected="selected"
-                            value="@(Model.Employees
-                                            .FirstOrDefault(x => x.UserName == Model.EmployeeUserName)
-                                            .Id)">
-                            @Model.EmployeeUserName
-                        </option>
+                        <option selected="selected" value="@Model.EmployeeId">@Model.EmployeeUserName</option>
                     </select>
                 }
             </div>

@@ -144,3 +144,38 @@
         margin-bottom: 10px;
     }
 }
+
+.create-task-dialog {
+    margin: auto;
+}
+
+.expiring-side-bar {
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #010409;
+}
+
+.m-panel-wrapper {
+    background-color: #010409;
+}
+
+.create-task-btn.management {
+    border-radius: 8px;
+    margin: 15px 0 0 20px;
+}
+
+input[type="datetime-local"] {
+    background-color: #30363D;
+    color: #C2CAD2;
+    border: 1px solid #39A6FF;
+}
+
+input[type="datetime-local"]:focus {
+    background-color: #2B3037;
+    color: #C2CAD2;
+}
+
+.create-form-wrapper {
+    font-weight: bold;
+    color: #8B949E;
+}

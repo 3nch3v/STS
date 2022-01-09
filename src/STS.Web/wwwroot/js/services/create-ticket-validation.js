@@ -1,81 +1,49 @@
-﻿const createTicketForm = document.querySelector('.create-form-wrapper form');
-const title = createTicketForm.querySelector('input#Title');
-const content = createTicketForm.querySelector('textarea#Content');
-const titleWrapper = createTicketForm.querySelector('div.t-tile');
-const contentWrapper = createTicketForm.querySelector('div.t-description');
+﻿const titleErr = document.querySelector('.title-err');
+const descriptionErr = document.querySelector('.description-err');
+const createTicketForm = document.querySelector('.create-form-wrapper form');
 const dialogCancelBtn = document.querySelector('.cancel-btn');
+const titleInput = document.querySelector('.t-tile input');
+const descriptionInput = document.querySelector('.t-description textarea');
 
-createTicketForm.addEventListener('submit', validateTicketInput)
-dialogCancelBtn.addEventListener('click', clearErrors);
+dialogCancelBtn.addEventListener('click', clearForm);
+createTicketForm.addEventListener('submit', validateTask);
 
-let titleError = null;
-let contentError = null;
 
-const isTitleValid = function () {
-    return title.value.trim().length >= 2
-        && title.value.trim().length <= 100;
-};
+function validateTask(event) {
+    const title = titleInput.value.trim();
+    const description = descriptionInput.value.trim();
 
-const isContentValid = function () {
-    return content.value.trim().length >= 5
-        && content.value.trim().length <= 2000;
-};
+    const isTitleValid = title.length >= 2 && title.length <= 100;
+    const isDescriptionValid = description.length >= 5 && description.length <= 2000;
 
-function validateTicketInput(event) {
-    if (!isTitleValid() || !isContentValid()) {
+    if (!isTitleValid || !isDescriptionValid) {
+
         event.preventDefault();
 
-        if (!isTitleValid()) {
-            if (!titleWrapper.contains(titleError)) {
-                titleError = createErr('p', 'Ticket title should be between 2 and 100 characters.');
-                titleWrapper.appendChild(titleError);
-            }
+        if (!isTitleValid) {
+            titleErr.textContent = 'Title length should be between 2 and 100 characters.';
+        } else {
+            titleErr.textContent = '';
         }
-        else if (titleWrapper.contains(titleError)) {
-            titleWrapper.removeChild(titleError);
-        }
-
-        if (!isContentValid()) {
-            if (!contentWrapper.contains(contentError)) {
-                contentError = createErr('p', 'Ticket content should be between 5 and 2000 characters.');
-                contentWrapper.appendChild(contentError);
-            }    
-        } else if (contentWrapper.contains(contentError)) {
-            contentWrapper.removeChild(contentError);
+        if (!isDescriptionValid) {
+            descriptionErr.textContent = 'Description length should be between 5 and 2000 characters.';
+        } else {
+            descriptionErr.textContent = '';
         }
 
-        return;
+    } else {
+        clearErrors();
     }
 }
 
 function clearErrors() {
-    clearTitleError();
-    clearContentError();
+    titleErr.textContent = '';
+    descriptionErr.textContent = '';
 }
 
-function clearTitleError() {
-    if (titleError) {
-        titleWrapper.removeChild(titleError);
-        titleError = null;
-    }
-
-    title.value = '';
+function clearForm() {
+    clearErrors();
+    titleInput.value = '';
+    descriptionInput.value = '';
 }
 
-function clearContentError() {
-    if (contentError) {
-        contentWrapper.removeChild(contentError);
-        contentError = null;
-    }
-
-    content.value = '';
-}
-
-function createErr(element, message) {
-    const errorElement = document.createElement(element);
-    errorElement.style.color = 'red';
-    errorElement.textContent = message;
-    errorElement.classList.add('p-err-msg');
-
-    return errorElement;
-}

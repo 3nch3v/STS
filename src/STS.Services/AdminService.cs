@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -161,10 +162,41 @@ namespace STS.Services
             return await userManager.GetRolesAsync(GetUserById(id));
         }
 
+        public async Task LockoutUserAsync(string userId)
+        {
+            var user = GetUserById(userId);
+            await userManager.SetLockoutEnabledAsync(user, true);
+            var lockoutEnd = DateTime.Now.AddYears(100);
+            await userManager.SetLockoutEndDateAsync(user, lockoutEnd);
+            await userManager.UpdateAsync(user);
+        }
+
+        public async Task UnlockUserAsync(string userId)
+        {
+            var user = GetUserById(userId);
+            await userManager.SetLockoutEndDateAsync(user, DateTime.Now);
+            await userManager.UpdateAsync(user);  
+        }
+
         public async Task DeleteUserAsync(string userId)
         {
             var user = GetUserById(userId);
+
             user.IsDeleted = true;
+
+            var tasks = dbContext.EmployeesTasks
+                .Where(task => task.EmployeeId == userId)
+                .ToList();
+
+            tasks.ForEach(task => task.IsDeleted = true);
+
+            var replaiesTasks = dbContext.RepliesTasks
+               .Where(task => task.UserId == userId)
+               .ToList();
+
+            replaiesTasks.ForEach(task => task.IsDeleted = true);
+
+            //TODO Do someyhing with the tickets ?!
 
             await dbContext.SaveChangesAsync();
         }
@@ -219,6 +251,7 @@ namespace STS.Services
             {
                 var currUser = await userManager.FindByIdAsync(user.Id);
                 user.Roles = await userManager.GetRolesAsync(currUser);
+                user.IsLockedOut = await userManager.IsLockedOutAsync(currUser);
             }
 
             return users;

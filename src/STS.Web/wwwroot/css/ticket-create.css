@@ -17,6 +17,7 @@
 
 .create-form-wrapper,
 .comment-wrapper {
+    border: 1px solid #39A6FF;
     background-color: #0C0F15;
     padding: 20px;
 }

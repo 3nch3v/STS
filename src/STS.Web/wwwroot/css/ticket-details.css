@@ -165,6 +165,7 @@
 }
 
 .ticket-content {
+    margin-top: 10px;
     margin-bottom: 20px;
 }
 
@@ -179,4 +180,12 @@
     flex-shrink: 1;
     width: 100%;
     margin-bottom: 10px;
+}
+
+.task-manager.username.comment {
+    margin-bottom: 0;
+}
+
+.task-manager.username {
+    padding-bottom: 10px;
 }

@@ -135,6 +135,36 @@ namespace STS.Web.Areas.Administration.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Route("/[controller]/LockoutUser/{id}")]
+        public async Task<IActionResult> LockoutUser(string id)
+        {
+            var user = adminService.GetUserById(id);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            await adminService.LockoutUserAsync(id);
+
+            return RedirectToAction(nameof(Users));
+        }
+
+        [Route("/[controller]/UnlockUser/{id}")]
+        public async Task<IActionResult> UnlockUser(string id)
+        {
+            var user = adminService.GetUserById(id);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            await adminService.UnlockUserAsync(id);
+
+            return RedirectToAction(nameof(Users));
+        }
+
         [Route("/[controller]/DeleteUser/{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {

@@ -7,10 +7,12 @@
 
 <article class="m-tasks-wrapper">
     <section class="tasks-side-bar-section">
-        <section>
-            <button class="create-task-btn" title="Create a new task...">New Task</button>
-        </section>
-        <vc:management-task-search keyword="@Model.Keyword" manager-id="@Model.ManagerId"></vc:management-task-search>
+        <div class="m-panel-wrapper"> 
+            <section>
+                <button class="create-task-btn management" title="Create a new task...">New Task</button>
+            </section>
+            <vc:management-task-search keyword="@Model.Keyword" manager-id="@Model.ManagerId"></vc:management-task-search>
+        </div>
         <vc:tasks-side-bar is-manager=true tasks-count=TasksSideBarCount></vc:tasks-side-bar>
     </section>
 
@@ -28,21 +30,19 @@
                         {
                             <li>
                                 <a asp-controller="Tasks"
-                                   asp-action="Management"
-                                   asp-route-page="@Model.PreviousPage"
-                                   asp-route-isActive="@Model.OnlyActive"
-                                   asp-route-keyword="@Model.Keyword"
-                                >
-                                     Previous
+                           asp-action="Management"
+                           asp-route-page="@Model.PreviousPage"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword">
+                                    Previous
                                 </a>
                             </li>
                             <li>
                                 <a asp-controller="Tasks"
-                                   asp-action="Management"
-                                   asp-route-page="@(Model.Page - 1)"
-                                   asp-route-isActive="@Model.OnlyActive"
-                                   asp-route-keyword="@Model.Keyword"
-                                >
+                           asp-action="Management"
+                           asp-route-page="@(Model.Page - 1)"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword">
                                     @(Model.Page - 1)
                                 </a>
                             </li>
@@ -50,11 +50,10 @@
 
                         <li>
                             <a asp-controller="Tasks"
-                               asp-action="Management"
-                               asp-route-page="@Model.Page"
-                               asp-route-isActive="@Model.OnlyActive"
-                               asp-route-keyword="@Model.Keyword"
-                            >
+                           asp-action="Management"
+                           asp-route-page="@Model.Page"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword">
                                 @Model.Page
                             </a>
                         </li>
@@ -63,21 +62,19 @@
                         {
                             <li>
                                 <a asp-controller="Tasks"
-                                   asp-action="Management"
-                                   asp-route-page="@(Model.Page + 1)"
-                                   asp-route-isActive="@Model.OnlyActive"
-                                   asp-route-keyword="@Model.Keyword"
-                                >
+                           asp-action="Management"
+                           asp-route-page="@(Model.Page + 1)"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword">
                                     @(Model.Page + 1)
                                 </a>
                             </li>
                             <li>
                                 <a asp-controller="Tasks"
-                                   asp-action="Management"
-                                   asp-route-page="@Model.NextPage"
-                                   asp-route-isActive="@Model.OnlyActive"
-                                   asp-route-keyword="@Model.Keyword"
-                                >
+                           asp-action="Management"
+                           asp-route-page="@Model.NextPage"
+                           asp-route-isActive="@Model.OnlyActive"
+                           asp-route-keyword="@Model.Keyword">
                                     Next
                                 </a>
                             </li>
@@ -96,5 +93,6 @@
 </dialog>
 
 @section Scripts {
-<script type="module" src="~/js/services/create-task-dialog.js"></script>
+    <script type="module" src="~/js/services/create-task-validation.js"></script>
+    <script type="module" src="~/js/services/create-task-dialog.js"></script>
 } 

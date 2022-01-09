@@ -25,7 +25,7 @@
                 </select>
 
                 <button class="tasks-search-btn" type="submit">Go</button>
-            </div>  
+            </div>
         </form>
     </section>
 
@@ -52,10 +52,22 @@
                 <div>@string.Join(", ", user.Roles)</div>
                 <div>@user.PhoneNumber</div>
                 <div>
-                    <a class="user-edit-btn" asp-area="Administartion" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">
+                    <a class="user-edit-btn" title="Edit user data" asp-area="Administartion" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">
                         <i class="fa fa-edit"></i>
                     </a>
-                    <a asp-area="Administartion" asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@user.Id">
+                    @if (user.IsLockedOut)
+                    {
+                        <a class="user-lockout-btn" title="Unlock user" asp-area="Administartion" asp-controller="Administration" asp-action="UnlockUser" asp-route-id="@user.Id">
+                            <i class="fa fa-unlock"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="user-lockout-btn" title="Lockout user" asp-area="Administartion" asp-controller="Administration" asp-action="LockoutUser" asp-route-id="@user.Id">
+                            <i class="fa fa-ban"></i>
+                        </a>
+                    }
+                    <a class="user-delete-btn" asp-area="Administartion" title="Delete user" asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@user.Id">
                         <i class="fa fa-trash"></i>
                     </a>
                 </div>
@@ -63,77 +75,72 @@
         }
     </section>
     <section class="pagination">
-            @if (Model.PagesCount > 1)
-            {
-                <nav class="page-nav">
-                    <ul class="page-nav-list">
+        @if (Model.PagesCount > 1)
+        {
+            <nav class="page-nav">
+                <ul class="page-nav-list">
 
-                        @if (Model.HasPreviousPage)
-                        {
-                            <li>
-                                <a asp-area="Administartion"
-                                   asp-controller="Administration"
-                                   asp-action="Users"
-                                   asp-route-page="@Model.PreviousPage"
-                                   asp-route-keyword="@Model.Keyword"
-                                   asp-route-departmentId="@Model.DepartmentId"
-                                >
-                                            Previous
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-area="Administartion"
-                                   asp-controller="Administration"
-                                   asp-action="Users"
-                                   asp-route-page="@(Model.Page - 1)"
-                                   asp-route-keyword="@Model.Keyword"
-                                   asp-route-departmentId="@Model.DepartmentId"
-                                >
-                                            @(Model.Page - 1)
-                                </a>
-                            </li>
-                        }
-
+                    @if (Model.HasPreviousPage)
+                    {
                         <li>
                             <a asp-area="Administartion"
-                               asp-controller="Administration"
-                               asp-action="Users"
-                               asp-route-page="@Model.Page"
-                               asp-route-keyword="@Model.Keyword"
-                               asp-route-departmentId="@Model.DepartmentId"
-                            >
-                                    @Model.Page
+                       asp-controller="Administration"
+                       asp-action="Users"
+                       asp-route-page="@Model.PreviousPage"
+                       asp-route-keyword="@Model.Keyword"
+                       asp-route-departmentId="@Model.DepartmentId">
+                                Previous
                             </a>
                         </li>
+                        <li>
+                            <a asp-area="Administartion"
+                       asp-controller="Administration"
+                       asp-action="Users"
+                       asp-route-page="@(Model.Page - 1)"
+                       asp-route-keyword="@Model.Keyword"
+                       asp-route-departmentId="@Model.DepartmentId">
+                                @(Model.Page - 1)
+                            </a>
+                        </li>
+                    }
 
-                        @if (Model.HasNextPage)
-                        {
-                            <li>
-                                <a asp-area="Administartion"
-                                   asp-controller="Administration"
-                                   asp-action="Users"
-                                   asp-route-page="@(Model.Page + 1)"
-                                   asp-route-keyword="@Model.Keyword"
-                                   asp-route-departmentId="@Model.DepartmentId"
-                                >
-                                            @(Model.Page + 1)
-                                </a>
-                            </li>
-                            <li>
-                                <a asp-area="Administartion"
-                                   asp-controller="Administration"
-                                   asp-action="Users"
-                                   asp-route-page="@Model.NextPage"
-                                   asp-route-keyword="@Model.Keyword"
-                                   asp-route-departmentId="@Model.DepartmentId"
-                                >
-                                            Next
-                                </a>
-                            </li>
-                        }
+                    <li>
+                        <a asp-area="Administartion"
+                       asp-controller="Administration"
+                       asp-action="Users"
+                       asp-route-page="@Model.Page"
+                       asp-route-keyword="@Model.Keyword"
+                       asp-route-departmentId="@Model.DepartmentId">
+                            @Model.Page
+                        </a>
+                    </li>
 
-                    </ul>
-                </nav>
-            }
-        </section>
+                    @if (Model.HasNextPage)
+                    {
+                        <li>
+                            <a asp-area="Administartion"
+                       asp-controller="Administration"
+                       asp-action="Users"
+                       asp-route-page="@(Model.Page + 1)"
+                       asp-route-keyword="@Model.Keyword"
+                       asp-route-departmentId="@Model.DepartmentId">
+                                @(Model.Page + 1)
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-area="Administartion"
+                       asp-controller="Administration"
+                       asp-action="Users"
+                       asp-route-page="@Model.NextPage"
+                       asp-route-keyword="@Model.Keyword"
+                       asp-route-departmentId="@Model.DepartmentId">
+                                Next
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </nav>
+        }
+    </section>
 </article>

@@ -60,6 +60,7 @@ async function changeEmplyee() {
 
     await editTicket(token, { id: ticketId, assignedToId: assignToId });
 
+    changeTextContent('.assigned-to-username .name-prefix', "Assigned to");
     changeTextContent('.assigned-to-username .username', assignedToUsername);
 }
 

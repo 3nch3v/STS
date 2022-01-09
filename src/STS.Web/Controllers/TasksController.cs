@@ -10,9 +10,9 @@ using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tasks;
 using STS.Web.ViewModels.Common;
+using STS.Web.ViewModels.User;
 
 using static STS.Common.GlobalConstants;
-using STS.Web.ViewModels.User;
 
 namespace STS.Web.Controllers
 {
@@ -41,9 +41,10 @@ namespace STS.Web.Controllers
             var currUser = userManager.GetUserId(User);
             var taskDto = taskService.GetById(id);
 
-            if (taskDto.EmployeeId != currUser 
+            if (taskDto == null ||
+                (taskDto.EmployeeId != currUser 
                 && !User.IsInRole(ManagerRoleName) 
-                && !User.IsInRole(AdministratorRoleName))
+                && !User.IsInRole(AdministratorRoleName)))
             {
                 return BadRequest();
             }
@@ -51,7 +52,8 @@ namespace STS.Web.Controllers
             var task = mapper.Map<TaskViewModel>(taskDto);
             task.Statuses = mapper.Map<List<StatusViewModel>>(commonService.GetStatuses());
 
-            if (User.IsInRole(ManagerRoleName) || User.IsInRole(AdministratorRoleName)) 
+            if (User.IsInRole(ManagerRoleName) 
+               || User.IsInRole(AdministratorRoleName)) 
             {
                 var departmentId = commonService.GetDepartmentId(currUser);
                 task.Employees = mapper.Map<List<BaseUserViewModel>>(commonService.GetEmployeesBase(departmentId));
@@ -97,20 +99,21 @@ namespace STS.Web.Controllers
             return RedirectToAction(nameof(Management));
         }
 
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    var task = taskService.GetById(id);
-        //    var userId = userManager.GetUserId(User);
+        [Authorize(Roles = "Administrator, Manager")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var task = taskService.GetById(id);
+            var userId = userManager.GetUserId(User);
 
-        //    if (task == null || task.ManagerId != userId)
-        //    {
-        //        return BadRequest();
-        //    }
+            if (task == null || task.ManagerId != userId)
+            {
+                return BadRequest();
+            }
 
-        //    await taskService.DeleteAsync(id);
+            await taskService.DeleteAsync(id);
 
-        //    return RedirectToAction(nameof(Index));
-        //}
+            return RedirectToAction(nameof(Management));
+        }
 
         private TasksViewModel PrepareViewModel(
             bool isManager,

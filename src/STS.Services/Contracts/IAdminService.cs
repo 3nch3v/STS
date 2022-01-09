@@ -14,6 +14,10 @@ namespace STS.Services.Contracts
 
         Task DeleteUserAsync(string userId);
 
+        Task UnlockUserAsync(string userId);
+
+        Task LockoutUserAsync(string userId);
+
         Task RegisterUserAsync<T>(T userInput);
 
         Task EditUserAsync<T>(T userInput);

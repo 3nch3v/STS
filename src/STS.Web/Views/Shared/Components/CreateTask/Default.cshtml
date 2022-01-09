@@ -6,21 +6,22 @@
         <section class="select-group">
             <div class="p-select">
                 <label asp-for="PriorityId">Priority</label>
-                <select 
-                    class="form-control-sm" 
-                    asp-for="PriorityId" 
-                    asp-items="Model.Priorities.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"
+                <select class="form-control-sm" 
+                        asp-for="PriorityId" 
+                        asp-items="Model.Priorities.Select(t => new SelectListItem(t.Name, t.Id.ToString()))"
+                        required
                 >
                 </select>
                 <span asp-validation-for="PriorityId" class="text-danger"></span>
             </div>
             <div class="p-select">
                 <label asp-for="EmployeeId">Employee</label>
-                <select 
-                    class="form-control-sm" 
-                    asp-for="EmployeeId" 
-                    asp-items="Model.Employees.Select(t => new SelectListItem(t.UserName, t.Id))"
+                <select class="form-control-sm" 
+                        asp-for="EmployeeId" 
+                        asp-items="Model.Employees.Select(t => new SelectListItem(t.UserName, t.Id))"
+                        required
                 >
+                    <option value="" selected="selected" >Please select</option>
                 </select>
                 <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
@@ -28,18 +29,25 @@
         <div class="form-group t-tile">
             <label asp-for="Title">Title</label>
             <input asp-for="Title" class="form-control" required>
-            <span asp-validation-for="Title" class="text-danger title-validation"></span>
+            <span asp-validation-for="Title" class="text-danger title-err"></span>
 
         </div>
         <div class="form-group t-description">
             <label asp-for="Description">Description</label>
             <textarea asp-for="Description" class="form-control" rows="10" required></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
+            <span asp-validation-for="Description" class="text-danger description-err"></span>
         </div>
-        <div class="form-group t-description">
+        <div class="form-group t-description t-deadline">
             <label asp-for="Deadline">Deadline</label>
-            <input type="datetime-local" asp-for="Deadline" min="@DateTime.Now" class="form-control" required>
-            <span asp-validation-for="Deadline" class="text-danger"></span>
+            <input asp-for="Deadline" 
+                   class="form-control deadline-calender"
+                   type="datetime-local" 
+                   min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")"
+                   max="@DateTime.Now.AddYears(5).ToString("yyyy-MM-ddThh:mm")"
+                   value="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" 
+                   required
+            />
+            <span asp-validation-for="Deadline" class="text-danger deadline-err"></span>
         </div>
         <div class="c-form-btns">
             <button type="submit" class="c-btn">Create</button>

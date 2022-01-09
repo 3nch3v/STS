@@ -226,6 +226,7 @@
     margin: auto;
 }
 
-.user-edit-btn {
+.user-edit-btn,
+.user-lockout-btn {
     margin-right: 10px;
 }

@@ -37,30 +37,32 @@ namespace STS.Services
 
         public TaskDto GetById(int id)
         {
-            return dbContext.EmployeesTasks
-               .Where(x => x.Id == id)
-               .Select(x => new TaskDto
+            var task = dbContext.EmployeesTasks
+               .Where(task => task.Id == id)
+               .Select(task => new TaskDto
                { 
-                    Id = x.Id,
-                    Title = x.Title,
-                    Description = x.Description,
-                    Deadline = x.Deadline,
-                    StatusName = x.Status.Name,
-                    PriorityName = x.Priority.Name,
-                    ManagerId = x.ManagerId,
-                    ManagerUserName = x.Manager.UserName,
-                    EmployeeId = x.EmployeeId,
-                    EmployeeUserName = x.Employee.UserName,
-                    Comments = x.Comments
-                        .Select(c => new ReplayTaskDto
+                    Id = task.Id,
+                    Title = task.Title,
+                    Description = task.Description,
+                    Deadline = task.Deadline,
+                    StatusName = task.Status.Name,
+                    PriorityName = task.Priority.Name,
+                    ManagerId = task.ManagerId,
+                    ManagerUserName = task.Manager.UserName,
+                    EmployeeId = task.EmployeeId,
+                    EmployeeUserName = task.Employee.UserName,
+                    Comments = task.Comments
+                        .Select(replay => new ReplayTaskDto
                         {
-                            Id = c.Id,
-                            Content = c.Content,
-                            UserUserName = c.User.UserName,
+                            Id = replay.Id,
+                            Content = replay.Content,
+                            UserUserName = replay.User.UserName,
                         })
                         .ToList(),
                })
                .FirstOrDefault();
+
+            return task;
         }
 
         public async Task CreateAsync<T>(string userId, T taskDto)
@@ -127,6 +129,12 @@ namespace STS.Services
                .FirstOrDefault();
 
             task.IsDeleted = true;
+
+            var repliesTasks = dbContext.RepliesTasks
+                .Where(x => x.EmployeeTaskId == id)
+                .ToList();
+
+            repliesTasks.ForEach(x => x.IsDeleted = true);
 
             await dbContext.SaveChangesAsync();
         }

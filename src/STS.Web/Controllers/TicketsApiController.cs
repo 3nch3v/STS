@@ -41,13 +41,6 @@ namespace STS.Web.Controllers
                 return NotFound();
             }
 
-            var currUserId = userManager.GetUserId(User);
-
-            if (ticket.EmployeeId != currUserId) 
-            {
-                return Unauthorized();
-            }
-
             var result = await ticketService.EditAsync(ticketDto.Id, ticketDto);
             var response = mapper.Map<TicketViewModel>(result);
 

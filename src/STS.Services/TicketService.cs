@@ -118,13 +118,10 @@ namespace STS.Services
             ticket.IsDeleted = true;
 
             var comments = dbContext.Comments
-                .Where(x => x.TicketId == ticketId)
+                .Where(x => x.TicketId == ticketId) 
                 .ToList();
 
-            foreach (var comment in comments)
-            {
-                comment.IsDeleted = true;
-            }
+            comments.ForEach(c => c.IsDeleted = true);
 
             await dbContext.SaveChangesAsync();
         }
