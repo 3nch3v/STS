@@ -39,8 +39,13 @@ async function postCommen(event) {
     }
 
     const data = await createComment(token, commentDto);
+
     changeStatusIcon('Open');
     appendComment(token, data);
+    const commentSection = document.querySelector('.new-comment');
+    const commentChildren = [...commentSection.children];
+    const commentCopy = commentChildren[commentChildren.length - 1].cloneNode(true);
+    comments.appendChild(commentCopy);
     commentForm.reset();
     closeDialog();
 };

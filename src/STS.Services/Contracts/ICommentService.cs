@@ -9,6 +9,8 @@ namespace STS.Services.Contracts
 
         Task<bool> DeleteAsync(int id);
 
+        Task SendEmailAsync(int ticketId, string content, ApplicationUser sender);
+
         Comment GetById(int id);
     }
 }

@@ -1,0 +1,30 @@
+﻿@using STS.Web.ViewModels.User;
+@model UserViewModel;
+
+<article class="profile-info">
+    <section>
+        <label asp-for="FullName">Name:</label>
+        <input asp-for="FullName" placeholder="@Model.FullName" disabled>
+    </section> 
+    <section>
+        <label asp-for="DepartmentName">Department:</label>
+        <input asp-for="DepartmentName" placeholder="@Model.DepartmentName" disabled>
+    </section>
+        <section>
+        <label asp-for="Position">Position:</label>
+        <input asp-for="Position" placeholder="@Model.Position" disabled>
+    </section>
+    <section>
+        <label asp-for="UserName">Username:</label>
+        <input asp-for="UserName" placeholder="@Model.UserName" disabled>
+    </section>
+    <section>
+        <label asp-for="Email">Email:</label>
+        <input asp-for="Email" placeholder="@Model.Email" disabled>
+    </section>
+    <section>
+        <label asp-for="PhoneNumber">Phone number:</label>
+        <input asp-for="PhoneNumber" value="@Model.PhoneNumber" disabled>
+    </section>
+
+</article>

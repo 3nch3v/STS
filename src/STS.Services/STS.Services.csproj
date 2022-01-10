@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\STS.Common\STS.Common.csproj" />
     <ProjectReference Include="..\STS.Data\STS.Data.csproj" />
+    <ProjectReference Include="..\STS.Messaging\STS.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

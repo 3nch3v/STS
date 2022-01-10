@@ -189,3 +189,7 @@
 .task-manager.username {
     padding-bottom: 10px;
 }
+
+.new-comment {
+    display: none;
+}

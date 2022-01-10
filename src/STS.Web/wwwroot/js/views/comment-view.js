@@ -1,4 +1,4 @@
-import { html, render } from '../node_modules/lit-html/lit-html.js';
+import { html, render,  } from '../node_modules/lit-html/lit-html.js';
 
 const commentTemplate = (comment, token) => html`
 <section class="t-comment">
@@ -27,7 +27,7 @@ const commentTemplate = (comment, token) => html`
 `;
 
 export default function appendComment(token, comment) {
-    const container = document.querySelector(".ticket-comments");
+    const container = document.querySelector(".new-comment");
     render(commentTemplate(comment, token), container);
 };
 

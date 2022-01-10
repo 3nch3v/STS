@@ -103,6 +103,9 @@ namespace STS.Services
                 && dbTicket.DepartmentId != ticketInput.DepartmentId)
             {
                 dbTicket.DepartmentId = (int)ticketInput.DepartmentId;
+                dbTicket.StatusId = commonService.GetStatusId("Open");
+                dbTicket.AssignedToId = null;
+                dbTicket.AssignedTo = null;
             }
 
             await dbContext.SaveChangesAsync();

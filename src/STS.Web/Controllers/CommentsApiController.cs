@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using STS.Data.Models;
-using STS.Messaging;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Comment;
 
@@ -17,19 +16,13 @@ namespace STS.Web.Controllers
     public class CommentsApiController : ControllerBase
     {
         private readonly ICommentService commentService;
-        private readonly ITicketService ticketService;
-        private readonly IEmailSender emailSender;
         private readonly UserManager<ApplicationUser> userManager;
 
         public CommentsApiController(
             ICommentService commentService,
-            ITicketService ticketService,
-            IEmailSender emailSender,
             UserManager<ApplicationUser> userManager)
         {
             this.commentService = commentService;
-            this.ticketService = ticketService;
-            this.emailSender = emailSender;
             this.userManager = userManager;
         }
 
@@ -46,7 +39,7 @@ namespace STS.Web.Controllers
 
             if (comment.sendEmail)
             {
-                await SendEmail(comment, user);
+                await commentService.SendEmailAsync(comment.TicketId, comment.Content, user);
             }
 
             var commentDto = new CommentViewModel
@@ -73,29 +66,6 @@ namespace STS.Web.Controllers
             var result = await commentService.DeleteAsync(id);
 
             return Ok(result);
-        }
-        private async Task SendEmail(CommentInputModel comment, ApplicationUser user)
-        {
-            var ticket = ticketService.GetById(comment.TicketId);
-
-            ApplicationUser assignedToUser = null;
-
-            if (ticket.AssignedToId != null)
-            {
-                assignedToUser = await userManager.FindByIdAsync(ticket.AssignedToId);
-            }
-
-            var receiver = user.Id != ticket.EmployeeId 
-                            ? ticket.Employee.Email 
-                            : assignedToUser?.Email;
-
-            if (receiver != null)
-            {
-                string senderNames = $"{user.FirstName} {user.LastName}";
-                string subject = $"Ticket: #{ticket.Id} Priority: {ticket.Priority.Name} *{ticket.Title}*.";
-                string htmlContent = $"<p>{comment.Content}</p><br><a href='/Tickets/Ticket/{ticket.Id}'>Click here</a>";
-                await emailSender.SendEmailAsync(user.Email, senderNames, receiver, subject, htmlContent);
-            }
         }
     }
 }

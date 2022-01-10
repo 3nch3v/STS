@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 using STS.Data.Models;
+using STS.Services.Contracts;
 using STS.Web.ViewModels;
 using STS.Web.ViewModels.Identity;
 
@@ -19,17 +21,20 @@ namespace STS.Web.Controllers
         private const string errKey = "LoginAttempt";
         private const string logInfoMsg = "User logged in.";
 
+        private readonly IAdminService adminService;
         private readonly ILogger<HomeController> logger;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
 
         public HomeController(
+            IAdminService adminService,
             ILogger<HomeController> logger,
             SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManage)
+            UserManager<ApplicationUser> userManager)
         {
             this.signInManager = signInManager;
-            this.userManager = userManage;
+            this.userManager = userManager;
+            this.adminService = adminService;
             this.logger = logger;
         }
 
@@ -73,6 +78,40 @@ namespace STS.Web.Controllers
             }
 
             return View();
+        }
+
+        [Authorize]
+        public IActionResult Profile()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Profile(ChangePassInputModel passInput)
+        {
+            if (passInput.NewPass != passInput.RepeatPass) 
+            {
+                ModelState.AddModelError("RepeatPass", "Password doesn't match."); 
+            }
+
+            if (!ModelState.IsValid) 
+            {
+                return View(passInput);
+            }
+
+            string userId = userManager.GetUserId(User);
+            var user = await userManager.FindByIdAsync(userId);
+
+            var passChangeResult = await userManager.ChangePasswordAsync(user, passInput.OldPass, passInput.NewPass);
+
+            if (!passChangeResult.Succeeded)
+            {
+                await signInManager.SignOutAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction("Tickets", "Tickets");
         }
 
         public IActionResult Privacy()

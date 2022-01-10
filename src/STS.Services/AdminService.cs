@@ -151,12 +151,6 @@ namespace STS.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task ChangePasswordAsync(string userId, string currPassword, string newPassword) 
-        {
-            var user = await userManager.FindByIdAsync(userId);
-            await userManager.ChangePasswordAsync(user, currPassword, newPassword);
-        }
-
         public async Task<IEnumerable<string>> GetUserRolesAsync(string id)
         {
             return await userManager.GetRolesAsync(GetUserById(id));

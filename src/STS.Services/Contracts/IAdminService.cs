@@ -26,8 +26,6 @@ namespace STS.Services.Contracts
 
         Task CreateRoleAsync(string roleName);
 
-        Task ChangePasswordAsync(string userId, string currPassword, string newPassword);
-
         Task<IEnumerable<string>> GetUserRolesAsync(string id);
 
         Task<IEnumerable<UserDto>> GetUsersAsync(int page, string searchTerm, int? departmentId);

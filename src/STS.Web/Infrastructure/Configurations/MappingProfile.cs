@@ -39,6 +39,7 @@ namespace STS.Web.Infrastructure.Configurations
             CreateMap<UserEditModel, UserEditDto>();
             CreateMap<UserDto, UserViewModel>();
             CreateMap<ApplicationUser, UserEditModel>();
+            CreateMap<ApplicationUser, UserViewModel>();
 
             CreateMap<TaskListingDto, TaskLinstingViewModel>();
             CreateMap<TaskInputModel, EmployeeTask>();

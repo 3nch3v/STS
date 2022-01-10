@@ -161,7 +161,12 @@ p.daily-tasks {
     color: #8B949E;
 }
 
-.search-input-field {
+.search-input-field,
+.email,
+.password,
+.old-pass,
+.new-pass,
+.repeat-pass {
     background-color: #30363D;
     color: #C2CAD2;
     border-bottom-left-radius: 6px;
@@ -258,7 +263,9 @@ p.daily-tasks {
 .cancel-c-btn,
 .create-task-btn,
 .create-user-btn,
-.users-btn {
+.users-btn,
+.login-btn,
+.change-pass-btn {
     border-radius: 10px;
     padding: 6px 20px;
     color: #C2CAD2;
