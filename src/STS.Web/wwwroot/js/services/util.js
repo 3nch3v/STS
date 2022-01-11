@@ -54,3 +54,13 @@ export function createHtmlElement(type, attributes, ...content) {
 
     return result;
 };
+
+export function displayMessage(message) {
+    const msgDiv = document.querySelector('#msgBox');
+    const spanElement = msgDiv.querySelector('span');
+
+    spanElement.textContent = message;
+    msgDiv.style.display = 'block';
+
+    setTimeout(() => msgDiv.style.display = 'none', 3000);
+}

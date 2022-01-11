@@ -15,14 +15,14 @@
         <button class="show-create-btn" title="Create a new ticket...">New Ticket</button>
     </section>
     <section class="search-section">
-        <form asp-controller="Tickets" asp-action="Tickets" method="get">
+        <form asp-controller="Tickets" asp-action="Tickets" class="search-ticket-form" method="get">
             <input class="search-input-field"
                    name="keyword"
                    type="text"
                    required
                    minlength=2
                    placeholder="Search..." />
-            <button class="search-btn" type="submit">Search</button>
+            <button class="search-btn" type="submit">Go</button>
         </form>
     </section>
 </article>
@@ -187,6 +187,8 @@
     </aside>
 
 </article>
+
+<partial name="_NotificationPartial"></partial>
 
 <dialog class="create-dialog">
     <vc:create-ticket></vc:create-ticket>

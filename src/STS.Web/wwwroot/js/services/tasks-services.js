@@ -1,5 +1,5 @@
 ﻿import { editTask, createTaskComment } from '../data/data.js';
-import { createHtmlElement } from '../services/util.js';
+import { createHtmlElement, displayMessage } from '../services/util.js';
 
 const taskData = document.querySelector('.task-details');
 const submitBtn = document.querySelector('.c-btn.task-btn');
@@ -15,8 +15,9 @@ async function changeEmplyee() {
     const taskId = taskData.dataset.taskId;
     const token = taskData.dataset.requestToken;
     const employeeId = employeeSelect.value;
-
+    const employeeName = employeeSelect.options[employeeSelect.selectedIndex].text;
     await editTask(token, { id: taskId, employeeId: employeeId });
+    displayMessage(`Ticket has been assigned to ${employeeName}`);
 }
 
 async function changeStatus() {
@@ -28,7 +29,7 @@ async function changeStatus() {
     await editTask(token, { id: taskId, statusId: statusId });
 
     changeStatusName(statusName);
-   
+    displayMessage(`Status has been chanded to ${statusName}`);
 }
 
 async function replayTask() {

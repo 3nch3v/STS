@@ -1,0 +1,25 @@
+﻿#notifications {
+    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: center;
+    margin: 1em;
+}
+
+.notification {
+    font-size: 24px;
+    color: #ffffff;
+    display: none;
+    text-align: right;
+}
+
+.notification > span {
+    display: inline-block;
+    padding: 5px 10px 5px 10px;
+    border-radius: 8px;
+}
+
+#msgBox > span {
+    background: #0C6BF0;
+}

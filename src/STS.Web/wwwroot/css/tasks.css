@@ -5,7 +5,8 @@
 .manager-search-form,
 .task-wrapper,
 .task-comment-form,
-.task-actions {
+.task-actions,
+.checkbox-btn-sec {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -19,6 +20,10 @@
     margin: auto auto;
     flex-direction: row;
     gap: 25px;
+}
+
+.checkbox-btn-sec.tasks {
+    margin-top: 10px;
 }
 
 .tasks-side-bar-section,

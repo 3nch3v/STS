@@ -5,25 +5,23 @@
 <section class="tasks-side-bar-section">
     <section class="search-task-section">
         <form method="post" asp-controller="Tasks" asp-action="Index">
-            <div>
+            <section>
                 <input name="keyword"
                        type="text"
                        value="@(keyWords == null ? null : keyWords)"
                        class="search-input-field"
                        placeholder="Search..." />
-            </div>
-            <div>
-                <input id="isActive"
-                       name="isActive"
-                       type="checkbox"
-                       value="true">
-                <label class="checkbox-label" for="isActive">
-                    Only active
-                </label>
-                <button type="submit" class="tasks-search-btn">
-                    Go
-                </button>
-            </div>
+            </section>
+            <section class="checkbox-btn-sec tasks">
+                <div class="switch-box">
+                    <label class="switch">
+                        <input id="isActive" type="checkbox" name="isActive" value="true">
+                        <span class="slider round"></span>
+                    </label>
+                    <label class="checkbox-label" for="isActive"> Only active</label>
+                </div>
+                <button type="submit" class="tasks-search-btn">Go</button>
+            </section>
         </form>
     </section>
 

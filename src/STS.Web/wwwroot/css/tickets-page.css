@@ -175,6 +175,10 @@ p.daily-tasks {
     padding: 6px;
 }
 
+.search-input-field {
+    width: 100%;
+}
+
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
 
     body {
@@ -284,4 +288,8 @@ p.daily-tasks {
     background-color: #30363D;
     font-size: 18px;
     height: 36px;
+}
+
+.search-ticket-form {
+    display:flex;
 }

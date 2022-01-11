@@ -1,4 +1,4 @@
-﻿import { getTicketId, getRequestToken } from './util.js';
+﻿import { getTicketId, getRequestToken, displayMessage } from './util.js';
 import { editTicket } from '../data/data.js';
 import getTitleView from '../views/edit-ticket-title-view.js';
 import getContentView from '../views/edit-ticket-content-view.js';
@@ -13,7 +13,7 @@ const editTicketContentBtn = document.querySelector('.edit-t-content');
 
 departmentSelect.addEventListener('change', changeDepartment);
 statusSelect.addEventListener('change', changeStatus);
-assignToSelect.addEventListener('change', changeEmplyee)
+assignToSelect.addEventListener('change', changeEmplyee);
 
 if (editTicketContentBtn) editTicketContentBtn.addEventListener('click', editContent)
 if (assignToMeBtn) assignToMeBtn.addEventListener('click', assignToMe)
@@ -23,8 +23,10 @@ async function changeDepartment() {
     const ticketId = getTicketId();
     const token = getRequestToken();
     const departmentId = departmentSelect.value;
+    const departmentName = departmentSelect.options[departmentSelect.selectedIndex].text;
 
     await editTicket(token, { id: ticketId, departmentId: departmentId });
+    displayMessage(`Ticket department has been changed to ${departmentName}`);
 }
 
 async function assignToMe(event) {
@@ -37,6 +39,7 @@ async function assignToMe(event) {
     await editTicket(token, { id: ticketId, AssignedToId: myId });
 
     changeTextContent('.assigned-to-username .username', 'you');
+    displayMessage(`Ticket has been assigned to you`);
 }
 
 async function changeStatus() {
@@ -49,6 +52,7 @@ async function changeStatus() {
     await editTicket(token, { id: ticketId, statusId: statusId});
 
     changeStatusIcon(statusName);
+    displayMessage(`Status has been chanded to ${statusName}`);
 }
 
 async function changeEmplyee() {
@@ -62,6 +66,7 @@ async function changeEmplyee() {
 
     changeTextContent('.assigned-to-username .name-prefix', "Assigned to");
     changeTextContent('.assigned-to-username .username', assignedToUsername);
+    displayMessage(`Ticket has been assigned to ${assignedToUsername}`);
 }
 
 async function editTitle(event) {
@@ -81,6 +86,7 @@ async function editTitle(event) {
             const token = getRequestToken();
             await editTicket(token, { id: ticketId, title: input });
             renderTitle(input, true, true);
+            displayMessage(`Ticket title has been edited`);
         } else {
             renderTitle(input, true, true);
         }
@@ -108,6 +114,7 @@ async function editContent(event) {
             const token = getRequestToken();
             await editTicket(token, { id: ticketId, content: input });
             renderContent(input, true, true);
+            displayMessage(`Ticket description has been edited`);
         } else {
             renderContent(input, true, true);
         }
