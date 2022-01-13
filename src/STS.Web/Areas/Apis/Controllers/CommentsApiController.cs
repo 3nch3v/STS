@@ -8,7 +8,7 @@ using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Comment;
 
-namespace STS.Web.Controllers
+namespace STS.Web.Areas.Api.Controllers
 {
     [Authorize]
     [Route("api/Comments")]

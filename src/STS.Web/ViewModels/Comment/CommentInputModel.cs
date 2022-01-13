@@ -8,6 +8,7 @@ namespace STS.Web.ViewModels.Comment
     {
         public int TicketId { get; set; }
 
+        [Required]
         [StringLength(CommentMaxLength, MinimumLength = CommentMinLength)]
         public string Content { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿@using STS.Web.ViewModels.User;
+
 @model UsersViewModel;
 
 @{
@@ -7,25 +8,24 @@
 
 <article class="admin-users">
     <section class="user-search-section">
-        <form method="get" asp-area="Administration" asp-controller="Administration" asp-action="Users" class="manager-search-form">
-            <div>
-                <input name="keyword"
-                       type="text"
-                       value="@(Model.Keyword != null ? Model.Keyword : null)"
-                       class="search-input-field"
-                       placeholder="Search...">
-            </div>
-
-            <div class="p-select">
+        <form method="get" asp-controller="Administration" asp-action="Users" class="manager-search-form">
+             <section class="p-select">
                 <select class="form-control-sm t-employee-select"
                         for="DepartmentId"
                         name="DepartmentId"
                         asp-items="Model.Departments.Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
                     <option value="" selected="selected">Please select</option>
                 </select>
-
+            </section>
+            <section class="user-s-inpit-btn-sec">
+                <input name="keyword"
+                       type="text"
+                       value="@(Model.Keyword != null ? Model.Keyword : null)"
+                       class="search-input-field"
+                       placeholder="Search..."
+                >
                 <button class="tasks-search-btn" type="submit">Go</button>
-            </div>
+            </section>
         </form>
     </section>
 
@@ -52,22 +52,43 @@
                 <div>@string.Join(", ", user.Roles)</div>
                 <div>@user.PhoneNumber</div>
                 <div>
-                    <a class="user-edit-btn" title="Edit user data" asp-area="Administartion" asp-controller="Administration" asp-action="EditUser" asp-route-id="@user.Id">
+                    <a class="user-edit-btn" 
+                       title="Edit user data" 
+                       asp-controller="Administration" 
+                       asp-action="EditUser" 
+                       asp-route-id="@user.Id"
+                    >
                         <i class="fa fa-edit"></i>
                     </a>
                     @if (user.IsLockedOut)
                     {
-                        <a class="user-lockout-btn" title="Unlock user" asp-area="Administartion" asp-controller="Administration" asp-action="UnlockUser" asp-route-id="@user.Id">
+                        <a class="user-lockout-btn" 
+                           title="Unlock user" 
+                           asp-controller="Administration" 
+                           asp-action="UnlockUser" 
+                           asp-route-id="@user.Id"
+                        >
                             <i class="fa fa-unlock"></i>
                         </a>
                     }
                     else
                     {
-                        <a class="user-lockout-btn" title="Lockout user" asp-area="Administartion" asp-controller="Administration" asp-action="LockoutUser" asp-route-id="@user.Id">
+                        <a class="user-lockout-btn" 
+                           title="Lockout user" 
+                           asp-controller="Administration" 
+                           asp-action="LockoutUser" 
+                           asp-route-id="@user.Id"
+                        >
                             <i class="fa fa-ban"></i>
                         </a>
                     }
-                    <a class="user-delete-btn" asp-area="Administartion" title="Delete user" asp-controller="Administration" asp-action="DeleteUser" asp-route-id="@user.Id">
+                    <a class="user-delete-btn"
+                       title="Delete user" 
+                       asp-controller="Administration" 
+                       asp-action="DeleteUser" 
+                       asp-route-id="@user.Id" 
+                       OnClick=" return ConfirmOnDelete()"
+                    >
                         <i class="fa fa-trash"></i>
                     </a>
                 </div>
@@ -83,34 +104,34 @@
                     @if (Model.HasPreviousPage)
                     {
                         <li>
-                            <a asp-area="Administartion"
-                       asp-controller="Administration"
-                       asp-action="Users"
-                       asp-route-page="@Model.PreviousPage"
-                       asp-route-keyword="@Model.Keyword"
-                       asp-route-departmentId="@Model.DepartmentId">
+                            <a asp-controller="Administration"
+                               asp-action="Users"
+                               asp-route-page="@Model.PreviousPage"
+                               asp-route-keyword="@Model.Keyword"
+                               asp-route-departmentId="@Model.DepartmentId"
+                            >
                                 Previous
                             </a>
                         </li>
                         <li>
-                            <a asp-area="Administartion"
-                       asp-controller="Administration"
-                       asp-action="Users"
-                       asp-route-page="@(Model.Page - 1)"
-                       asp-route-keyword="@Model.Keyword"
-                       asp-route-departmentId="@Model.DepartmentId">
+                            <a asp-controller="Administration"
+                               asp-action="Users"
+                               asp-route-page="@(Model.Page - 1)"
+                               asp-route-keyword="@Model.Keyword"
+                               asp-route-departmentId="@Model.DepartmentId"                           
+                            >
                                 @(Model.Page - 1)
                             </a>
                         </li>
                     }
 
                     <li>
-                        <a asp-area="Administartion"
-                       asp-controller="Administration"
-                       asp-action="Users"
-                       asp-route-page="@Model.Page"
-                       asp-route-keyword="@Model.Keyword"
-                       asp-route-departmentId="@Model.DepartmentId">
+                        <a asp-controller="Administration"
+                           asp-action="Users"
+                           asp-route-page="@Model.Page"
+                           asp-route-keyword="@Model.Keyword"
+                           asp-route-departmentId="@Model.DepartmentId"
+                        >
                             @Model.Page
                         </a>
                     </li>
@@ -118,22 +139,22 @@
                     @if (Model.HasNextPage)
                     {
                         <li>
-                            <a asp-area="Administartion"
-                       asp-controller="Administration"
-                       asp-action="Users"
-                       asp-route-page="@(Model.Page + 1)"
-                       asp-route-keyword="@Model.Keyword"
-                       asp-route-departmentId="@Model.DepartmentId">
+                            <a asp-controller="Administration"
+                               asp-action="Users"
+                               asp-route-page="@(Model.Page + 1)"
+                               asp-route-keyword="@Model.Keyword"
+                               asp-route-departmentId="@Model.DepartmentId"
+                            >
                                 @(Model.Page + 1)
                             </a>
                         </li>
                         <li>
-                            <a asp-area="Administartion"
-                       asp-controller="Administration"
-                       asp-action="Users"
-                       asp-route-page="@Model.NextPage"
-                       asp-route-keyword="@Model.Keyword"
-                       asp-route-departmentId="@Model.DepartmentId">
+                            <a asp-controller="Administration"
+                               asp-action="Users"
+                               asp-route-page="@Model.NextPage"
+                               asp-route-keyword="@Model.Keyword"
+                               asp-route-departmentId="@Model.DepartmentId"
+                            >
                                 Next
                             </a>
                         </li>
@@ -144,3 +165,15 @@
         }
     </section>
 </article>
+
+@section Scripts{
+<script type="text/javascript">    
+   function ConfirmOnDelete() {
+        if (confirm("Do you really want to delete the user?") == true) {
+            return true;
+        } else{
+            return false;
+        }
+   }
+</script>
+}

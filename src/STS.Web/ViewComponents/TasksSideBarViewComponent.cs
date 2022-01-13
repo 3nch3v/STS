@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 using AutoMapper;
 
 using STS.Data.Models;
@@ -31,7 +30,6 @@ namespace STS.Web.ViewComponents
         {
             var user = Request.HttpContext.User;
             var userId = userManager.GetUserId(user);
-
             var tasksDtos = taskService.GetSideBarTasks(userId, isManager, tasksCount);
 
             var tasks = new TasksSideBarViewModel

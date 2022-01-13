@@ -1,4 +1,5 @@
 ﻿@using STS.Web.ViewModels.Admin;
+
 @model IEnumerable<DepartmentStatisticViewModel>;
 
 <article class="departments-wrapper">
@@ -25,7 +26,7 @@
         }
     </section>
 
-    <form method="post" asp-area="Administration" asp-controller="Administration" asp-action="CreateDepartment">
+    <form method="post" asp-controller="Administration" asp-action="CreateDepartment">
         <label class="create-dep-label" for="departmentName">New department:</label>
         <input class="create-dep-input" type="text" id="departmentName" name="departmentName" required>
         <button class="create-dep-btn" type="submit">Create</button>

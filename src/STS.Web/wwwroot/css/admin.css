@@ -15,10 +15,10 @@
     flex-direction: column;
 }
 
-    .admin-user-section a:hover {
-        text-decoration: none;
-        color: #39A6FF;
-    }
+.admin-user-section a:hover {
+    text-decoration: none;
+    color: #39A6FF;
+}
 
 .admin-stat-section,
 .dep-count,

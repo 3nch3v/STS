@@ -32,6 +32,7 @@ async function postCommen(event) {
 
     const ticketId = getTicketId();
     const token = getRequestToken();
+
     const commentDto = {
         content: comment,
         ticketId: ticketId,

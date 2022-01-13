@@ -43,8 +43,8 @@ namespace STS.Web.Controllers
 
             if (taskDto == null ||
                 (taskDto.EmployeeId != currUser 
-                && !User.IsInRole(ManagerRoleName) 
-                && !User.IsInRole(AdministratorRoleName)))
+                 && !User.IsInRole(ManagerRoleName) 
+                 && !User.IsInRole(AdministratorRoleName)))
             {
                 return BadRequest();
             }
@@ -62,10 +62,7 @@ namespace STS.Web.Controllers
             return View(task);
         }
 
-        public IActionResult Index(
-            string keyword, 
-            bool isActive, 
-            int page = DefaultPageNumber)
+        public IActionResult Index(string keyword, bool isActive, int page = DefaultPageNumber)
         {
             var tasks = PrepareViewModel(false, keyword, isActive, null, page);
 
@@ -105,7 +102,8 @@ namespace STS.Web.Controllers
             var task = taskService.GetById(id);
             var userId = userManager.GetUserId(User);
 
-            if (task == null || task.ManagerId != userId)
+            if (task == null 
+                || task.ManagerId != userId)
             {
                 return BadRequest();
             }

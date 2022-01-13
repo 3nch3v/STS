@@ -6,7 +6,6 @@ const submitBtn = document.querySelector('.c-btn.task-btn');
 const selectStatus = document.querySelector('.task-status-select');
 const employeeSelect = document.querySelector('.t-employee-select');
 const status = document.querySelector('p.status');
-
 selectStatus.addEventListener('change', changeStatus);
 submitBtn.addEventListener('click', replayTask);
 employeeSelect.addEventListener('change', changeEmplyee);
@@ -25,9 +24,7 @@ async function changeStatus() {
     const token = taskData.dataset.requestToken;
     const statusId = selectStatus.value;
     const statusName = selectStatus.options[selectStatus.selectedIndex].text;
-
     await editTask(token, { id: taskId, statusId: statusId });
-
     changeStatusName(statusName);
     displayMessage(`Status has been chanded to ${statusName}`);
 }
@@ -47,11 +44,9 @@ async function replayTask() {
 
     const token = taskData.dataset.requestToken;
     const taskId = taskData.dataset.taskId;
-    var statusId = Array.from(selectStatus.options).find(x => x.textContent.trim() == 'Open').value;
-
+    const statusId = Array.from(selectStatus.options).find(x => x.textContent.trim() == 'Open').value;
     const result = await createTaskComment(token, { employeeTaskId: taskId, content: comment });
     await editTask(token, { id: taskId, statusId: statusId });
-
     const newComment = createCommentHtml(result.id, result.content, result.userUserName)
     tasksComments.appendChild(newComment);
     commentInput.value = '';

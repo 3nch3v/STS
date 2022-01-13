@@ -30,6 +30,7 @@ namespace STS.Services
             await dbContext.SaveChangesAsync();
 
             var result = mapper.Map<ReplayTaskDto>(task);
+
             return result;
         }
     }

@@ -2,25 +2,24 @@
 @model UserInputModel
 
 <article class="create-user">
-
-    <form class="create-user-form" asp-area="Administartion" asp-controller="Administration" asp-action="CreateUser" method="post">
-
+    <form class="create-user-form" asp-controller="Administration" asp-action="CreateUser" method="post">
         <section class="user-select-group">
             <div>
                 <label asp-for="Role">Role:</label>
                 <select asp-for="Role"                                    
                         asp-items="Model.SystemRoles
-                    .Select(t => new SelectListItem(t.Name, t.Name))">
+                            .Select(t => new SelectListItem(t.Name, t.Name))"
+                >
                     <option value="" selected>Please select</option>
                 </select>
                 <span asp-validation-for="Role" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="DepartmentId">Department:</label>
                 <select asp-for="DepartmentId"
                         asp-items="Model.Departments
-                    .Select(t => new SelectListItem(t.Name, t.Id.ToString()))">
+                            .Select(t => new SelectListItem(t.Name, t.Id.ToString()))"
+                >
                     <option value="" selected>Please select</option>
                 </select>
                 <span asp-validation-for="DepartmentId" class="text-danger"></span>
@@ -33,37 +32,31 @@
                 <input asp-for="UserName">
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="Email">Email:</label>
                 <input asp-for="Email">
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="Password">Password:</label>
                 <input asp-for="Password">
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="FirstName">First name:</label>
                 <input asp-for="FirstName">
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="LastName">Last name:</label>
                 <input asp-for="LastName">
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="Position">Position:</label>
                 <input asp-for="Position">
                 <span asp-validation-for="Position" class="text-danger"></span>
             </div>
-
             <div>
                 <label asp-for="PhoneNumber">Phone number:</label>
                 <input asp-for="PhoneNumber">
@@ -73,6 +66,5 @@
         <section>
             <button class="show-create-btn" type="submit">Register</button>
         </section>
-
     </form>
 </article>

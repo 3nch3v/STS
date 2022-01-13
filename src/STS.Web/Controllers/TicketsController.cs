@@ -57,20 +57,20 @@ namespace STS.Web.Controllers
             ticketDto.Employees = mapper.Map<List<BaseUserViewModel>>(commonService.GetEmployeesBase(departmentId));
             ticketDto.Departments = mapper.Map<List<DepartmentViewModel>>(commonService.GetDepartmentsBase());
             ticketDto.LoggedInUserId = userId;
-
+            ticketDto.LoggedInUserDepartmentId = commonService.GetDepartmentId(userId);
             return View(ticketDto);
         }
 
         [HttpGet]
         public IActionResult Tickets(string keyword, int page = DefaultPageNumber)
         {
-            this.TempData["keyword"] = keyword;
             var userId = userManager.GetUserId(User);
             var tickets = ticketService.GetAll(userId, page, TicketsPerPage, keyword);
 
             var ticketsDtos = new TicketsListViewModel
             {
                 Page = page,
+                Keyword = keyword,
                 TicketsCount = ticketService.GetTicketsCount(userId, keyword),
                 Tickets = mapper.Map<List<BaseTicketViewModel>>(tickets),
             };

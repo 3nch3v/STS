@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using AutoMapper;
 
@@ -14,17 +14,19 @@ namespace STS.Services
 {
     public class TicketService : ITicketService
     {
-        private static string[] ticketsNavCategories = { "my", "to me", "answers", "new", "all", "history" };
-
+        private static string[] ticketsNavCategories = { "my", "to me", "new", "all", "history" };
+        private readonly IAdminService adminService;
         private readonly ICommonService commonService;
         private readonly IMapper mapper;
         private readonly ApplicationDbContext dbContext;
 
         public TicketService(
+            IAdminService adminService,
             ICommonService commonService,
             IMapper mapper,
             ApplicationDbContext dbContext)
         {
+            this.adminService = adminService;
             this.commonService = commonService;
             this.mapper = mapper;
             this.dbContext = dbContext;
@@ -63,6 +65,12 @@ namespace STS.Services
             var ticket = mapper.Map<Ticket>(ticketDto);
             ticket.EmployeeId = userId;
             ticket.StatusId = commonService.GetStatusId("Open");
+            var assigneToUser = adminService.GetUserById(ticket.AssignedToId);
+
+            if (assigneToUser == null) 
+            {
+                ticket.AssignedToId = null;
+            }
 
             await dbContext.Tickets.AddAsync(ticket);
             await dbContext.SaveChangesAsync();
@@ -104,8 +112,16 @@ namespace STS.Services
             {
                 dbTicket.DepartmentId = (int)ticketInput.DepartmentId;
                 dbTicket.StatusId = commonService.GetStatusId("Open");
-                dbTicket.AssignedToId = null;
-                dbTicket.AssignedTo = null;
+
+                if (commonService.GetDepartmentId(dbTicket.EmployeeId) == ticketInput.DepartmentId)
+                {
+                    dbTicket.AssignedToId = dbTicket.EmployeeId;
+                }
+                else 
+                {
+                    dbTicket.AssignedToId = null;
+                    dbTicket.AssignedTo = null;
+                }
             }
 
             await dbContext.SaveChangesAsync();
@@ -117,7 +133,6 @@ namespace STS.Services
         public async Task DeleteAsync(int ticketId)
         {
             var ticket = GetById(ticketId);
-
             ticket.IsDeleted = true;
 
             var comments = dbContext.Comments
@@ -162,42 +177,24 @@ namespace STS.Services
 
             if (keyword == "my")
             {
-                Func<Ticket, bool> createdByUser = ticket => ticket.EmployeeId == userId
-                                                          && ticket.Status.Name.ToLower() != "closed"
-                                                          && ticket.Status.Name.ToLower() != "solved"
-                                                          && ticket.IsDeleted == false;
+                Func<Ticket, bool> createdByUser = ticket => ticket.EmployeeId == userId;
                 return createdByUser;
             }
 
             if (keyword == "to me")
             {
-                Func<Ticket, bool> assignedToUser = ticket => (ticket.DepartmentId == userDepartmentId
-                                                                && ticket.AssignedToId == userId)
-                                                           && (ticket.Status.Name.ToLower() != "closed"
-                                                              || ticket.Status.Name.ToLower() != "solved")
-                                                           && ticket.IsDeleted == false;
+                Func<Ticket, bool> assignedToUser = ticket => (ticket.DepartmentId == userDepartmentId && ticket.AssignedToId == userId)
+                                                           && (ticket.Status.Name.ToLower() != "closed" && ticket.Status.Name.ToLower() != "solved");
                 return assignedToUser;
-            }
-
-            if (keyword == "answers")
-            {
-                Func<Ticket, bool> newAnswers = ticket => ((ticket.DepartmentId == userDepartmentId
-                                                                && ticket.AssignedToId == userId)
-                                                          || ticket.EmployeeId == userId)
-                                                       && ticket.Status.Name.ToLower() == "open"
-                                                       && (ticket.Status.Name.ToLower() != "closed"
-                                                          || ticket.Status.Name.ToLower() != "solved")
-                                                       && ticket.IsDeleted == false;
-                return newAnswers;
             }
 
             if (keyword == "new")
             {
                 Func<Ticket, bool> newTickets = ticket => ticket.DepartmentId == userDepartmentId
                                                        && ticket.Status.Name.ToLower() == "open"
+                                                       && ticket.AssignedToId == null
                                                        && (ticket.Status.Name.ToLower() != "closed"
-                                                          || ticket.Status.Name.ToLower() != "solved")
-                                                       && ticket.IsDeleted == false;
+                                                          || ticket.Status.Name.ToLower() != "solved");
                 return newTickets;
             }
 
@@ -205,8 +202,7 @@ namespace STS.Services
             {
                 Func<Ticket, bool> solved = ticket => ticket.DepartmentId == userDepartmentId
                                                    && (ticket.Status.Name.ToLower() == "closed"
-                                                      || ticket.Status.Name.ToLower() == "solved")
-                                                   && ticket.IsDeleted == false;
+                                                      || ticket.Status.Name.ToLower() == "solved");
                 return solved;
             }
 
@@ -214,8 +210,7 @@ namespace STS.Services
             {
                 Func<Ticket, bool> all = ticket => ticket.DepartmentId == userDepartmentId
                                             && ticket.Status.Name.ToLower() != "closed"
-                                            && ticket.Status.Name.ToLower() != "solved"
-                                            && ticket.IsDeleted == false;
+                                            && ticket.Status.Name.ToLower() != "solved";
                 return all;
             }
 

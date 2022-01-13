@@ -1,14 +1,11 @@
 ﻿const titleErr = document.querySelector('.title-err');
 const descriptionErr = document.querySelector('.description-err');
 const deadlineErr = document.querySelector('.deadline-err');
-
 const titleInput = document.querySelector('.t-tile input');
 const descriptionInput = document.querySelector('.t-description textarea');
 const deadlineInput = document.querySelector('.t-deadline input');
-
 const dialogCancelBtn = document.querySelector('.cancel-btn');
 const createTaskForm = document.querySelector('.create-form-wrapper form');
-
 createTaskForm.addEventListener('submit', validateTask);
 dialogCancelBtn.addEventListener('click', clearForm);
 
@@ -23,7 +20,6 @@ function validateTask(event) {
     const isDeadlineValid = timeDifference < 0;
 
     if (!isTitleValid || !isDescriptionValid || !isDeadlineValid) {
-
         event.preventDefault();
 
         if (!isTitleValid) {

@@ -21,6 +21,8 @@ namespace STS.Web.ViewModels.Tickets
 
         public bool HasNextPage => Page < PagesCount;
 
+        public string Keyword { get; set; }
+
         public IEnumerable<BaseTicketViewModel> Tickets { get; set; }
     }
 }

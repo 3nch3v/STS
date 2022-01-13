@@ -1,5 +1,6 @@
-﻿using STS.Data.Dtos.Task;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+
+using STS.Data.Dtos.Task;
 
 namespace STS.Services.Contracts
 {

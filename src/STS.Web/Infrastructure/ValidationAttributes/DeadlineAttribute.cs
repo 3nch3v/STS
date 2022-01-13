@@ -5,7 +5,7 @@ namespace STS.Web.Infrastructure.ValidationAttributes
 {
     public class DeadlineAttribute : ValidationAttribute
     {
-        public string GetErrorMessage => $"Deadline can not be in the past.";
+        public string GetErrorMessage => $"Deadline should be at a future time.";
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

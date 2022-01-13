@@ -14,10 +14,8 @@ namespace STS.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
-        private static readonly MethodInfo SetIsDeletedQueryFilterMethod =
-            typeof(ApplicationDbContext).GetMethod(
-                nameof(SetIsDeletedQueryFilter),
-                BindingFlags.NonPublic | BindingFlags.Static);
+        private static readonly MethodInfo SetIsDeletedQueryFilterMethod = 
+            typeof(ApplicationDbContext).GetMethod(nameof(SetIsDeletedQueryFilter), BindingFlags.NonPublic | BindingFlags.Static);
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using AutoMapper;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Common;

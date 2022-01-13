@@ -37,13 +37,11 @@ namespace STS.Web.Areas.Administration.Controllers
             this.userManager = userManager;
         }
 
-        [Route("/[controller]")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Route("/[controller]/CreateUser")]
         [HttpGet]
         public IActionResult CreateUser()
         {
@@ -58,7 +56,6 @@ namespace STS.Web.Areas.Administration.Controllers
             return View(userInput);
         }
 
-        [Route("/[controller]/CreateUser")]
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserInputModel userInput)
         {
@@ -76,12 +73,10 @@ namespace STS.Web.Areas.Administration.Controllers
             return RedirectToAction(nameof(Users));
         }
 
-        [Route("/[controller]/EditUser/{id}")]
         public async Task<IActionResult> EditUser(string id)
         {
             var (departments, roles) = GetDepartmentsAndRoles();
-            var userData = mapper.Map<UserEditModel>(
-                adminService.GetUserById(id));
+            var userData = mapper.Map<UserEditModel>(adminService.GetUserById(id));
             userData.Departments = departments;
             userData.SystemRoles = roles;
             userData.Role = string.Join("", await adminService.GetUserRolesAsync(id));
@@ -89,7 +84,6 @@ namespace STS.Web.Areas.Administration.Controllers
             return View(userData);
         }
 
-        [Route("/[controller]/EditUser")]
         [HttpPost]
         public async Task<IActionResult> EditUser(UserEditModel userInput)
         {
@@ -112,7 +106,8 @@ namespace STS.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateDepartment(string departmentName)
         {
-            if (departmentName.Length < DepartmentNameMinLength || departmentName.Length > DepartmentNameMaxLength)
+            if (departmentName.Length < DepartmentNameMinLength 
+                || departmentName.Length > DepartmentNameMaxLength)
             {
                 return BadRequest();
             }
@@ -125,7 +120,8 @@ namespace STS.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRole(string roleName)
         {
-            if (roleName.Length < RoleNameMinLength || roleName.Length > RoleNameMaxLength)
+            if (roleName.Length < RoleNameMinLength 
+                || roleName.Length > RoleNameMaxLength)
             {
                 return BadRequest();
             }
@@ -135,7 +131,6 @@ namespace STS.Web.Areas.Administration.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Route("/[controller]/LockoutUser/{id}")]
         public async Task<IActionResult> LockoutUser(string id)
         {
             var user = adminService.GetUserById(id);
@@ -150,7 +145,6 @@ namespace STS.Web.Areas.Administration.Controllers
             return RedirectToAction(nameof(Users));
         }
 
-        [Route("/[controller]/UnlockUser/{id}")]
         public async Task<IActionResult> UnlockUser(string id)
         {
             var user = adminService.GetUserById(id);
@@ -164,8 +158,6 @@ namespace STS.Web.Areas.Administration.Controllers
 
             return RedirectToAction(nameof(Users));
         }
-
-        [Route("/[controller]/DeleteUser/{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = adminService.GetUserById(id);
@@ -180,7 +172,6 @@ namespace STS.Web.Areas.Administration.Controllers
             return RedirectToAction(nameof(Users));
         }
 
-        [Route("/[controller]/Users")]
         public async Task<IActionResult> Users(int? departmentId, string keyword, int page = DefaultPageNumber)
         {
             var users = await adminService.GetUsersAsync(page, keyword, departmentId);

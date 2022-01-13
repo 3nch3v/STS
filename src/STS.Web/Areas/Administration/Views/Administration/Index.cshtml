@@ -9,26 +9,23 @@
         <h5 class="t-stat-title">Tickets statistic</h5>
         <vc:tickets-statistic></vc:tickets-statistic>
     </section>
-
     <section class="admin-users-row">
         <section class="admin-dep-section">
             <h5 class="dep-title">Departments</h5>
             <vc:departments></vc:departments>
         </section>
-
         <section class="admin-roles-section">
             <h5 class="t-stat-title">Roles</h5>
             <vc:roles></vc:roles>
         </section>
           <section class="admin-user-section">
             <h5 class="user-title">Users</h5>
-            <a class="create-user-btn" asp-area="Administartion" asp-controller="Administration" asp-action="CreateUser">
+            <a class="create-user-btn" asp-controller="Administration" asp-action="CreateUser">
                 Create user
             </a>
-            <a class="users-btn" asp-area="Administartion" asp-controller="Administration" asp-action="Users">
+            <a class="users-btn" asp-controller="Administration" asp-action="Users">
                 Users Explorer
             </a>
         </section>
     </section>
-
 </article>

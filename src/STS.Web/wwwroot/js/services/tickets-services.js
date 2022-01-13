@@ -1,5 +1,5 @@
 ﻿import { getTicketId, getRequestToken, displayMessage } from './util.js';
-import { editTicket } from '../data/data.js';
+import { editTicket, getEmployees } from '../data/data.js';
 import getTitleView from '../views/edit-ticket-title-view.js';
 import getContentView from '../views/edit-ticket-content-view.js';
 
@@ -7,50 +7,88 @@ const status = document.querySelector('span.status');
 const statusSelect = document.querySelector('.t-status-select');
 const assignToSelect = document.querySelector('.t-employee-select');
 const departmentSelect = document.querySelector('.t-department-select');
+const createDepartmentSelect = document.querySelector('.create-f-dep-select');
 const assignToMeBtn = document.querySelector('.assign-to-me-btn');
 const editTicketTitleBtn = document.querySelector('.edit-t-title');
 const editTicketContentBtn = document.querySelector('.edit-t-content');
 
-departmentSelect.addEventListener('change', changeDepartment);
-statusSelect.addEventListener('change', changeStatus);
-assignToSelect.addEventListener('change', changeEmplyee);
-
+if (departmentSelect) departmentSelect.addEventListener('change', changeDepartment);
+if (assignToSelect) assignToSelect.addEventListener('change', changeEmplyee);
+if (statusSelect) statusSelect.addEventListener('change', changeStatus);
 if (editTicketContentBtn) editTicketContentBtn.addEventListener('click', editContent)
 if (assignToMeBtn) assignToMeBtn.addEventListener('click', assignToMe)
 if (editTicketTitleBtn) editTicketTitleBtn.addEventListener('click', editTitle)
+if (createDepartmentSelect) createDepartmentSelect.addEventListener('change', showEmployeeSelect)
+
+async function showEmployeeSelect() {
+    const employeeSelect = document.querySelector('.create-f-empl-select');
+    const selectDiv = document.querySelector('.create-f-empl-select-div');
+    const createForm = document.querySelector('.create-form-wrapper');
+    const token = createForm.dataset.requestToken;
+    selectDiv.style.display = 'block';
+    await loadDepartmentEmployees(createDepartmentSelect, employeeSelect, token);
+}
+
+async function loadDepartmentEmployees(department, assignTo, token) {
+    const departmentId = department.value;
+    const employees = await getEmployees(departmentId, token);
+    assignTo.options.length = 0;
+    var option = document.createElement("option");
+    option.text = "Select employee";
+    assignTo.add(option, assignTo[0]);
+    employees.forEach(({ id, userName }) =>
+        assignTo.options[assignTo.options.length] = new Option(userName, id)
+    );
+}
 
 async function changeDepartment() {
+    const deleteBtn = document.querySelector('.t-delete-btn');
     const ticketId = getTicketId();
     const token = getRequestToken();
     const departmentId = departmentSelect.value;
     const departmentName = departmentSelect.options[departmentSelect.selectedIndex].text;
-
     await editTicket(token, { id: ticketId, departmentId: departmentId });
+
+    if (deleteBtn) {
+        deleteBtn.remove();
+    }
+    if (assignToMeBtn) {
+        assignToMeBtn.remove();
+    }
+    if (editTicketTitleBtn) {
+        editTicketTitleBtn.remove();
+    }
+    if (editTicketContentBtn) {
+        editTicketContentBtn.remove();
+    }
+    statusSelect.disabled = true;
+    changeStatusIcon('Open');
+    changeTextContent('.assigned-to-username .name-prefix', 'unassigned');
+    changeTextContent('.assigned-to-username .username', '');
     displayMessage(`Ticket department has been changed to ${departmentName}`);
+
+    await loadDepartmentEmployees(departmentSelect, assignToSelect, token);
 }
 
 async function assignToMe(event) {
     event.preventDefault();
-
-    const myId = event.target.dataset.myId;
+    const currUser = event.target.dataset.myId;
     const ticketId = getTicketId();
-    const token = getRequestToken();
-    
-    await editTicket(token, { id: ticketId, AssignedToId: myId });
-
-    changeTextContent('.assigned-to-username .username', 'you');
+    const token = getRequestToken();  
+    await editTicket(token, { id: ticketId, AssignedToId: currUser });
+    assignToMeBtn.remove();
+    assignToSelect.value = currUser;
+    const currUserName = assignToSelect.options[assignToSelect.selectedIndex].text;
+    changeTextContent('.assigned-to-username .username', currUserName);
     displayMessage(`Ticket has been assigned to you`);
 }
 
 async function changeStatus() {
     const ticketId = getTicketId();
     const token = getRequestToken();
-
     const statusId = statusSelect.value;
     const statusName = statusSelect.options[statusSelect.selectedIndex].text;
-
     await editTicket(token, { id: ticketId, statusId: statusId});
-
     changeStatusIcon(statusName);
     displayMessage(`Status has been chanded to ${statusName}`);
 }
@@ -58,12 +96,9 @@ async function changeStatus() {
 async function changeEmplyee() {
     const ticketId = getTicketId();
     const token = getRequestToken();
-
     const assignToId = assignToSelect.value;
     const assignedToUsername = assignToSelect.options[assignToSelect.selectedIndex].text;
-
     await editTicket(token, { id: ticketId, assignedToId: assignToId });
-
     changeTextContent('.assigned-to-username .name-prefix', "Assigned to");
     changeTextContent('.assigned-to-username .username', assignedToUsername);
     displayMessage(`Ticket has been assigned to ${assignedToUsername}`);

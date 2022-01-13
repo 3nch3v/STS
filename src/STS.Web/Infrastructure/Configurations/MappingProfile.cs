@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 
+using STS.Data.Models;
 using STS.Data.Dtos.Department;
 using STS.Data.Dtos.Role;
 using STS.Data.Dtos.Task;
 using STS.Data.Dtos.Ticket;
 using STS.Data.Dtos.User;
 
-using STS.Data.Models;
 using STS.Web.ViewModels.Admin;
 using STS.Web.ViewModels.Comment;
 using STS.Web.ViewModels.Common;

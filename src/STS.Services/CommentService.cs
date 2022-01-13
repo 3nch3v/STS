@@ -38,6 +38,11 @@ namespace STS.Services
             this.userManager = userManager;
         }
 
+        public Comment GetById(int id)
+        {
+            return dbContext.Comments.FirstOrDefault(x => x.Id == id);
+        }
+
         public async Task<Comment> CreateAsync<T>(T commentDto, string userId)
         {
             var comment = mapper.Map<Comment>(commentDto);
@@ -55,15 +60,18 @@ namespace STS.Services
         public async Task<bool> DeleteAsync(int id)
         {
             var comment = GetById(id);
-            dbContext.Comments.Remove(comment);
-            await dbContext.SaveChangesAsync();
 
-            return true;
-        }
+            try
+            {
+                dbContext.Comments.Remove(comment);
+                await dbContext.SaveChangesAsync();
 
-        public Comment GetById(int id)
-        {
-            return dbContext.Comments.FirstOrDefault(x => x.Id == id);    
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task SendEmailAsync(int ticketId, string content, ApplicationUser sender)

@@ -24,6 +24,7 @@ namespace STS.Data.Seeding
                 new Status { Name = "Closed" },
                 new Status { Name = "In progress" },
                 new Status { Name = "On hold" },
+                new Status { Name = "New reply" },
             };
 
             await dbContext.Statuses.AddRangeAsync(priorities);

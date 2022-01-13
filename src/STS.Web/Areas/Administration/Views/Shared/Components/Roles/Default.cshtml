@@ -5,10 +5,9 @@
     @foreach (var role in Model)
     {
         <p>@role.Name </p>
-
     }
 
-    <form method="post" asp-area="Administration" asp-controller="Administration" asp-action="CreateRole">
+    <form method="post" asp-controller="Administration" asp-action="CreateRole">
         <label class="create-dep-label" for="roleName">Add new role:</label>
         <div>
             <input class="create-dep-input" type="text" id="roleName" name="roleName" required>

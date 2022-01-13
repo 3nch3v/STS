@@ -38,15 +38,81 @@ namespace STS.Services
 
         public int GetUsersCount() => usersCount;
 
+        public ApplicationUser GetUserById(string id)
+        {
+            return dbContext.Users.FirstOrDefault(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<string>> GetUserRolesAsync(string id)
+        {
+            return await userManager.GetRolesAsync(GetUserById(id));
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUsersAsync(int page, string searchTerm, int? departmentId)
+        {
+            var usersQuery = dbContext.Users.AsQueryable();
+
+            if (departmentId != null)
+            {
+                usersQuery = usersQuery
+                    .Where(user => user.DepartmentId == departmentId)
+                    .AsQueryable(); ;
+            }
+
+            if (searchTerm != null)
+            {
+                usersQuery = usersQuery.Where(user => user.Email.ToLower() == searchTerm.ToLower()
+                                           || user.UserName == searchTerm.ToLower()
+                                           || user.Department.Name.ToLower() == searchTerm.ToLower()
+                                           || user.FirstName.ToLower() == searchTerm.ToLower()
+                                           || user.LastName.ToLower() == searchTerm.ToLower()
+                                           || user.FirstName.ToLower() + ' ' + user.LastName.ToLower() == searchTerm.ToLower()
+                                           || user.Position.ToLower() == searchTerm.ToLower());
+            }
+
+            usersCount = usersQuery.Count();
+
+            var users = usersQuery
+                .Select(u => new UserDto
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    UserName = u.UserName,
+                    Position = u.Position,
+                    PhoneNumber = u.PhoneNumber,
+                    DepartmentId = u.DepartmentId,
+                    DepartmentName = u.Department.Name,
+                })
+                .Skip((page - 1) * UsersPerPage)
+                .Take(UsersPerPage)
+                .ToList();
+
+            foreach (var user in users)
+            {
+                var currUser = await userManager.FindByIdAsync(user.Id);
+                user.Roles = await userManager.GetRolesAsync(currUser);
+                user.IsLockedOut = await userManager.IsLockedOutAsync(currUser);
+            }
+
+            return users;
+        }
+
         public async Task CreateDepartmentAsync(string departmentName)
         {
-            var department = new Department()
-            {
-                Name = departmentName,
-            };
+            var dbDepartment = dbContext.Departments.FirstOrDefault(d => d.Name.ToLower() == departmentName.ToLower());
 
-            await dbContext.Departments.AddAsync(department);
-            await dbContext.SaveChangesAsync();
+            if(dbDepartment == null)
+            {
+                var department = new Department()
+                {
+                    Name = departmentName,
+                };
+
+                await dbContext.Departments.AddAsync(department);
+                await dbContext.SaveChangesAsync();
+            }       
         }
 
         public async Task CreateRoleAsync(string roleName)
@@ -151,11 +217,6 @@ namespace STS.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<string>> GetUserRolesAsync(string id)
-        {
-            return await userManager.GetRolesAsync(GetUserById(id));
-        }
-
         public async Task LockoutUserAsync(string userId)
         {
             var user = GetUserById(userId);
@@ -193,62 +254,6 @@ namespace STS.Services
             //TODO Do someyhing with the tickets ?!
 
             await dbContext.SaveChangesAsync();
-        }
-
-        public ApplicationUser GetUserById(string id)
-        {
-            return dbContext.Users.FirstOrDefault(x => x.Id == id);
-        }
-
-        public async Task<IEnumerable<UserDto>> GetUsersAsync(int page, string searchTerm, int? departmentId)
-        {
-            var usersQuery = dbContext.Users.AsQueryable();
-
-            if (departmentId != null)
-            {
-                usersQuery = usersQuery
-                    .Where(user => user.DepartmentId == departmentId)
-                    .AsQueryable(); ;
-            }
-
-            if (searchTerm != null)
-            {
-                usersQuery = usersQuery.Where(user => user.Email.ToLower() == searchTerm.ToLower()
-                                           || user.UserName == searchTerm.ToLower()
-                                           || user.Department.Name.ToLower() == searchTerm.ToLower()
-                                           || user.FirstName.ToLower() == searchTerm.ToLower()
-                                           || user.LastName.ToLower() == searchTerm.ToLower()
-                                           || user.FirstName.ToLower() + ' ' + user.LastName.ToLower() == searchTerm.ToLower()
-                                           || user.Position.ToLower() == searchTerm.ToLower());
-            }
-
-            usersCount = usersQuery.Count();
-
-            var users = usersQuery
-                .Select(u => new UserDto
-                {
-                    Id = u.Id,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Email = u.Email,
-                    UserName = u.UserName,
-                    Position = u.Position,
-                    PhoneNumber = u.PhoneNumber,
-                    DepartmentId = u.DepartmentId,
-                    DepartmentName = u.Department.Name,
-                })
-                .Skip((page - 1) * UsersPerPage)
-                .Take(UsersPerPage)
-                .ToList();
-
-            foreach (var user in users)
-            {
-                var currUser = await userManager.FindByIdAsync(user.Id);
-                user.Roles = await userManager.GetRolesAsync(currUser);
-                user.IsLockedOut = await userManager.IsLockedOutAsync(currUser);
-            }
-
-            return users;
         }
     }
 }

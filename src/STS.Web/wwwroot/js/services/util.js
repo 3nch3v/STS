@@ -13,9 +13,8 @@ export function getRequestToken() {
 
 export function modal(modalElement, dialogElement, cancelBtnElement) {
     const showModal = document.querySelector(modalElement);
-    var dialog = document.querySelector(dialogElement);
+    const dialog = document.querySelector(dialogElement);
     const cancelBtn = document.querySelector(cancelBtnElement);
-
     showModal.addEventListener('click', openDialog);
     cancelBtn.addEventListener('click', closeDialog);
 
@@ -58,9 +57,7 @@ export function createHtmlElement(type, attributes, ...content) {
 export function displayMessage(message) {
     const msgDiv = document.querySelector('#msgBox');
     const spanElement = msgDiv.querySelector('span');
-
     spanElement.textContent = message;
     msgDiv.style.display = 'block';
-
     setTimeout(() => msgDiv.style.display = 'none', 3000);
 }

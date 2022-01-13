@@ -7,7 +7,7 @@ using AutoMapper;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tasks;
 
-namespace STS.Web.Controllers
+namespace STS.Web.Areas.Api.Controllers
 {
     [Route("api/tasks")]
     [ApiController]

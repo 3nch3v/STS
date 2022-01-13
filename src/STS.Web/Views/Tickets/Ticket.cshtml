@@ -1,13 +1,15 @@
 ﻿@using STS.Web.ViewModels.Tickets;
 @using static STS.Common.GlobalConstants;
+
 @model TicketViewModel;
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
 @{
-    ViewData["Title"] = Model.Title;
-    ViewData["ticketId"] = Model.Id;
+    bool isInLoggedInUserDepartment = Model.LoggedInUserDepartmentId == Model.DepartmentId;
     var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
     ViewData["requestToken"] = requestToken;
+    ViewData["Title"] = Model.Title;
+    ViewData["ticketId"] = Model.Id;
 }
 
 <article class="ticket-search">
@@ -21,7 +23,8 @@
                    type="text"
                    required
                    minlength=2
-                   placeholder="Search..." />
+                   placeholder="Search..." 
+            />
             <button class="search-btn" type="submit">Go</button>
         </form>
     </section>
@@ -33,69 +36,67 @@
     </section>
 
     <section class="ticket-wrapper">
-
         <section class="ticket" data-ticket-id="@Model.Id" data-request-token="@requestToken">
-
             <section class="ticket-actions">
                 <div>
                     <select class="t-status-select"
                             asp-items="@Model.Statuses
                                 .Where(x => x.Name != Model.StatusName)
-                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
+                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))"
+                            disabled="@(!isInLoggedInUserDepartment)"
+                    >
                         <option selected="selected" value="@Model.StatusId">@Model.StatusName</option>
                     </select>
-
                     <select class="t-department-select"
                             asp-items="@Model.Departments
                                 .Where(x => x.Name != Model.DepartmentName)
-                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
+                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))"
+                            disabled="@(!isInLoggedInUserDepartment)"
+                    >
                         <option selected="selected" value="@Model.DepartmentId">@Model.DepartmentName</option>
                     </select>
-
                     <select class="t-employee-select"
                             asp-items="@Model.Employees
                                 .Where(x => x.UserName != Model.AssignedToUserName)
-                                .Select(x => new SelectListItem(x.UserName, x.Id))">
-                        <option selected="selected" value="@Model.AssignedToId">@(Model.AssignedToUserName ?? "Select user")</option>
+                                .Select(x => new SelectListItem(x.UserName, x.Id))"
+                            disabled="@(!isInLoggedInUserDepartment)"
+                    >
+                        <option selected="selected" value="@Model.AssignedToId">@(Model.AssignedToUserName ?? "Select employee")</option>
                     </select>
                 </div>
                 <div>
-                    @if (Model.AssignedToId != Model.LoggedInUserId)
+                    @if (Model.AssignedToId != Model.LoggedInUserId
+                        && Model.LoggedInUserDepartmentId == Model.DepartmentId)
                     {
                         <a href="javascript.void(0)"
                            type="button"
                            class="assign-to-me-btn"
-                           data-my-id="@Model.LoggedInUserId"
-                        >
-                            Assign to me
+                           data-my-id="@Model.LoggedInUserId">
+                                Assign to me
                         </a>
                     }
-                    @if (Model.IsOwner)
+                    @if (Model.IsOwner &&  Model.LoggedInUserDepartmentId == Model.DepartmentId)
                     {
                         <a asp-controller="Tickets"
                            asp-action="Delete"
                            asp-route-id="@Model.Id"
-                           class="t-delete-btn"
-                        >
-                            <i class="fa fa-trash fa-lg"></i>
+                           class="t-delete-btn">
+                             <i class="fa fa-trash fa-lg"></i>
                         </a>
                     }
                 </div>
             </section>
-
             <section class="ticket-details">
-
                 <section class="ticket-details-title">
                     <section class="tile-status-priority">
                         <span class="status @Model.StatusName.ToLower().Replace(" ", "")">@Model.StatusName</span>
                         <span class="priority @Model.PriorityName.ToLower().Replace(" ", "")">@Model.PriorityName</span>
                     </section>
-
                     <section class='t-title-section'>
                         <section class='t-title'>
                             <p class="ticket-title">
                                 @Model.Title
-                                @if (Model.IsOwner)
+                                @if (Model.IsOwner && Model.LoggedInUserDepartmentId == Model.DepartmentId)
                                 {
                                     <a class="edit-t-title" href="javascript.void(0)">
                                         <i class="fa fa-edit"></i>
@@ -103,16 +104,13 @@
                                 }
                             </p>
                         </section>
-                         <section class='t-title-section-edited'></section>
+                        <section class='t-title-section-edited'></section>
                     </section>
-
-                   
                 </section>
-
                 <section class="ticket-body-section">
                     <p class="ticket-content">
                         @Model.Content
-                        @if (Model.IsOwner)
+                        @if (Model.IsOwner && Model.LoggedInUserDepartmentId == Model.DepartmentId)
                         {
                             <a class="edit-t-content" href="javascript.void(0)">
                                 <i class="fa fa-edit"></i>
@@ -120,14 +118,12 @@
                         }
                     </p>
                 </section>
-
                 <section class="t-content-section-edited"></section>
-
                 <section class="ticket-footer">
                     <div>
                         <p>
                             from
-                            <span class="username">@Model.EmployeeUserName</span>
+                            <span class="username">@(Model.EmployeeUserName ?? "Ex employee")</span>
                             created on
                             <span class="date">@Model.CreatedOn</span>
                         </p>
@@ -141,7 +137,6 @@
                 </section>
             </section>
         </section>
-
         <section class="ticket-comments">
             @foreach (var comment in Model.Comments)
             {
@@ -168,19 +163,15 @@
                                 </button>
                             }
                         </div>
-
                     </div>
                 </section>
             }
         </section>
-
         <section class="new-comment"></section>
-
         <section class="t-comment-btn-section">
             <button class="t-comment-btn">Comment</button>
         </section>
     </section>
-
     <aside class="tasks-review">
         <p class="daily-tasks">Daily tasks</p>
         <vc:tasks-side-bar is-manager=false tasks-count=TasksSideBarCount></vc:tasks-side-bar>
@@ -199,8 +190,8 @@
 </dialog>
 
 @section Scripts {
-<script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
-<script type="module" src="~/js/services/comments-services.js"></script>
-<script type="module" src="~/js/services/tickets-services.js"></script>
-<script type="module" src="~/js/services/create-ticket-validation.js"></script>
+    <script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
+    <script type="module" src="~/js/services/comments-services.js"></script>
+    <script type="module" src="~/js/services/tickets-services.js"></script>
+    <script type="module" src="~/js/services/create-ticket-validation.js"></script>
 }

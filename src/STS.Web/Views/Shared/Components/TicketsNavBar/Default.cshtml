@@ -3,24 +3,10 @@
 <nav class="tickets-nav">
     <ul>
         <li>
-            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="my">
-                My tickets
-                <span class="t-count">@Model["my"]</span>
-            </a>
-        </li>
-        <li>
             <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="to me">
-                Assigned to me 
+                Waiting for me 
                 <span class="t-count">
                     @Model["to me"]
-                </span>
-            </a>
-        </li>
-        <li>
-            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="answers">
-                New answers 
-                <span class="t-count">
-                    @Model["answers"]
                 </span>
             </a>
         </li>
@@ -38,6 +24,12 @@
                 <span class="t-count">
                     @Model["all"]
                 </span>
+            </a>
+        </li>
+         <li>
+            <a asp-controller="Tickets" asp-action="Tickets" asp-route-keyword="my">
+                My tickets
+                <span class="t-count">@Model["my"]</span>
             </a>
         </li>
         <li>

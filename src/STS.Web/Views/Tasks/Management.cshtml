@@ -30,19 +30,21 @@
                         {
                             <li>
                                 <a asp-controller="Tasks"
-                           asp-action="Management"
-                           asp-route-page="@Model.PreviousPage"
-                           asp-route-isActive="@Model.OnlyActive"
-                           asp-route-keyword="@Model.Keyword">
+                                   asp-action="Management"
+                                   asp-route-page="@Model.PreviousPage"
+                                   asp-route-isActive="@Model.OnlyActive"
+                                   asp-route-keyword="@Model.Keyword"
+                                >
                                     Previous
                                 </a>
                             </li>
                             <li>
                                 <a asp-controller="Tasks"
-                           asp-action="Management"
-                           asp-route-page="@(Model.Page - 1)"
-                           asp-route-isActive="@Model.OnlyActive"
-                           asp-route-keyword="@Model.Keyword">
+                                   asp-action="Management"
+                                   asp-route-page="@(Model.Page - 1)"
+                                   asp-route-isActive="@Model.OnlyActive"
+                                   asp-route-keyword="@Model.Keyword"
+                                >
                                     @(Model.Page - 1)
                                 </a>
                             </li>
@@ -50,10 +52,11 @@
 
                         <li>
                             <a asp-controller="Tasks"
-                           asp-action="Management"
-                           asp-route-page="@Model.Page"
-                           asp-route-isActive="@Model.OnlyActive"
-                           asp-route-keyword="@Model.Keyword">
+                               asp-action="Management"
+                               asp-route-page="@Model.Page"
+                               asp-route-isActive="@Model.OnlyActive"
+                               asp-route-keyword="@Model.Keyword"
+                            >
                                 @Model.Page
                             </a>
                         </li>
@@ -62,19 +65,21 @@
                         {
                             <li>
                                 <a asp-controller="Tasks"
-                           asp-action="Management"
-                           asp-route-page="@(Model.Page + 1)"
-                           asp-route-isActive="@Model.OnlyActive"
-                           asp-route-keyword="@Model.Keyword">
+                                   asp-action="Management"
+                                   asp-route-page="@(Model.Page + 1)"
+                                   asp-route-isActive="@Model.OnlyActive"
+                                   asp-route-keyword="@Model.Keyword"
+                                >
                                     @(Model.Page + 1)
                                 </a>
                             </li>
                             <li>
                                 <a asp-controller="Tasks"
-                           asp-action="Management"
-                           asp-route-page="@Model.NextPage"
-                           asp-route-isActive="@Model.OnlyActive"
-                           asp-route-keyword="@Model.Keyword">
+                                   asp-action="Management"
+                                   asp-route-page="@Model.NextPage"
+                                   asp-route-isActive="@Model.OnlyActive"
+                                   asp-route-keyword="@Model.Keyword"
+                                >
                                     Next
                                 </a>
                             </li>

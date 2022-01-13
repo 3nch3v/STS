@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using STS.Data;
-using STS.Data.Dtos.Department;
 using STS.Data.Models;
-using STS.Services.Contracts;
+using STS.Data.Dtos.Department;
 using STS.Data.Dtos.User;
 using STS.Data.Dtos.Role;
 using STS.Data.Dtos.Ticket;
+using STS.Services.Contracts;
 
 namespace STS.Services
 {
@@ -15,6 +16,7 @@ namespace STS.Services
     {
         private const string statusClosed = "Closed";
         private const string statusSolved = "Solved";
+
         private readonly ApplicationDbContext dbContext;
 
         public CommonService(ApplicationDbContext dbContext)
@@ -29,6 +31,61 @@ namespace STS.Services
                 .FirstOrDefault();
 
             return requestedStatus.Id;
+        }
+
+        public Task<bool> IsDepartmentExisting(int id)
+        {
+            if (dbContext.Departments.Any(x => x.Id == id))
+            {
+                return Task.FromResult(true);
+            }
+
+            return Task.FromResult(false);
+        }
+
+        public int GetDepartmentId(string userId)
+        {
+            var user = dbContext.Users
+                .Where(x => x.Id == userId)
+                .FirstOrDefault();
+
+            return user.DepartmentId;
+        }
+
+        public Dictionary<string, Dictionary<string, int>> GetTicketsStatistic()
+        {
+            var ticketStatistic = dbContext.Tickets
+              .GroupBy(x => new
+              {
+                  StatusName = x.Status.Name,
+                  DepartmentName = x.Department.Name
+              })
+              .Select(g => new TicketStatisticDto
+              {
+                  Status = g.Key.StatusName,
+                  Department = g.Key.DepartmentName,
+                  Count = g.Count(),
+              })
+              .ToList();
+
+            Dictionary<string, Dictionary<string, int>> byStatus = new Dictionary<string, Dictionary<string, int>>();
+
+            foreach (var currStat in ticketStatistic)
+            {
+                if (!byStatus.ContainsKey(currStat.Status))
+                {
+                    byStatus.Add(currStat.Status, new Dictionary<string, int>());
+                }
+
+                if (!byStatus[currStat.Status].ContainsKey(currStat.Department))
+                {
+                    byStatus[currStat.Status].Add(currStat.Department, 0);
+                }
+
+                byStatus[currStat.Status][currStat.Department] += currStat.Count;
+            }
+
+            return byStatus;
         }
 
         public IEnumerable<DepartmentBaseDto> GetDepartmentsBase()
@@ -77,6 +134,7 @@ namespace STS.Services
                 .ToList();
         }
 
+
         public IEnumerable<Priority> GetPriorities()
         {
             return dbContext.Priorities.ToList();
@@ -97,52 +155,5 @@ namespace STS.Services
                 })
                 .ToList();
         }
-
-        public Dictionary<string, Dictionary<string, int>> GetTicketsStatistic()
-        {
-            var ticketStatistic = dbContext.Tickets
-              .GroupBy(x => new
-              {
-                  StatusName = x.Status.Name,
-                  DepartmentName = x.Department.Name
-                  
-              })
-              .Select(g => new TicketStatisticDto
-              {
-                  Status = g.Key.StatusName,
-                  Department = g.Key.DepartmentName,
-                  Count = g.Count(),
-              })
-              .ToList();
-
-            Dictionary<string, Dictionary<string, int>> byStatus = new Dictionary<string, Dictionary<string,int>>();
-
-            foreach (var currStat in ticketStatistic) 
-            {
-                if (!byStatus.ContainsKey(currStat.Status))
-                {
-                    byStatus.Add(currStat.Status, new Dictionary<string, int>());
-                }
-
-                if (!byStatus[currStat.Status].ContainsKey(currStat.Department))
-                {
-                    byStatus[currStat.Status].Add(currStat.Department, 0);
-                }
-
-                byStatus[currStat.Status][currStat.Department] += currStat.Count;
-            }
-
-            return byStatus;
-        }
-
-        public int GetDepartmentId(string userId)
-        {
-            var user = dbContext.Users
-                .Where(x => x.Id == userId)
-                .FirstOrDefault();
-
-            return user.DepartmentId;
-        }
-
     }
 }

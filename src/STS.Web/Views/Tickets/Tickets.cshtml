@@ -1,13 +1,12 @@
 ﻿@using STS.Web.ViewModels.Tickets;
+
 @using static STS.Common.GlobalConstants;
 
 @model TicketsListViewModel;
 
 @{
     this.ViewData["Title"] = "Tickets";
-    this.TempData.Keep("keyword");
-    this.ViewData["keyword"] = this.TempData["keyword"];
-    string[] keys = new string[] { "my", "to me", "answers", "new", "all", "history" };
+    string[] keys = { "my", "to me", "new", "all", "history" };
 }
 
 <article class="ticket-search">
@@ -19,7 +18,7 @@
             <input class="search-input-field"
                    name="keyword"
                    type="text"
-                   value="@(!keys.Contains(this.ViewData["keyword"]) ? this.ViewData["keyword"] : null)"
+                   value="@(!keys.Contains(Model.Keyword) ? Model.Keyword : null)"
                    placeholder="Search..."
                    required
                    minlength=2 />
@@ -29,7 +28,6 @@
 </article>
 
 <article class="tickets-page-container">
-
     <section class="tickets-nav-section">
         <vc:tickets-nav-bar></vc:tickets-nav-bar>
     </section>
@@ -71,7 +69,7 @@
             }
             else
             {
-                <p>No Tickets Currently Available</p>
+                <p>No tickets currently available.</p>
             }
         </section>
 
@@ -86,7 +84,8 @@
                             <a asp-controller="Tickets" 
                                asp-action="Tickets" 
                                asp-route-page="@Model.PreviousPage" 
-                               asp-route-keyword="@this.ViewData["keyword"]">
+                               asp-route-keyword="@Model.Keyword"
+                            >
                                     Previous
                             </a>
                         </li>
@@ -94,7 +93,8 @@
                             <a asp-controller="Tickets"
                                asp-action="Tickets" 
                                asp-route-page="@(Model.Page - 1)" 
-                               asp-route-keyword="@this.ViewData["keyword"]">
+                               asp-route-keyword="@Model.Keyword"
+                            >
                                     @(Model.Page - 1)
                             </a>
                         </li>
@@ -104,7 +104,8 @@
                         <a asp-controller="Tickets" 
                            asp-action="Tickets" 
                            asp-route-page="@Model.Page" 
-                           asp-route-keyword="@this.ViewData["keyword"]">
+                           asp-route-keyword="@Model.Keyword"
+                        >
                                 @Model.Page
                         </a>
                     </li>
@@ -115,7 +116,8 @@
                             <a asp-controller="Tickets"
                                asp-action="Tickets" 
                                asp-route-page="@(Model.Page + 1)" 
-                               asp-route-keyword="@this.ViewData["keyword"]">
+                               asp-route-keyword="@Model.Keyword"
+                            >
                                     @(Model.Page + 1)
                             </a>
                         </li>
@@ -123,7 +125,8 @@
                             <a asp-controller="Tickets" 
                                asp-action="Tickets" 
                                asp-route-page="@Model.NextPage" 
-                               asp-route-keyword="@this.ViewData["keyword"]">
+                               asp-route-keyword="@Model.Keyword"
+                            >
                                     Next
                             </a>
                         </li>
@@ -139,6 +142,7 @@
 </dialog>
 
 @section Scripts {
-<script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
-<script type="module" src="~/js/services/create-ticket-validation.js"></script>
+    <script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
+    <script type="module" src="~/js/services/create-ticket-validation.js"></script>
+    <script type="module" src="~/js/services/tickets-services.js"></script>
 }

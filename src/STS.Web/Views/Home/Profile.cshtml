@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims
+
 @using STS.Web.ViewModels.Identity;
 
 @model ChangePassInputModel;
@@ -9,9 +10,7 @@
 }
 
 <article class="profile-wrapper">
-
     <vc:profile user-id="@currUserId"></vc:profile>
-
     <div>
         <section class="change-pass">
             <p>Change your password</p>
@@ -28,7 +27,7 @@
                 </div>
                 <div class="d-password">
                     <label asp-for="RepeatPass"></label>
-                    <input asp-for="RepeatPass" class="repeat-pass" />
+                    <input asp-for="RepeatPass" type="password" class="repeat-pass" />
                     <span asp-validation-for="RepeatPass" class="text-danger"></span>
                 </div>
                 <div class="form-group">

@@ -18,13 +18,13 @@ namespace STS.Web.ViewModels.Tickets
         [StringLength(ContentMaxLength, MinimumLength = ContentMinLength)]
         public string Content { get; set; }
 
-        public string AssignedToId { get; set; }
-
         [PriorityId]
         public int PriorityId { get; set; }
 
         [DepartmentId]
         public int DepartmentId { get; set; }
+
+        public string AssignedToId { get; set; }
 
         public IEnumerable<PriorityViewModel> Priorities { get; set; }
 

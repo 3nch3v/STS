@@ -24,6 +24,8 @@ namespace STS.Web.ViewModels.Tickets
 
         public string LoggedInUserId { get; set; }
 
+        public int LoggedInUserDepartmentId { get; set; }
+
         public bool IsOwner => EmployeeId == LoggedInUserId;
 
         public ICollection<CommentViewModel> Comments { get; set; }

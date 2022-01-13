@@ -12,8 +12,6 @@ namespace STS.Data.Seeding
 {
     internal class UsersSeeder : ISeeder
     {
-        private const string password = "111111";
-
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             if (dbContext.Users.Any())
@@ -23,60 +21,21 @@ namespace STS.Data.Seeding
 
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            //Add admin user 
             var adminUser = new ApplicationUser
             {
                 FirstName = "Admin",
-                LastName = "Panel",
+                LastName = "Admin",
                 Position = "Administrator",
-                UserName = "admin@sts.net",
+                UserName = "Admin",
                 Email = "admin@sts.net",
-                DepartmentId = 2,
+                DepartmentId = 1,
             };
 
-            var adminRegistrationResult = userManager.CreateAsync(adminUser, password).Result;
+            var adminRegistrationResult = userManager.CreateAsync(adminUser, "administrator").Result;
 
             if (adminRegistrationResult.Succeeded)
             {
                 await userManager.AddToRoleAsync(adminUser, GlobalConstants.AdministratorRoleName);
-            }
-
-            //Add employee user 
-            var employeeUser = new ApplicationUser
-            {
-                FirstName = "Employee1",
-                LastName = "User1",
-                Position = "Customer Care Agent",
-                UserName = "cc1@sts.net",
-                Email = "cc1@sts.net",
-                DepartmentId = 1,
-                PhoneNumber = "+49-88-78-78",
-            };
-
-            var employeeRegistrationResult = userManager.CreateAsync(employeeUser, password).Result;
-
-            if (employeeRegistrationResult.Succeeded)
-            {
-                await userManager.AddToRoleAsync(employeeUser, GlobalConstants.EmployeeRoleName);
-            }
-
-            //Add manager user 
-            var managerUser = new ApplicationUser
-            {
-                FirstName = "Manager",
-                LastName = "ManagerUser",
-                Position = "CC Manager",
-                Email = "manager@sts.net",
-                UserName = "manager@sts.net",
-                DepartmentId = 1,
-                PhoneNumber = "+49-88-78-78",
-            };
-
-            var managerSignInResult = userManager.CreateAsync(managerUser, password).Result;
-
-            if (managerSignInResult.Succeeded)
-            {
-                await userManager.AddToRoleAsync(managerUser, GlobalConstants.ManagerRoleName);
             }
         }
     }

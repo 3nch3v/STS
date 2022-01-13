@@ -1,4 +1,5 @@
 ﻿@using STS.Web.ViewModels.Tasks;
+
 @model TasksViewModel;
 
 @{
@@ -7,7 +8,7 @@
 }
 
 <article class="tasks-wrapper">
-    <partial name="_TaskSideBar" view-data=this.ViewData />
+    <partial name="_TaskSideBar" view-data="this.ViewData" />
 
     <section class="tasks-table-wrapper">
         <partial name="_TasksTable" model="Model"/>
@@ -17,7 +18,6 @@
             {
                 <nav class="page-nav">
                     <ul class="page-nav-list">
-
                         @if (Model.HasPreviousPage)
                         {
                             <li>
@@ -25,7 +25,8 @@
                                    asp-action="Index"
                                    asp-route-page="@Model.PreviousPage"
                                    asp-route-isActive="@Model.OnlyActive"
-                                   asp-route-keyword="@Model.Keyword">
+                                   asp-route-keyword="@Model.Keyword"
+                                >
                                             Previous
                                 </a>
                             </li>
@@ -34,7 +35,8 @@
                                    asp-action="Index"
                                    asp-route-page="@(Model.Page - 1)"
                                    asp-route-isActive="@Model.OnlyActive"
-                                   asp-route-keyword="@Model.Keyword">
+                                   asp-route-keyword="@Model.Keyword"
+                                >
                                             @(Model.Page - 1)
                                 </a>
                             </li>
@@ -45,7 +47,8 @@
                                asp-action="Index"
                                asp-route-page="@Model.Page"
                                asp-route-isActive="@Model.OnlyActive"
-                               asp-route-keyword="@Model.Keyword">
+                               asp-route-keyword="@Model.Keyword"
+                            >
                                     @Model.Page
                             </a>
                         </li>
@@ -57,7 +60,8 @@
                                    asp-action="Index"
                                    asp-route-page="@(Model.Page + 1)"
                                    asp-route-isActive="@Model.OnlyActive"
-                                   asp-route-keyword="@Model.Keyword">
+                                   asp-route-keyword="@Model.Keyword"
+                                >
                                             @(Model.Page + 1)
                                 </a>
                             </li>
@@ -66,12 +70,12 @@
                                    asp-action="Index"
                                    asp-route-page="@Model.NextPage"
                                    asp-route-isActive="@Model.OnlyActive"
-                                   asp-route-keyword="@Model.Keyword">
+                                   asp-route-keyword="@Model.Keyword"
+                                >
                                             Next
                                 </a>
                             </li>
                         }
-
                     </ul>
                 </nav>
             }

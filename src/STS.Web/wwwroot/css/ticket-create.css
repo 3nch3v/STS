@@ -2,7 +2,7 @@
 .comment-dialog {
     margin: auto auto;
     border-radius: 8px;
-    width: 800px;
+    width: 1020px;
     color: #8B949E;
     border: 1px solid #39A6FF;
 }
@@ -47,4 +47,8 @@
 
 .select-group div {
     margin: 5px 20px;
+}
+
+.create-f-empl-select-div {
+    display: none;
 }

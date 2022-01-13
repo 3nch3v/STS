@@ -1,7 +1,10 @@
 ﻿@using System.Security.Claims;
 @using STS.Web.ViewModels.Tasks;
-@model TaskViewModel;
+@using STS.Web.ViewModels.Common;
+
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@model TaskViewModel;
+
 
 @{
     this.ViewData["Title"] = "Task details";
@@ -9,6 +12,16 @@
     bool isManager = User.IsInRole(AdministratorRoleName) || User.IsInRole(ManagerRoleName);
     string currUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
     bool isOwnTask = Model.ManagerId == currUserId;
+
+    Func<StatusViewModel, bool> statusFilter = status =>
+    {
+        if (!isManager)
+        {
+            return (status.Name.ToLower() != Model.StatusName.ToLower()) && status.Name.ToLower() != "closed";
+        }
+
+        return status.Name.ToLower() != Model.StatusName.ToLower();
+    };
 }
 
 <article class="task-wrapper">
@@ -19,14 +32,17 @@
             <div>
                 <select class="task-status-select"
                         asp-items="@Model.Statuses
-                                .Where(x => x.Name.ToLower() != Model.StatusName.ToLower())
-                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))">
+                                .Where(statusFilter)
+                                .Select(x => new SelectListItem(x.Name, x.Id.ToString()))"
+                        disabled="@(!isManager && (Model.StatusName.ToLower() == "closed") ? true : false)"
+                >
                     <option class="status"
                             selected="selected"
                             value="@(Model.Statuses
                                           .Where(x => x.Name.ToLower() == Model.StatusName.ToLower())
                                           .Select(x => x.Id)
-                                          .FirstOrDefault())">
+                                          .FirstOrDefault())"
+                    >
                         @Model.StatusName
                     </option>
                 </select>
@@ -34,9 +50,10 @@
                 @if (isManager && isOwnTask)
                 {
                     <select class="t-employee-select"
-                        asp-items="@Model.Employees
-                                .Where(x => x.UserName != Model.EmployeeUserName)
-                                .Select(x => new SelectListItem(x.UserName, x.Id))">
+                            asp-items="@Model.Employees
+                                    .Where(x => x.UserName != Model.EmployeeUserName)
+                                    .Select(x => new SelectListItem(x.UserName, x.Id))"
+                    >
                         <option selected="selected" value="@Model.EmployeeId">@Model.EmployeeUserName</option>
                     </select>
                 }
@@ -75,5 +92,5 @@
 <partial name="_NotificationPartial"></partial> 
 
 @section Scripts{
-<script type="module" src="~/js/services/tasks-services.js"></script>
+    <script type="module" src="~/js/services/tasks-services.js"></script>
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using STS.Data.Dtos.Department;
 using STS.Data.Dtos.Role;
 using STS.Data.Dtos.User;
@@ -8,6 +10,14 @@ namespace STS.Services.Contracts
 {
     public interface ICommonService
     {
+        int GetStatusId(string status);
+
+        int GetDepartmentId(string userId);
+
+        Task<bool> IsDepartmentExisting(int id);
+
+        Dictionary<string, Dictionary<string, int>> GetTicketsStatistic();
+
         IEnumerable<Priority> GetPriorities();
 
         IEnumerable<Status> GetStatuses();
@@ -19,11 +29,5 @@ namespace STS.Services.Contracts
         IEnumerable<DepartmentStatisticDto> GetDepartmentsWithStatistic();
 
         IEnumerable<BaseUserDto> GetEmployeesBase(int departmentId);
-
-        Dictionary<string, Dictionary<string, int>> GetTicketsStatistic();
-
-        int GetStatusId(string status);
-
-        int GetDepartmentId(string userId);
     }
 }

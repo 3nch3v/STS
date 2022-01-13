@@ -40,8 +40,8 @@ function getOptions(method = 'GET', token, body) {
     return options;
 }
 
-export async function get(url) {
-    return request(url, getOptions());
+export async function get(url, token) {
+    return request(url, getOptions('GET', token));
 }
 
 export async function post(url, token, data) {

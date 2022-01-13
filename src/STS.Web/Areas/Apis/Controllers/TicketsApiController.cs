@@ -9,7 +9,7 @@ using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tickets;
 
-namespace STS.Web.Controllers
+namespace STS.Web.Areas.Api.Controllers
 {
 
     [Route("api/Tickets")]

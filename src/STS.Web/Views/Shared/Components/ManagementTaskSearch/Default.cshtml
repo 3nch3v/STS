@@ -3,13 +3,6 @@
 
 <section class="search-task-section">
     <form method="post" asp-controller="Tasks" asp-action="Management" class="manager-search-form">
-        <section>
-            <input name="keyword"
-                   type="text"
-                   value="@Model.Keyword"
-                   class="search-input-field"
-                   placeholder="Search...">
-        </section>
         <section class="p-select">
             <select class="form-control-sm t-employee-select"
                     for="EmployeeId"
@@ -25,7 +18,15 @@
                     <span class="slider round"></span>
                 </label>
                 <label class="checkbox-label" for="isActive"> Only active</label>
-            </div>
+            </div> 
+        </section>
+         <section class="search-input-btn-sec">
+            <input name="keyword"
+                   type="text"
+                   value="@Model.Keyword"
+                   class="search-input-field"
+                   placeholder="Search..."
+            >
             <button class="tasks-search-btn" type="submit">Go</button>
         </section>
     </form>

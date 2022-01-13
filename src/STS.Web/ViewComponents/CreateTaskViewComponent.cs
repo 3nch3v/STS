@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 
-using AutoMapper;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 using STS.Data.Models;
 using STS.Services.Contracts;
@@ -41,7 +40,7 @@ namespace STS.Web.ViewComponents
             var inputModel = new TaskInputModel
             {
                 Priorities = mapper.Map<List<PriorityViewModel>>(commonService.GetPriorities()),
-                Employees = mapper.Map<IEnumerable<BaseUserViewModel>>(commonService.GetEmployeesBase(departmentId))
+                Employees = mapper.Map<IEnumerable<BaseUserViewModel>>(commonService.GetEmployeesBase(departmentId)),
             };
 
             return View(inputModel);

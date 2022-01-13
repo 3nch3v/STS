@@ -1,4 +1,5 @@
 ﻿@using STS.Web.ViewModels.Tasks
+
 @model TaskInputModel
 
 <article class="create-form-wrapper">
@@ -30,7 +31,6 @@
             <label asp-for="Title">Title</label>
             <input asp-for="Title" class="form-control" required>
             <span asp-validation-for="Title" class="text-danger title-err"></span>
-
         </div>
         <div class="form-group t-description">
             <label asp-for="Description">Description</label>

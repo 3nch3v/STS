@@ -9,7 +9,7 @@ using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tasks;
 
-namespace STS.Web.Controllers
+namespace STS.Web.Areas.Api.Controllers
 {
     [Route("api/replay")]
     [ApiController]
@@ -21,7 +21,8 @@ namespace STS.Web.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public ReplayTaskApiController(ITaskService taskServie,
+        public ReplayTaskApiController(
+            ITaskService taskServie,
             IReplayTaskService replayTaskService,
             IMapper mapper,
             UserManager<ApplicationUser> userManager)

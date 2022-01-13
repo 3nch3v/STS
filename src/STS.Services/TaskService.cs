@@ -166,16 +166,27 @@ namespace STS.Services
             else
             {
                 tasksQuery = tasksQuery
-                    .Where(task => task.EmployeeId == userId)
+                    .Where(task => task.EmployeeId == userId
+                            && (task.Status.Name.ToLower() != "closed"
+                                && task.Status.Name.ToLower() != "solved"))
                     .AsQueryable();
             }
 
             if (isTaskActive)
             {
-                tasksQuery = tasksQuery
-                    .Where(task => task.Status.Name.ToLower() != "closed"
-                                && task.Status.Name.ToLower() != "solved")
-                    .AsQueryable();
+                if (isManager)
+                {
+                    tasksQuery = tasksQuery
+                        .Where(task => task.Status.Name.ToLower() != "closed")
+                        .AsQueryable();
+                }
+                else 
+                {
+                    tasksQuery = tasksQuery
+                        .Where(task => task.Status.Name.ToLower() != "closed"
+                                    && task.Status.Name.ToLower() != "solved")
+                        .AsQueryable();
+                }       
             }
 
             if (keyword != null)
