@@ -89,7 +89,7 @@ namespace STS.Web.Controllers
             var userId = userManager.GetUserId(User);
             await ticketService.CreateAsync(userId, ticket);
 
-            return RedirectToAction(nameof(Tickets));
+            return RedirectToAction(nameof(Tickets), new { keyword = "my"});
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -110,7 +110,7 @@ namespace STS.Web.Controllers
 
             await ticketService.DeleteAsync(id);
 
-            return RedirectToAction(nameof(Tickets));
+            return RedirectToAction(nameof(Tickets), new { keyword = "my" });
         }
     }
 }

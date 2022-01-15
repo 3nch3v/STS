@@ -1,12 +1,14 @@
 ﻿@using STS.Web.ViewModels.User;
 
+@using static STS.Common.GlobalConstants;
+
 @model UsersViewModel;
 
 @{
     ViewData["Title"] = "Users";
 }
 
-<article class="admin-users">
+<div class="admin-users">
     <section class="user-search-section">
         <form method="get" asp-controller="Administration" asp-action="Users" class="manager-search-form">
              <section class="p-select">
@@ -87,7 +89,7 @@
                        asp-controller="Administration" 
                        asp-action="DeleteUser" 
                        asp-route-id="@user.Id" 
-                       OnClick=" return ConfirmOnDelete()"
+                       OnClick=" return ConfirmOnDelete('@deleteUserMassage')"
                     >
                         <i class="fa fa-trash"></i>
                     </a>
@@ -164,16 +166,8 @@
             </nav>
         }
     </section>
-</article>
+</div>
 
 @section Scripts{
-<script type="text/javascript">    
-   function ConfirmOnDelete() {
-        if (confirm("Do you really want to delete the user?") == true) {
-            return true;
-        } else{
-            return false;
-        }
-   }
-</script>
+    <script src="~/js/services/confirm-on-delete.js"></script>
 }

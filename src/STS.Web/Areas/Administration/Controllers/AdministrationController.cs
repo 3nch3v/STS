@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
@@ -8,9 +11,9 @@ using AutoMapper;
 
 using STS.Data.Models;
 using STS.Services.Contracts;
-using STS.Web.ViewModels.Admin;
 using STS.Web.ViewModels.Common;
 using STS.Web.ViewModels.User;
+using STS.Web.Infrastructure.ControllersHelpers.Contracts;
 
 using static STS.Common.GlobalConstants;
 
@@ -20,20 +23,28 @@ namespace STS.Web.Areas.Administration.Controllers
     [Area("Administration")]
     public class AdministrationController : Controller
     {
+        private readonly DateTime lockoutEnd = DateTime.Now.AddYears(100);
+
         private readonly IAdminService adminService;
         private readonly ICommonService commonService;
         private readonly IMapper mapper;
+        private readonly IAdminControllerHelper adminHelper;
+        private readonly RoleManager<ApplicationRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
 
         public AdministrationController(
+            IMapper mapper,
             IAdminService adminService,
             ICommonService commonService,
-            IMapper mapper,
+            IAdminControllerHelper adminControllerHelper,
+            RoleManager<ApplicationRole> roleManager,
             UserManager<ApplicationUser> userManager)
         {
             this.adminService = adminService;
             this.commonService = commonService;
             this.mapper = mapper;
+            this.adminHelper = adminControllerHelper;
+            this.roleManager = roleManager;
             this.userManager = userManager;
         }
 
@@ -42,139 +53,15 @@ namespace STS.Web.Areas.Administration.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult CreateUser()
-        {
-            var (departments, roles) = GetDepartmentsAndRoles();
-
-            var userInput = new UserInputModel
-            {
-                Departments = departments,
-                SystemRoles = roles,
-            };
-
-            return View(userInput);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateUser(UserInputModel userInput)
-        {
-            if (!ModelState.IsValid)
-            {
-                var (departments, roles) = GetDepartmentsAndRoles();
-                userInput.Departments = departments;
-                userInput.SystemRoles = roles;
-
-                return View(userInput);
-            }
-
-            await adminService.RegisterUserAsync(userInput);
-
-            return RedirectToAction(nameof(Users));
-        }
-
-        public async Task<IActionResult> EditUser(string id)
-        {
-            var (departments, roles) = GetDepartmentsAndRoles();
-            var userData = mapper.Map<UserEditModel>(adminService.GetUserById(id));
-            userData.Departments = departments;
-            userData.SystemRoles = roles;
-            userData.Role = string.Join("", await adminService.GetUserRolesAsync(id));
-
-            return View(userData);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> EditUser(UserEditModel userInput)
-        {
-            await ValidateEmailAndUserName(userInput);
-
-            if (!ModelState.IsValid)
-            {
-                var (departments, roles) = GetDepartmentsAndRoles();
-                userInput.Departments = departments;
-                userInput.SystemRoles = roles;
-
-                return View(userInput);
-            }
-
-            await adminService.EditUserAsync(userInput);
-
-            return RedirectToAction(nameof(Users));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateDepartment(string departmentName)
-        {
-            if (departmentName.Length < DepartmentNameMinLength 
-                || departmentName.Length > DepartmentNameMaxLength)
-            {
-                return BadRequest();
-            }
-
-            await adminService.CreateDepartmentAsync(departmentName);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateRole(string roleName)
-        {
-            if (roleName.Length < RoleNameMinLength 
-                || roleName.Length > RoleNameMaxLength)
-            {
-                return BadRequest();
-            }
-
-            await adminService.CreateRoleAsync(roleName);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<IActionResult> LockoutUser(string id)
-        {
-            var user = adminService.GetUserById(id);
-
-            if (user == null)
-            {
-                return BadRequest();
-            }
-
-            await adminService.LockoutUserAsync(id);
-
-            return RedirectToAction(nameof(Users));
-        }
-
-        public async Task<IActionResult> UnlockUser(string id)
-        {
-            var user = adminService.GetUserById(id);
-
-            if (user == null)
-            {
-                return BadRequest();
-            }
-
-            await adminService.UnlockUserAsync(id);
-
-            return RedirectToAction(nameof(Users));
-        }
-        public async Task<IActionResult> DeleteUser(string id)
-        {
-            var user = adminService.GetUserById(id);
-
-            if (user == null)
-            {
-                return BadRequest();
-            }
-
-            await adminService.DeleteUserAsync(id);
-
-            return RedirectToAction(nameof(Users));
-        }
-
         public async Task<IActionResult> Users(int? departmentId, string keyword, int page = DefaultPageNumber)
         {
-            var users = await adminService.GetUsersAsync(page, keyword, departmentId);
+            var users = adminService.GetUsersAsync(page, keyword, departmentId);
+            foreach (var user in users)
+            {
+                var currUser = await userManager.FindByIdAsync(user.Id);
+                user.Roles = await userManager.GetRolesAsync(currUser);
+                user.IsLockedOut = await userManager.IsLockedOutAsync(currUser);
+            }
 
             var usersDtos = new UsersViewModel
             {
@@ -189,32 +76,151 @@ namespace STS.Web.Areas.Administration.Controllers
             return View(usersDtos);
         }
 
-        private (IEnumerable<DepartmentViewModel>, IEnumerable<RoleViewModel>) GetDepartmentsAndRoles()
+        [HttpGet]
+        public IActionResult CreateUser()
         {
-            var departmentsDtos = commonService.GetDepartmentsBase();
-            var departments = mapper.Map<IEnumerable<DepartmentViewModel>>(departmentsDtos);
-            var rolesDtos = commonService.GetRoles();
-            var roles = mapper.Map<IEnumerable<RoleViewModel>>(rolesDtos);
+            var (departments, roles) = adminHelper.GetDepartmentsAndRoles();
+            var user = new UserInputModel
+            {
+                Departments = departments,
+                SystemRoles = roles,
+            };
 
-            return (departments, roles);
+            return View(user);
         }
 
-        private async Task ValidateEmailAndUserName(UserEditModel userInput)
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(UserInputModel user)
         {
-            var existingEmail = await userManager.FindByEmailAsync(userInput.Email);
-            var existingUserName = await userManager.FindByNameAsync(userInput.UserName);
-
-            if (existingEmail != null
-                && existingEmail.Id != userInput.Id)
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("Email", EmailErrorMsg); ;
+                var (departments, roles) = adminHelper.GetDepartmentsAndRoles();
+                user.Departments = departments;
+                user.SystemRoles = roles;
+
+                return View(user);
             }
 
-            if (existingUserName != null
-                && existingUserName.Id != userInput.Id)
+            await adminHelper.SignInUser(user);
+
+            return RedirectToAction(nameof(Users));
+        }
+
+        public async Task<IActionResult> EditUser(string id)
+        {
+            var (departments, roles) = adminHelper.GetDepartmentsAndRoles();
+            var user = adminService.GetUserById(id);
+            var userRoles = await userManager.GetRolesAsync(user);
+
+            var userDto = mapper.Map<UserEditModel>(user);
+            userDto.Departments = departments;
+            userDto.SystemRoles = roles;
+            userDto.Role = string.Join("", userRoles);
+
+            return View(userDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(UserEditModel userInput)
+        {
+            var erros = await adminHelper.ValidateEmailAndUserName(userInput);
+
+            if (erros.Any())
             {
-                ModelState.AddModelError("UserName", UsernameErrorMsg);
+                foreach (var (key, errorMessage) in erros)
+                {
+                    ModelState.AddModelError(key, errorMessage);
+                }
             }
+
+            if (!ModelState.IsValid)
+            {
+                var (departments, roles) = adminHelper.GetDepartmentsAndRoles();
+                userInput.Departments = departments;
+                userInput.SystemRoles = roles;
+
+                return View(userInput);
+            }
+
+            var user = await adminService.EditUserAsync(userInput);
+
+            if (userInput.Role != null)
+            {
+                await adminHelper.EditUserRole(userInput.Role, user);
+            }
+
+            return RedirectToAction(nameof(Users));
+        }
+
+        public async Task<IActionResult> LockoutUser(string id)
+        {
+            var user = adminService.GetUserById(id);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            await userManager.SetLockoutEnabledAsync(user, true);
+            await userManager.SetLockoutEndDateAsync(user, lockoutEnd);
+            await userManager.UpdateAsync(user);
+
+            return RedirectToAction(nameof(Users));
+        }
+
+        public async Task<IActionResult> UnlockUser(string id)
+        {
+            var user = adminService.GetUserById(id);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            await userManager.SetLockoutEndDateAsync(user, DateTime.Now);
+            await userManager.UpdateAsync(user);
+
+            return RedirectToAction(nameof(Users));
+        }
+
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = adminService.GetUserById(id);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            await adminService.DeleteUserAsync(id);
+
+            return RedirectToAction(nameof(Users));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateDepartment([StringLength(DepartmentNameMaxLength, MinimumLength = DepartmentNameMinLength)]  string departmentName)
+        {
+            if (ModelState.IsValid)
+            {
+                await adminService.CreateDepartmentAsync(departmentName);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRole([StringLength(RoleNameMaxLength, MinimumLength = RoleNameMinLength)] string roleName)
+        {
+            var role = await roleManager.FindByNameAsync(roleName);
+
+            if (!ModelState.IsValid || role != null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            await roleManager.CreateAsync(new ApplicationRole(roleName));
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

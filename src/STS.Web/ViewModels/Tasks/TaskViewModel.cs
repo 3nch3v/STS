@@ -17,6 +17,6 @@ namespace STS.Web.ViewModels.Tasks
 
         public IEnumerable<BaseUserViewModel> Employees { get; set; }
 
-        public IEnumerable<ReplayTaskViewModel> Comments { get; set; }
+        public IEnumerable<ReplyTaskViewModel> Comments { get; set; }
     }
 }

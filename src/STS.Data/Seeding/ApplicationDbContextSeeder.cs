@@ -9,7 +9,7 @@ namespace STS.Data.Seeding
 {
     public class ApplicationDbContextSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(StsDbContext dbContext, IServiceProvider serviceProvider)
         {
             if (dbContext == null)
             {

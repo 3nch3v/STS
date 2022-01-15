@@ -9,7 +9,7 @@ using STS.Data;
 
 namespace STS.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(StsDbContext))]
     [Migration("20211220094124_InitialCreate")]
     partial class InitialCreate
     {

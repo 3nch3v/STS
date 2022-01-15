@@ -1,4 +1,5 @@
-﻿const ticket = document.querySelector('.ticket');
+﻿import constants from '../constants.js';
+const ticket = document.querySelector('.ticket');
 
 export function getTicketId()
 {
@@ -59,5 +60,5 @@ export function displayMessage(message) {
     const spanElement = msgDiv.querySelector('span');
     spanElement.textContent = message;
     msgDiv.style.display = 'block';
-    setTimeout(() => msgDiv.style.display = 'none', 3000);
+    setTimeout(() => msgDiv.style.display = 'none', constants.MSG_TIMEOUT);
 }

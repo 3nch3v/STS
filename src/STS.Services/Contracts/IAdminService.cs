@@ -12,22 +12,12 @@ namespace STS.Services.Contracts
 
         ApplicationUser GetUserById(string id);
 
-        Task DeleteUserAsync(string userId);
-
-        Task UnlockUserAsync(string userId);
-
-        Task LockoutUserAsync(string userId);
-
-        Task RegisterUserAsync<T>(T userInput);
-
-        Task EditUserAsync<T>(T userInput);
+        IEnumerable<UserDto> GetUsersAsync(int page, string searchTerm, int? departmentId);
 
         Task CreateDepartmentAsync(string departmentName);
 
-        Task CreateRoleAsync(string roleName);
+        Task DeleteUserAsync(string userId);
 
-        Task<IEnumerable<string>> GetUserRolesAsync(string id);
-
-        Task<IEnumerable<UserDto>> GetUsersAsync(int page, string searchTerm, int? departmentId);
+        Task<ApplicationUser> EditUserAsync<T>(T userInput);
     }
 }

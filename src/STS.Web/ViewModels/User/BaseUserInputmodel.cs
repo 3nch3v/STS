@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using STS.Web.Infrastructure.ValidationAttributes;
@@ -13,6 +14,7 @@ namespace STS.Web.ViewModels.User
     {
         [Required]
         [MaxLength(EmployeeNameMaxLength)]
+        [DisplayName("username")]
         public string UserName { get; set; }
 
         [Required]
@@ -22,10 +24,12 @@ namespace STS.Web.ViewModels.User
 
         [Required]
         [MaxLength(EmployeeNameMaxLength)]
+        [DisplayName("first name")]
         public string FirstName { get; set; }
 
         [Required]
         [MaxLength(EmployeeNameMaxLength)]
+        [DisplayName("last name")]
         public string LastName { get; set; }
 
         [Required]
@@ -33,9 +37,11 @@ namespace STS.Web.ViewModels.User
         public string Position { get; set; }
 
         [Required]
+        [DisplayName("role")]
         public string Role { get; set; }
 
         [DepartmentId]
+        [DisplayName("department")]
         public int DepartmentId { get; set; }
 
         public string PhoneNumber { get; set; }

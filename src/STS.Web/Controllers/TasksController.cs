@@ -38,13 +38,13 @@ namespace STS.Web.Controllers
 
         public IActionResult Task(int id)
         {
-            var currUser = userManager.GetUserId(User);
+            var currUserId = userManager.GetUserId(User);
             var taskDto = taskService.GetById(id);
 
-            if (taskDto == null ||
-                (taskDto.EmployeeId != currUser 
-                 && !User.IsInRole(ManagerRoleName) 
-                 && !User.IsInRole(AdministratorRoleName)))
+            if (taskDto == null 
+                || (taskDto.EmployeeId != currUserId 
+                   && !User.IsInRole(ManagerRoleName) 
+                   && !User.IsInRole(AdministratorRoleName)))
             {
                 return BadRequest();
             }
@@ -55,14 +55,17 @@ namespace STS.Web.Controllers
             if (User.IsInRole(ManagerRoleName) 
                || User.IsInRole(AdministratorRoleName)) 
             {
-                var departmentId = commonService.GetDepartmentId(currUser);
+                var departmentId = commonService.GetDepartmentId(currUserId);
                 task.Employees = mapper.Map<List<BaseUserViewModel>>(commonService.GetEmployeesBase(departmentId));
             }
 
             return View(task);
         }
 
-        public IActionResult Index(string keyword, bool isActive, int page = DefaultPageNumber)
+        public IActionResult Index(
+            string keyword,
+            bool isActive, 
+            int page = DefaultPageNumber)
         {
             var tasks = PrepareViewModel(false, keyword, isActive, null, page);
 

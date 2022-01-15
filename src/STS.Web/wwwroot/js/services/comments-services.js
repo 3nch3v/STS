@@ -1,4 +1,5 @@
-﻿import appendComment from '../views/comment-view.js';
+﻿import constants from '../constants.js';
+import appendComment from '../views/comment-view.js';
 import { getTicketId, getRequestToken, modal, } from './util.js';
 import { createComment, deleteCommentById } from '../data/data.js';
 import { changeStatusIcon } from './tickets-services.js';
@@ -23,8 +24,9 @@ async function postCommen(event) {
     const checkbox = document.getElementById('send-email-check');
     const sendEmail = checkbox.checked;
 
-    if (comment.length < 2 || comment.length > 2000) {
-        commentValidationMsg.textContent = 'Comment should be between 2 and 2000 characters.';
+    if (comment.length < constants.COMMENT_MIN_LENGTH
+        || comment.length > constants.COMMENT_MAX_LENGTH) {
+        commentValidationMsg.textContent = constants.COMMENT_ERR_MSG;
         return;
     } else {
         commentValidationMsg.textContent = '';
@@ -41,7 +43,10 @@ async function postCommen(event) {
 
     const data = await createComment(token, commentDto);
 
-    changeStatusIcon('Open');
+    const statusSelect = document.querySelector('.t-status-select');
+    const replyStatusIndex = [...statusSelect.options].find(x => x.textContent == "New reply");
+    statusSelect.value = replyStatusIndex.value;
+    changeStatusIcon('New reply');
     appendComment(token, data);
     const commentSection = document.querySelector('.new-comment');
     const commentChildren = [...commentSection.children];
@@ -57,18 +62,21 @@ async function deleteComment(event) {
     if (currTaget.tagName === 'BUTTON'
         || (currTaget.tagName === 'I' && currTaget.parentElement.tagName === 'BUTTON')) {
 
-        let commentWrapper = currTaget.parentElement.parentElement.parentElement;
-        let commentId;
-        if (currTaget.tagName === 'I') {
-            commentId = currTaget.parentElement.dataset.commentId;
-            commentWrapper = commentWrapper.parentElement;
-        } else {
-            commentId = currTaget.dataset.commentId;
-        }
+        if (confirm(constants.DEL_COMMENT_MSG) == true) {
+            let commentWrapper = currTaget.parentElement.parentElement.parentElement;
+            let commentId;
 
-        let token = getRequestToken();
-        await deleteCommentById(commentId, token);
-        commentWrapper.remove();
+            if (currTaget.tagName === 'I') {
+                commentId = currTaget.parentElement.dataset.commentId;
+                commentWrapper = commentWrapper.parentElement;
+            } else {
+                commentId = currTaget.dataset.commentId;
+            }
+
+            let token = getRequestToken();
+            await deleteCommentById(commentId, token);
+            commentWrapper.remove();
+        }
     }
 }
 

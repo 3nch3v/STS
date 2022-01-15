@@ -11,37 +11,37 @@ using STS.Web.ViewModels.Tasks;
 
 namespace STS.Web.Areas.Api.Controllers
 {
-    [Route("api/replay")]
+    [Route("api/reply")]
     [ApiController]
     [Authorize]
-    public class ReplayTaskApiController : ControllerBase
+    public class ReplyTaskController : ControllerBase
     {
         private readonly ITaskService taskServie;
-        private readonly IReplayTaskService replayTaskService;
+        private readonly IReplyTaskService replyTaskService;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public ReplayTaskApiController(
+        public ReplyTaskController(
             ITaskService taskServie,
-            IReplayTaskService replayTaskService,
+            IReplyTaskService replyTaskService,
             IMapper mapper,
             UserManager<ApplicationUser> userManager)
         {
             this.taskServie = taskServie;
-            this.replayTaskService = replayTaskService;
+            this.replyTaskService = replyTaskService;
             this.mapper = mapper;
             this.userManager = userManager;
         }
 
         [HttpPost]
-        public async Task<ActionResult> Replay([FromBody] ReplayTaskInputModel replay)
+        public async Task<ActionResult> Reply([FromBody] ReplyTaskInputModel reply)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            var task = taskServie.GetById(replay.EmployeeTaskId);
+            var task = taskServie.GetById(reply.EmployeeTaskId);
 
             if (task == null)
             {
@@ -49,8 +49,8 @@ namespace STS.Web.Areas.Api.Controllers
             }
 
             var userId = userManager.GetUserId(User);
-            var result = await replayTaskService.ReplayTaskAsync(userId, replay);
-            var response = mapper.Map<ReplayTaskViewModel>(result);
+            var replyResult = await replyTaskService.ReplyTaskAsync(userId, reply);
+            var response = mapper.Map<ReplyTaskViewModel>(replyResult);
 
             return Ok(response);
         }

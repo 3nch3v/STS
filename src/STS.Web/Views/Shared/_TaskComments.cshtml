@@ -1,5 +1,5 @@
 ﻿<section class="task-comments-wrapper">
-    <section class="comments">
+    <div class="comments">
         <h5>Comments:</h5>
         @if (Model.Comments.Count > 0)
         {
@@ -15,10 +15,10 @@
         }
         else
         {
-            <p>No comments</p>
+            <p class="no-task-comments">No comments</p>
         }
-    </section>
-    <section class="task-comment-form-wrapper">
+    </div>
+    <div class="task-comment-form-wrapper">
         <form method="post" class="task-comment-form">
             <div>
                 <textarea for="content"
@@ -26,11 +26,11 @@
                           class="form-control comment-task-ta"
                           rows="1"
                           required></textarea>
-                <p class="replay-validation text-danger"></p>
+                <p class="reply-validation text-danger"></p>
             </div>
             <button type="button" class="c-btn task-btn">Post</button>
         </form>
-    </section>
+    </div>
 </section>
 
 

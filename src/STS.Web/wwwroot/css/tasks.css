@@ -13,6 +13,11 @@
     align-items: start;
 }
 
+.task-actions div select,
+.delete-btn-div {
+    margin-bottom: 10px;
+}
+
 .tasks-wrapper,
 .m-tasks-wrapper,
 .admin-users-row,
@@ -148,8 +153,13 @@
     }
 
     .c-btn.task-btn,
-    .task-status-select {
+    .task-status-select,
+    .t-employee-select {
         margin-bottom: 10px;
+    }
+
+    .task-s-p-d {
+        gap: 0;
     }
 }
 
@@ -192,4 +202,12 @@ input[type="datetime-local"]:focus {
 .user-s-inpit-btn-sec {
     display: flex;
     flex-direction: row;
+}
+
+.task-s-p-d {
+    gap: 0 20px;
+}
+
+.c-btn.task-btn {
+    margin-bottom: 10px;
 }

@@ -1,7 +1,7 @@
 ﻿@using STS.Web.ViewModels.Admin;
 @model IEnumerable<RoleViewModel>;
 
-<article class="roles-wrapper">
+<div class="roles-wrapper">
     @foreach (var role in Model)
     {
         <p>@role.Name </p>
@@ -14,4 +14,4 @@
             <button class="create-dep-btn" type="submit">Create</button>
         </div>
     </form>
-</article>
+</div>

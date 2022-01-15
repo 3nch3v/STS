@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 
 using STS.Data;
@@ -13,29 +12,26 @@ namespace STS.Services
 {
     public class CommentService : ICommentService
     {
-        private const string status = "Open";
+        private const string status = "New reply";
 
         private readonly IMapper mapper;
         private readonly ITicketService ticketService;
         private readonly ICommonService commonService;
         private readonly IEmailSender emailSender;
-        private readonly ApplicationDbContext dbContext;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly StsDbContext dbContext;
 
         public CommentService(
             IMapper mapper,
             ITicketService ticketService,
             ICommonService commonService,
             IEmailSender emailSender,
-            ApplicationDbContext dbContext,
-            UserManager<ApplicationUser> userManager)
+            StsDbContext dbContext)
         {
             this.mapper = mapper;
             this.ticketService = ticketService;
             this.commonService = commonService;
             this.emailSender = emailSender;
             this.dbContext = dbContext;
-            this.userManager = userManager;
         }
 
         public Comment GetById(int id)
@@ -57,21 +53,11 @@ namespace STS.Services
             return comment;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var comment = GetById(id);
-
-            try
-            {
-                dbContext.Comments.Remove(comment);
-                await dbContext.SaveChangesAsync();
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            dbContext.Comments.Remove(comment);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task SendEmailAsync(int ticketId, string content, ApplicationUser sender)
@@ -82,7 +68,8 @@ namespace STS.Services
 
             if (ticket.AssignedToId != null)
             {
-                assignedToUser = await userManager.FindByIdAsync(ticket.AssignedToId);
+                var user = dbContext.Users.FirstOrDefault(x => x.Id == ticket.AssignedToId);
+                assignedToUser = user;
             }
 
             var receiver = sender.Id != ticket.EmployeeId

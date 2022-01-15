@@ -64,6 +64,12 @@
 
         public const string UsernameErrorMsg = "UserName already exist";
 
+        public const string deleteUserMassage= "Do you really want to delete the user?";
+
+        public const string deleteTicketMassage = "Do you really want to delete the ticket?";
+
+        public const string deleteTaskMassage = "Do you really want to delete the task?";
+
         public static class ErrorMessage
         {
             public const string BadRequest = "The server cannot or will not process the request due to a client error";

@@ -48,9 +48,9 @@ namespace STS.Web.Infrastructure.Configurations
             CreateMap<TaskDto, TaskViewModel>();
             CreateMap<TaskEditModel, TaskEditDto>();
 
-            CreateMap<ReplyTask, ReplayTaskDto>();
-            CreateMap<ReplayTaskDto, ReplayTaskViewModel>();
-            CreateMap<ReplayTaskInputModel, ReplyTask>();
+            CreateMap<ReplyTask, ReplyTaskDto>();
+            CreateMap<ReplyTaskDto, ReplyTaskViewModel>();
+            CreateMap<ReplyTaskInputModel, ReplyTask>();
         }
     }
 }

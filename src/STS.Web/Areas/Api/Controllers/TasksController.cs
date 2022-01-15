@@ -12,14 +12,12 @@ namespace STS.Web.Areas.Api.Controllers
     [Route("api/tasks")]
     [ApiController]
     [Authorize]
-    public class TasksApiController : ControllerBase
+    public class TasksController : ControllerBase
     {
         private readonly ITaskService taskServie;
         private readonly IMapper mapper;
 
-        public TasksApiController(
-            ITaskService taskServie,
-            IMapper mapper)
+        public TasksController(ITaskService taskServie, IMapper mapper)
         {
             this.taskServie = taskServie;
             this.mapper = mapper;

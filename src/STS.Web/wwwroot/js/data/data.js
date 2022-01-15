@@ -8,7 +8,7 @@ const router = {
     commentById: (id) => `/comments/${id}`,
     editTicket: '/tickets',
     editTask: '/tasks',
-    replayTask: '/replay',
+    replyTask: '/reply',
     employees: (id) => `/users/${id}`,
 };
 
@@ -29,7 +29,7 @@ export async function editTask(token, data) {
 }
 
 export async function createTaskComment(token, data) {
-    return await api.post(router.replayTask, token, data);
+    return await api.post(router.replyTask, token, data);
 }
 
 export async function getEmployees(id, token) {

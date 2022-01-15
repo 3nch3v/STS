@@ -12,11 +12,11 @@
     ViewData["ticketId"] = Model.Id;
 }
 
-<article class="ticket-search">
-    <section>
+<section class="ticket-search">
+    <div>
         <button class="show-create-btn" title="Create a new ticket...">New Ticket</button>
-    </section>
-    <section class="search-section">
+    </div>
+    <div class="search-section">
         <form asp-controller="Tickets" asp-action="Tickets" class="search-ticket-form" method="get">
             <input class="search-input-field"
                    name="keyword"
@@ -27,17 +27,17 @@
             />
             <button class="search-btn" type="submit">Go</button>
         </form>
-    </section>
-</article>
+    </div>
+</section>
 
-<article class="ticket-container">
+<section class="ticket-container">
     <section class="tickets-nav-section">
         <vc:tickets-nav-bar></vc:tickets-nav-bar>
     </section>
 
     <section class="ticket-wrapper">
-        <section class="ticket" data-ticket-id="@Model.Id" data-request-token="@requestToken">
-            <section class="ticket-actions">
+        <div class="ticket" data-ticket-id="@Model.Id" data-request-token="@requestToken">
+            <div class="ticket-actions">
                 <div>
                     <select class="t-status-select"
                             asp-items="@Model.Statuses
@@ -80,20 +80,23 @@
                         <a asp-controller="Tickets"
                            asp-action="Delete"
                            asp-route-id="@Model.Id"
-                           class="t-delete-btn">
+                           class="t-delete-btn"
+                           OnClick=" return ConfirmOnDelete('@deleteTicketMassage')"
+                        >
                              <i class="fa fa-trash fa-lg"></i>
                         </a>
                     }
                 </div>
-            </section>
-            <section class="ticket-details">
-                <section class="ticket-details-title">
-                    <section class="tile-status-priority">
+            </div>
+
+            <article class="ticket-details">
+                <header class="ticket-details-title">
+                    <div class="tile-status-priority">
                         <span class="status @Model.StatusName.ToLower().Replace(" ", "")">@Model.StatusName</span>
                         <span class="priority @Model.PriorityName.ToLower().Replace(" ", "")">@Model.PriorityName</span>
-                    </section>
-                    <section class='t-title-section'>
-                        <section class='t-title'>
+                    </div>
+                    <div class='t-title-section'>
+                        <div class='t-title'>
                             <p class="ticket-title">
                                 @Model.Title
                                 @if (Model.IsOwner && Model.LoggedInUserDepartmentId == Model.DepartmentId)
@@ -103,11 +106,11 @@
                                     </a>
                                 }
                             </p>
-                        </section>
-                        <section class='t-title-section-edited'></section>
-                    </section>
-                </section>
-                <section class="ticket-body-section">
+                        </div>
+                        <div class='t-title-section-edited'></div>
+                    </div>
+                </header>
+                <div class="ticket-body-section">
                     <p class="ticket-content">
                         @Model.Content
                         @if (Model.IsOwner && Model.LoggedInUserDepartmentId == Model.DepartmentId)
@@ -117,9 +120,9 @@
                             </a>
                         }
                     </p>
-                </section>
-                <section class="t-content-section-edited"></section>
-                <section class="ticket-footer">
+                </div>
+                <div class="t-content-section-edited"></div>
+                <footer class="ticket-footer">
                     <div>
                         <p>
                             from
@@ -134,13 +137,13 @@
                             <span class="username">@(Model.AssignedToUserName == null ? null : Model.AssignedToUserName)</span>
                         </p>
                     </div>
-                </section>
-            </section>
-        </section>
-        <section class="ticket-comments">
+                </footer>
+            </article>
+        </div>
+        <div class="ticket-comments">
             @foreach (var comment in Model.Comments)
             {
-                <section class="t-comment">
+                <article class="t-comment">
                     <p>@comment.Content</p>
 
                     <div class="comment-actions">
@@ -156,28 +159,29 @@
                             @if (Model.LoggedInUserId == comment.UserId)
                             {
                                 <button class="c-del-btn t-delete-btn"
-                                title="Delete comment."
-                                data-comment-id="@comment.Id"
-                                data-request-token="@requestToken">
+                                        title="Delete comment."
+                                        data-comment-id="@comment.Id"
+                                        data-request-token="@requestToken"
+                                >
                                     <i class="fa fa-trash"></i>
                                 </button>
                             }
                         </div>
                     </div>
-                </section>
+                </article>
             }
-        </section>
-        <section class="new-comment"></section>
-        <section class="t-comment-btn-section">
+        </div>
+        <div class="new-comment"></div>
+        <div class="t-comment-btn-section">
             <button class="t-comment-btn">Comment</button>
-        </section>
+        </div>
     </section>
     <aside class="tasks-review">
         <p class="daily-tasks">Daily tasks</p>
         <vc:tasks-side-bar is-manager=false tasks-count=TasksSideBarCount></vc:tasks-side-bar>
     </aside>
 
-</article>
+</section>
 
 <partial name="_NotificationPartial"></partial>
 
@@ -190,6 +194,7 @@
 </dialog>
 
 @section Scripts {
+    <script src="~/js/services/confirm-on-delete.js"></script>
     <script type="module" src="~/js/services/create-ticket-dialog-service.js"></script>
     <script type="module" src="~/js/services/comments-services.js"></script>
     <script type="module" src="~/js/services/tickets-services.js"></script>

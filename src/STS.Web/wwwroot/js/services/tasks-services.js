@@ -1,4 +1,5 @@
-﻿import { editTask, createTaskComment } from '../data/data.js';
+﻿import constants from '../constants.js';
+import { editTask, createTaskComment } from '../data/data.js';
 import { createHtmlElement, displayMessage } from '../services/util.js';
 
 const taskData = document.querySelector('.task-details');
@@ -6,9 +7,10 @@ const submitBtn = document.querySelector('.c-btn.task-btn');
 const selectStatus = document.querySelector('.task-status-select');
 const employeeSelect = document.querySelector('.t-employee-select');
 const status = document.querySelector('p.status');
+
 selectStatus.addEventListener('change', changeStatus);
-submitBtn.addEventListener('click', replayTask);
-employeeSelect.addEventListener('change', changeEmplyee);
+submitBtn.addEventListener('click', replyTask);
+if (employeeSelect) employeeSelect.addEventListener('change', changeEmplyee);
 
 async function changeEmplyee() {
     const taskId = taskData.dataset.taskId;
@@ -16,7 +18,7 @@ async function changeEmplyee() {
     const employeeId = employeeSelect.value;
     const employeeName = employeeSelect.options[employeeSelect.selectedIndex].text;
     await editTask(token, { id: taskId, employeeId: employeeId });
-    displayMessage(`Ticket has been assigned to ${employeeName}`);
+    displayMessage(constants.TASK_ASSIGN_MSG(employeeName));
 }
 
 async function changeStatus() {
@@ -26,17 +28,21 @@ async function changeStatus() {
     const statusName = selectStatus.options[selectStatus.selectedIndex].text;
     await editTask(token, { id: taskId, statusId: statusId });
     changeStatusName(statusName);
-    displayMessage(`Status has been chanded to ${statusName}`);
+    displayMessage(constants.CHANGE_STATUS_MSG(statusName));
 }
 
-async function replayTask() {
+async function replyTask() {
     const commentInput = document.querySelector('.comment-task-ta');
     const tasksComments = document.querySelector('.comments');
-    const errMsg = document.querySelector('.replay-validation');
+    const errMsg = document.querySelector('.reply-validation');
+    const noTasks = document.querySelector('.no-task-comments');
+    
     const comment = commentInput.value.trim();
 
-    if (comment.length < 2 || comment.length > 1000) {
-        errMsg.textContent = 'Task replay should be between 2 and 1000 characters.';
+    if (comment.length < constants.REPLY_MIN_LENGTH
+        || comment.length > constants.REPLY_MAX_LENGTH) {
+
+        errMsg.textContent = constants.TASK_REPLAY_ERR_MSG;
         return;
     } else {
         errMsg.textContent = '';
@@ -50,7 +56,14 @@ async function replayTask() {
     const newComment = createCommentHtml(result.id, result.content, result.userUserName)
     tasksComments.appendChild(newComment);
     commentInput.value = '';
+    const openStatusIndex = [...selectStatus.options].find(x => x.textContent == "Open");
+    if (openStatusIndex) {
+        selectStatus.value = openStatusIndex.value;
+    }
     changeStatusName('Open')
+    if (noTasks) {
+        noTasks.remove();
+    }
 }
 
 function changeStatusName(statusName) {

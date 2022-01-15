@@ -2,10 +2,10 @@
 
 @model UserEditModel
 
-<article class="create-user">
+<section class="create-user">
     <form class="create-user-form" asp-controller="Administration" asp-action="EditUser" method="post">
         <input type="hidden" asp-for="Id" value="@Model.Id"/>
-        <section class="user-select-group">
+        <div class="user-select-group">
             <div>
                 <label asp-for="Role">Role:</label>
                 <select asp-for="Role"                                    
@@ -24,9 +24,8 @@
                 </select>
                 <span asp-validation-for="DepartmentId" class="text-danger"></span>
             </div>
-        </section>
-
-        <section class="inputs-div"> 
+        </div>
+        <div class="inputs-div"> 
             <div>
                 <label asp-for="UserName">Username:</label>
                 <input asp-for="UserName">
@@ -57,10 +56,9 @@
                 <input asp-for="PhoneNumber">
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-        </section>
-
-        <section>
+        </div>
+        <div>
             <button class="show-create-btn" type="submit">Confirm</button>
-        </section>
+        </div>
     </form>
-</article>
+</section>

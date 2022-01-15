@@ -4,7 +4,7 @@ using static STS.Common.GlobalConstants;
 
 namespace STS.Web.ViewModels.Tasks
 {
-    public class ReplayTaskInputModel
+    public class ReplyTaskInputModel
     {
         public int EmployeeTaskId { get; set; }
 

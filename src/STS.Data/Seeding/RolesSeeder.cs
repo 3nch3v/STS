@@ -12,7 +12,7 @@ namespace STS.Data.Seeding
 {
     internal class RolesSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(StsDbContext dbContext, IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 

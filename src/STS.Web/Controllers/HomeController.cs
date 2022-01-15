@@ -17,9 +17,12 @@ namespace STS.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private const int statusErrorCode500 = 500;
         private const string invalidLogin = "Invalid login attempt.";
-        private const string errKey = "LoginAttempt";
+        private const string loginErrKey = "LoginAttempt";
+        private const string passErrKey = "RepeatPass";
         private const string logInfoMsg = "User logged in.";
+        private const string passErrMsg = "Password doesn't match.";
 
         private readonly IAdminService adminService;
         private readonly ILogger<HomeController> logger;
@@ -58,7 +61,7 @@ namespace STS.Web.Controllers
 
                 if (userByEmail == null && userByUsername == null)
                 {
-                    this.ModelState.AddModelError(errKey, invalidLogin);
+                    this.ModelState.AddModelError(loginErrKey, invalidLogin);
                     return View();
                 }
                 
@@ -73,7 +76,7 @@ namespace STS.Web.Controllers
                     return RedirectToAction("Tickets", "Tickets");
                 }
 
-                this.ModelState.AddModelError(errKey, invalidLogin);
+                this.ModelState.AddModelError(loginErrKey, invalidLogin);
                 return View();
             }
 
@@ -92,7 +95,7 @@ namespace STS.Web.Controllers
         {
             if (passInput.NewPass != passInput.RepeatPass) 
             {
-                ModelState.AddModelError("RepeatPass", "Password doesn't match."); 
+                ModelState.AddModelError(passErrKey, passErrMsg); 
             }
 
             if (!ModelState.IsValid) 
@@ -100,15 +103,13 @@ namespace STS.Web.Controllers
                 return View(passInput);
             }
 
-            string userId = userManager.GetUserId(User);
-            var user = await userManager.FindByIdAsync(userId);
-
+            var user = await userManager.GetUserAsync(User);
             var passChangeResult = await userManager.ChangePasswordAsync(user, passInput.OldPass, passInput.NewPass);
 
             if (!passChangeResult.Succeeded)
             {
                 await signInManager.SignOutAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Error), statusErrorCode500);
             }
 
             return RedirectToAction("Tickets", "Tickets");

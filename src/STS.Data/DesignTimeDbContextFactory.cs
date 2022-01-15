@@ -6,22 +6,22 @@ using Microsoft.Extensions.Configuration;
 
 namespace STS.Data
 {
-    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<StsDbContext>
     {
-        public ApplicationDbContext CreateDbContext(string[] args)
+        public StsDbContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .Build();
 
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            var builder = new DbContextOptionsBuilder<StsDbContext>();
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             builder.UseSqlServer(connectionString);
 
-            return new ApplicationDbContext(builder.Options);
+            return new StsDbContext(builder.Options);
         }
     }
 }

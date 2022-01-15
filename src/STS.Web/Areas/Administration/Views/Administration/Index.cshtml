@@ -4,21 +4,21 @@
 
 <h3 class="admin-greeting">Welcome to Admin panel</h3>
 
-<article class="admin-wrapper">
-    <section class="admin-stat-section">
+<section class="admin-wrapper">
+    <article class="admin-stat-section">
         <h5 class="t-stat-title">Tickets statistic</h5>
         <vc:tickets-statistic></vc:tickets-statistic>
-    </section>
-    <section class="admin-users-row">
-        <section class="admin-dep-section">
+    </article>
+    <div class="admin-users-row">
+        <article class="admin-dep-article">
             <h5 class="dep-title">Departments</h5>
             <vc:departments></vc:departments>
-        </section>
-        <section class="admin-roles-section">
+        </article>
+        <article class="admin-roles-section">
             <h5 class="t-stat-title">Roles</h5>
             <vc:roles></vc:roles>
-        </section>
-          <section class="admin-user-section">
+        </article>
+        <article class="admin-user-section">
             <h5 class="user-title">Users</h5>
             <a class="create-user-btn" asp-controller="Administration" asp-action="CreateUser">
                 Create user
@@ -26,6 +26,6 @@
             <a class="users-btn" asp-controller="Administration" asp-action="Users">
                 Users Explorer
             </a>
-        </section>
-    </section>
-</article>
+        </article>
+    </div>
+</section>

@@ -10,17 +10,15 @@ using STS.Web.ViewModels.Comment;
 
 namespace STS.Web.Areas.Api.Controllers
 {
-    [Authorize]
-    [Route("api/Comments")]
+    [Route("api/comments")]
     [ApiController]
-    public class CommentsApiController : ControllerBase
+    [Authorize]
+    public class CommentsController : ControllerBase
     {
         private readonly ICommentService commentService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public CommentsApiController(
-            ICommentService commentService,
-            UserManager<ApplicationUser> userManager)
+        public CommentsController(ICommentService commentService, UserManager<ApplicationUser> userManager)
         {
             this.commentService = commentService;
             this.userManager = userManager;
@@ -54,7 +52,7 @@ namespace STS.Web.Areas.Api.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<bool>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var comment = commentService.GetById(id);
 
@@ -63,9 +61,16 @@ namespace STS.Web.Areas.Api.Controllers
                 return NotFound();
             }
 
-            var result = await commentService.DeleteAsync(id);
+            var userId = userManager.GetUserId(User);
 
-            return Ok(result);
+            if (comment.UserId != userId)
+            {
+                return BadRequest();
+            }
+
+             await commentService.DeleteAsync(id);
+
+            return Ok();
         }
     }
 }

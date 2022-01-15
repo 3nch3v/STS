@@ -23,7 +23,7 @@
 .admin-stat-section,
 .dep-count,
 .admin-user-section,
-.admin-dep-section,
+.admin-dep-article,
 .admin-roles-section {
     background-color: black;
     border-radius: 8px;
@@ -31,7 +31,7 @@
 
 .ticket-stat-wrapper,
 .admin-user-section,
-.admin-dep-section,
+.admin-dep-article,
 .admin-roles-section {
     padding: 15px;
 }
@@ -77,7 +77,8 @@
 .admin-greeting,
 .create-user-btn,
 .dep-title,
-.t-stat-title {
+.t-stat-title,
+.admin-dep-article {
     margin-bottom: 15px;
 }
 

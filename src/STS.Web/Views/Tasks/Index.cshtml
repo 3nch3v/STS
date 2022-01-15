@@ -7,13 +7,13 @@
     this.ViewData["Keyword"] = @Model.Keyword;
 }
 
-<article class="tasks-wrapper">
+<div class="tasks-wrapper">
     <partial name="_TaskSideBar" view-data="this.ViewData" />
 
     <section class="tasks-table-wrapper">
         <partial name="_TasksTable" model="Model"/>
 
-        <section class="pagination">
+        <div class="pagination">
             @if (Model.PagesCount > 1)
             {
                 <nav class="page-nav">
@@ -79,6 +79,6 @@
                     </ul>
                 </nav>
             }
-        </section>
+        </div>
     </section>
-</article>
+</div>

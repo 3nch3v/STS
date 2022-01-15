@@ -1,34 +1,27 @@
 ﻿using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 
-using STS.Data.Models;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tickets;
 
 namespace STS.Web.Areas.Api.Controllers
 {
 
-    [Route("api/Tickets")]
+    [Route("api/tickets")]
     [ApiController]
     [Authorize]
-    public class TicketsApiController : ControllerBase
+    public class TicketsController : ControllerBase
     {
         private readonly ITicketService ticketService;
         private readonly IMapper mapper;
-        private readonly UserManager<ApplicationUser> userManager;
 
-        public TicketsApiController(
-            ITicketService ticketService,
-            IMapper mapper,
-            UserManager<ApplicationUser> userManager)
+        public TicketsController(ITicketService ticketService, IMapper mapper)
         {
             this.ticketService = ticketService;
             this.mapper = mapper;
-            this.userManager = userManager;
         }
 
         [HttpPut]

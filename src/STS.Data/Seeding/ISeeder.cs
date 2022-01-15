@@ -5,6 +5,6 @@ namespace STS.Data.Seeding
 {
     public interface ISeeder
     {
-        Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider);
+        Task SeedAsync(StsDbContext dbContext, IServiceProvider serviceProvider);
     }
 }

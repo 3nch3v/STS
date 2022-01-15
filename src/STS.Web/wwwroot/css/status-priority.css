@@ -12,9 +12,16 @@
     background-color: orangered;
 }
 
-.status.solved,
+.status.solved {
+    background-color: #8C818E;
+}
+
 .status.closed {
-    background-color: #7E7060;
+    background-color: #5D565E;
+}
+
+.status.newreply {
+    background-color: #7C3764;
 }
 
 .priority.low {
@@ -33,9 +40,9 @@
     background-color: #928629;
 }
 
-.status.inprogress {
-    background-color: #541743;
-}
+    .status.inprogress {
+        background-color: #42639E;
+    }
 
 .priority.medium {
     background-color: #F75431;

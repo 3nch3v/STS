@@ -5,7 +5,7 @@
     this.ViewData["Title"] = "Tasks management";
 }
 
-<article class="m-tasks-wrapper">
+<div class="m-tasks-wrapper">
     <section class="tasks-side-bar-section">
         <div class="m-panel-wrapper"> 
             <section>
@@ -20,7 +20,7 @@
 
         <partial name="_TasksTable" model="Model" />
 
-        <section class="pagination">
+        <div class="pagination">
             @if (Model.PagesCount > 1)
             {
                 <nav class="page-nav">
@@ -87,11 +87,11 @@
                     </ul>
                 </nav>
             }
-        </section>
+        </div>
 
     </section>
 
-</article>
+</div>
 
 <partial name="_NotificationPartial"></partial>
 

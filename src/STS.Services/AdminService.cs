@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 
 using STS.Data;
@@ -20,19 +18,13 @@ namespace STS.Services
         private int usersCount = 0;
 
         private readonly IMapper mapper;
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<ApplicationRole> roleManager;
-        private readonly ApplicationDbContext dbContext;
+        private readonly StsDbContext dbContext;
 
         public AdminService(
             IMapper mapper,
-            UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager,
-            ApplicationDbContext dbContext)
+            StsDbContext dbContext)
         {
             this.mapper = mapper;
-            this.userManager = userManager;
-            this.roleManager = roleManager;
             this.dbContext = dbContext;
         }
 
@@ -43,14 +35,10 @@ namespace STS.Services
             return dbContext.Users.FirstOrDefault(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<string>> GetUserRolesAsync(string id)
+        public IEnumerable<UserDto> GetUsersAsync(int page, string searchTerm, int? departmentId)
         {
-            return await userManager.GetRolesAsync(GetUserById(id));
-        }
-
-        public async Task<IEnumerable<UserDto>> GetUsersAsync(int page, string searchTerm, int? departmentId)
-        {
-            var usersQuery = dbContext.Users.AsQueryable();
+            var usersQuery = dbContext.Users
+                .AsQueryable();
 
             if (departmentId != null)
             {
@@ -89,91 +77,24 @@ namespace STS.Services
                 .Take(UsersPerPage)
                 .ToList();
 
-            foreach (var user in users)
-            {
-                var currUser = await userManager.FindByIdAsync(user.Id);
-                user.Roles = await userManager.GetRolesAsync(currUser);
-                user.IsLockedOut = await userManager.IsLockedOutAsync(currUser);
-            }
-
             return users;
         }
 
-        public async Task CreateDepartmentAsync(string departmentName)
-        {
-            var dbDepartment = dbContext.Departments.FirstOrDefault(d => d.Name.ToLower() == departmentName.ToLower());
-
-            if(dbDepartment == null)
-            {
-                var department = new Department()
-                {
-                    Name = departmentName,
-                };
-
-                await dbContext.Departments.AddAsync(department);
-                await dbContext.SaveChangesAsync();
-            }       
-        }
-
-        public async Task CreateRoleAsync(string roleName)
-        {
-            var role = await roleManager.FindByNameAsync(roleName);
-
-            if (role == null)
-            {
-                await roleManager.CreateAsync(new ApplicationRole(roleName));
-            }
-
-            await dbContext.SaveChangesAsync();
-        }
-
-        public async Task RegisterUserAsync<T>(T userInput)
-        {
-            var userDto = mapper.Map<UserInputDto>(userInput);
-
-            var user = new ApplicationUser
-            {
-                FirstName = userDto.FirstName,
-                LastName = userDto.LastName,
-                Position = userDto.Position,
-                UserName = userDto.UserName,
-                Email = userDto.Email,
-                DepartmentId = userDto.DepartmentId,
-                PhoneNumber = userDto.PhoneNumber,
-            };
-
-            var userResult = await userManager.CreateAsync(user, userDto.Password);
-
-            if (userResult.Succeeded)
-            {
-                var role = await roleManager.FindByNameAsync(userDto.Role);
-
-                if (role != null)
-                {
-                    await userManager.AddToRoleAsync(user, userDto.Role);
-                }
-            }
-
-            await dbContext.SaveChangesAsync();
-        }
-
-        public async Task EditUserAsync<T>(T userInput)
+        public async Task<ApplicationUser> EditUserAsync<T>(T userInput)
         {
             var userDto = mapper.Map<UserEditDto>(userInput);
-            var user = await userManager.FindByIdAsync(userDto.Id);
+            var user = GetUserById(userDto.Id);
 
             if (user.Email != userDto.Email)
             {
                 user.Email = userDto.Email;
-                user.NormalizedEmail = userDto.Email;
-                await userManager.UpdateAsync(user);
+                user.NormalizedEmail = userDto.Email.ToUpper();
             }
 
             if (user.UserName != userDto.UserName)
             {
                 user.UserName = userDto.UserName;
-                user.NormalizedUserName = userDto.UserName;
-                await userManager.UpdateAsync(user);
+                user.NormalizedUserName = userDto.UserName.ToUpper();
             }
 
             if (user.FirstName != userDto.FirstName)
@@ -201,36 +122,26 @@ namespace STS.Services
                 user.DepartmentId = userDto.DepartmentId;
             }
 
-            var role = await roleManager.FindByNameAsync(userDto.Role);
-
-            if (!user.Roles.Any(r => r.RoleId == role.Id))
-            {
-                foreach (var (roleId, userId) in user.Roles.Select(x => (x.RoleId, x.UserId)))
-                {
-                    var currRole = await roleManager.FindByIdAsync(roleId);
-                    await userManager.RemoveFromRoleAsync(user, currRole.Name);
-                }
-
-                await userManager.AddToRoleAsync(user, userDto.Role);
-            }
-
             await dbContext.SaveChangesAsync();
+
+            return user;
         }
 
-        public async Task LockoutUserAsync(string userId)
+        public async Task CreateDepartmentAsync(string departmentName)
         {
-            var user = GetUserById(userId);
-            await userManager.SetLockoutEnabledAsync(user, true);
-            var lockoutEnd = DateTime.Now.AddYears(100);
-            await userManager.SetLockoutEndDateAsync(user, lockoutEnd);
-            await userManager.UpdateAsync(user);
-        }
+            var dbDepartment = dbContext.Departments
+                .FirstOrDefault(d => d.Name.ToLower() == departmentName.ToLower());
 
-        public async Task UnlockUserAsync(string userId)
-        {
-            var user = GetUserById(userId);
-            await userManager.SetLockoutEndDateAsync(user, DateTime.Now);
-            await userManager.UpdateAsync(user);  
+            if (dbDepartment == null)
+            {
+                var department = new Department()
+                {
+                    Name = departmentName,
+                };
+
+                await dbContext.Departments.AddAsync(department);
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteUserAsync(string userId)
@@ -250,8 +161,6 @@ namespace STS.Services
                .ToList();
 
             replaiesTasks.ForEach(task => task.IsDeleted = true);
-
-            //TODO Do someyhing with the tickets ?!
 
             await dbContext.SaveChangesAsync();
         }

@@ -1,4 +1,5 @@
-﻿import { getTicketId, getRequestToken, displayMessage } from './util.js';
+﻿import constants from '../constants.js';
+import { getTicketId, getRequestToken, displayMessage } from './util.js';
 import { editTicket, getEmployees } from '../data/data.js';
 import getTitleView from '../views/edit-ticket-title-view.js';
 import getContentView from '../views/edit-ticket-content-view.js';
@@ -34,7 +35,7 @@ async function loadDepartmentEmployees(department, assignTo, token) {
     const employees = await getEmployees(departmentId, token);
     assignTo.options.length = 0;
     var option = document.createElement("option");
-    option.text = "Select employee";
+    option.text = constants.SELECT_EMPL_DEF;
     assignTo.add(option, assignTo[0]);
     employees.forEach(({ id, userName }) =>
         assignTo.options[assignTo.options.length] = new Option(userName, id)
@@ -61,11 +62,19 @@ async function changeDepartment() {
     if (editTicketContentBtn) {
         editTicketContentBtn.remove();
     }
+
     statusSelect.disabled = true;
-    changeStatusIcon('Open');
+    const currStatus = statusSelect.options[statusSelect.selectedIndex].text;
+
+    if (currStatus != 'New reply') {
+        const openStatusIndex = [...statusSelect.options].find(x => x.textContent == "Open");
+        statusSelect.value = openStatusIndex.value;
+        changeStatusIcon('Open');
+    }
+
     changeTextContent('.assigned-to-username .name-prefix', 'unassigned');
     changeTextContent('.assigned-to-username .username', '');
-    displayMessage(`Ticket department has been changed to ${departmentName}`);
+    displayMessage(constants.CHANGE_DEP_MSG(departmentName));
 
     await loadDepartmentEmployees(departmentSelect, assignToSelect, token);
 }
@@ -80,7 +89,7 @@ async function assignToMe(event) {
     assignToSelect.value = currUser;
     const currUserName = assignToSelect.options[assignToSelect.selectedIndex].text;
     changeTextContent('.assigned-to-username .username', currUserName);
-    displayMessage(`Ticket has been assigned to you`);
+    displayMessage(constants.TICKET_ASSIGN_MSG(currUserName));
 }
 
 async function changeStatus() {
@@ -90,7 +99,7 @@ async function changeStatus() {
     const statusName = statusSelect.options[statusSelect.selectedIndex].text;
     await editTicket(token, { id: ticketId, statusId: statusId});
     changeStatusIcon(statusName);
-    displayMessage(`Status has been chanded to ${statusName}`);
+    displayMessage(constants.CHANGE_STATUS_MSG(statusName));
 }
 
 async function changeEmplyee() {
@@ -101,7 +110,7 @@ async function changeEmplyee() {
     await editTicket(token, { id: ticketId, assignedToId: assignToId });
     changeTextContent('.assigned-to-username .name-prefix', "Assigned to");
     changeTextContent('.assigned-to-username .username', assignedToUsername);
-    displayMessage(`Ticket has been assigned to ${assignedToUsername}`);
+    displayMessage(constants.TICKET_ASSIGN_MSG(assignedToUsername));
 }
 
 async function editTitle(event) {
@@ -111,7 +120,8 @@ async function editTitle(event) {
 
     async function request() {
         const input = document.querySelector('.title-edit-input').value;
-        if (input.length < 2 || input.length > 100) {
+        if (input.length < constants.TITLE_MIN_LENGTH
+           || input.length > constants.TITLE_MAX_LENGTH) {
             renderTitle(input, false, false);
             return;
         }
@@ -121,7 +131,7 @@ async function editTitle(event) {
             const token = getRequestToken();
             await editTicket(token, { id: ticketId, title: input });
             renderTitle(input, true, true);
-            displayMessage(`Ticket title has been edited`);
+            displayMessage(constants.TICKET_TITLE_EDIT_MSG);
         } else {
             renderTitle(input, true, true);
         }
@@ -139,7 +149,8 @@ async function editContent(event) {
 
     async function request() {
         const input = document.querySelector('.content-edit-ta').value;
-        if (input.length < 5 || input.length > 2000) {
+        if (input.length < constants.TICKET_DESCR_MIN_LENGTH
+           || input.length > constants.TICKET_DESCR_MAX_LENGTH) {
             renderContent(input, false, false);
             return;
         }
@@ -149,7 +160,7 @@ async function editContent(event) {
             const token = getRequestToken();
             await editTicket(token, { id: ticketId, content: input });
             renderContent(input, true, true);
-            displayMessage(`Ticket description has been edited`);
+            displayMessage(constants.TICKET_DESCR_EDIT_MSG);
         } else {
             renderContent(input, true, true);
         }

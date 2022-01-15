@@ -5,7 +5,6 @@
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 @model TaskViewModel;
 
-
 @{
     this.ViewData["Title"] = "Task details";
     var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
@@ -24,7 +23,7 @@
     };
 }
 
-<article class="task-wrapper">
+<section class="task-wrapper">
     <partial name="_TaskSideBar" view-data=null />
 
     <section class="task-details" data-task-id="@Model.Id" data-request-token="@requestToken">
@@ -60,11 +59,12 @@
             </div>
             @if (isManager && isOwnTask)
             {
-                <div>
+                <div class="delete-btn-div">
                     <a asp-controller="Tasks"
                        asp-action="Delete"
                        asp-route-id="@Model.Id"
                        class="t-delete-btn"
+                       OnClick=" return ConfirmOnDelete('@deleteTaskMassage')"
                     >
                         <i class="fa fa-trash fa-lg"></i>
                     </a>
@@ -78,19 +78,20 @@
                 <p class="priority @Model.PriorityName.Replace(" ", "").ToLower()">@Model.PriorityName</p>
                 <p class="deadline">@Model.Deadline</p>
             </div>
-            <section>
+            <div>
                 <h5>@Model.Title</h5>
                 <p>@Model.Description</p>
                 <p class="task-manager username"><span class="from-user">from</span> @Model.ManagerUserName</p>
-            </section>
+            </div>
         </section>
     </section>
 
     <partial name="_TaskComments" model="Model"></partial>
-</article>
+</section>
 
 <partial name="_NotificationPartial"></partial> 
 
 @section Scripts{
+    <script src="~/js/services/confirm-on-delete.js"></script>
     <script type="module" src="~/js/services/tasks-services.js"></script>
 }

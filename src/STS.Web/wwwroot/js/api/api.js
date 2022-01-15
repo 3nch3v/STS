@@ -15,7 +15,11 @@ async function request(url, options) {
             return response;
         }
 
-        return await response.json();
+        try {
+            return await response.json();
+        } catch {
+            return response;
+        }
 
     } catch (err) {
         throw err;

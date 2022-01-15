@@ -10,6 +10,6 @@ namespace STS.Data.Dtos.Task
 
         public string Description { get; set; }
 
-        public virtual ICollection<ReplayTaskDto> Comments { get; set; }
+        public virtual ICollection<ReplyTaskDto> Comments { get; set; }
     }
 }

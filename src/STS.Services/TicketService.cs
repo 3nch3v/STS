@@ -18,13 +18,13 @@ namespace STS.Services
         private readonly IAdminService adminService;
         private readonly ICommonService commonService;
         private readonly IMapper mapper;
-        private readonly ApplicationDbContext dbContext;
+        private readonly StsDbContext dbContext;
 
         public TicketService(
             IAdminService adminService,
             ICommonService commonService,
             IMapper mapper,
-            ApplicationDbContext dbContext)
+            StsDbContext dbContext)
         {
             this.adminService = adminService;
             this.commonService = commonService;
@@ -110,9 +110,13 @@ namespace STS.Services
             if (ticketInput.DepartmentId != null
                 && dbTicket.DepartmentId != ticketInput.DepartmentId)
             {
-                dbTicket.DepartmentId = (int)ticketInput.DepartmentId;
-                dbTicket.StatusId = commonService.GetStatusId("Open");
+                if(dbTicket.StatusId != commonService.GetStatusId("New reply"))
+                {
+                    dbTicket.StatusId = commonService.GetStatusId("Open");
+                }
 
+                dbTicket.DepartmentId = (int)ticketInput.DepartmentId;
+               
                 if (commonService.GetDepartmentId(dbTicket.EmployeeId) == ticketInput.DepartmentId)
                 {
                     dbTicket.AssignedToId = dbTicket.EmployeeId;

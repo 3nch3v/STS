@@ -10,7 +10,7 @@ namespace STS.Services.Contracts
 
         Task<Comment> CreateAsync<T>(T commentDto, string userId);
 
-        Task<bool> DeleteAsync(int id);
+        Task DeleteAsync(int id);
 
         Task SendEmailAsync(int ticketId, string content, ApplicationUser sender);
     }

@@ -1,6 +1,6 @@
 ﻿@model Dictionary<string, Dictionary<string, int>>;
 
-<article class="ticket-stat-wrapper">
+<div class="ticket-stat-wrapper">
     @if (Model.Count > 0)
     {
         @foreach (var (status, kvp) in Model.OrderByDescending(x => x.Value.Count()))
@@ -24,4 +24,4 @@
     {
         <p>No tickets currently available.</p>
     }
-</article>
+</div>

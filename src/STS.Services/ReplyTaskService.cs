@@ -10,26 +10,26 @@ using STS.Services.Contracts;
 
 namespace STS.Services
 {
-    public class ReplayTaskService : IReplayTaskService
+    public class ReplyTaskService : IReplyTaskService
     {
         private readonly IMapper mapper;
-        private readonly ApplicationDbContext dbContext;
+        private readonly StsDbContext dbContext;
 
-        public ReplayTaskService(IMapper mapper, ApplicationDbContext dbContext)
+        public ReplyTaskService(IMapper mapper, StsDbContext dbContext)
         {
             this.mapper = mapper;
             this.dbContext = dbContext;
         }
 
-        public async Task<ReplayTaskDto> ReplayTaskAsync<T>(string userId, T replay)
+        public async Task<ReplyTaskDto> ReplyTaskAsync<T>(string userId, T reply)
         {
-            var task = mapper.Map<ReplyTask>(replay);
+            var task = mapper.Map<ReplyTask>(reply);
             task.User = dbContext.Users.FirstOrDefault(x => x.Id == userId);
 
             await dbContext.RepliesTasks.AddAsync(task);
             await dbContext.SaveChangesAsync();
 
-            var result = mapper.Map<ReplayTaskDto>(task);
+            var result = mapper.Map<ReplyTaskDto>(task);
 
             return result;
         }

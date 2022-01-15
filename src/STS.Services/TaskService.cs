@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -21,12 +21,12 @@ namespace STS.Services
 
         private readonly IMapper mapper;
         private readonly ICommonService commonService;
-        private readonly ApplicationDbContext dbContext;
+        private readonly StsDbContext dbContext;
 
         public TaskService(
             IMapper mapper,
             ICommonService commonService,
-            ApplicationDbContext dbContext)
+            StsDbContext dbContext)
         {
             this.mapper = mapper;
             this.commonService = commonService;
@@ -52,11 +52,11 @@ namespace STS.Services
                     EmployeeId = task.EmployeeId,
                     EmployeeUserName = task.Employee.UserName,
                     Comments = task.Comments
-                        .Select(replay => new ReplayTaskDto
+                        .Select(reply => new ReplyTaskDto
                         {
-                            Id = replay.Id,
-                            Content = replay.Content,
-                            UserUserName = replay.User.UserName,
+                            Id = reply.Id,
+                            Content = reply.Content,
+                            UserUserName = reply.User.UserName,
                         })
                         .ToList(),
                })

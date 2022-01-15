@@ -9,11 +9,11 @@
     string[] keys = { "my", "to me", "new", "all", "history" };
 }
 
-<article class="ticket-search">
-    <section>
+<section class="ticket-search">
+    <div>
         <button class="show-create-btn" title="Create a new ticket...">New Ticket</button>
-    </section>
-    <section class="search-section">
+    </div>
+    <div class="search-section">
         <form asp-controller="Tickets" asp-action="Tickets" class="search-ticket-form" method="get">
             <input class="search-input-field"
                    name="keyword"
@@ -24,16 +24,16 @@
                    minlength=2 />
             <button class="search-btn" type="submit">Go</button>
         </form>
-    </section>
-</article>
+    </div>
+</section>
 
-<article class="tickets-page-container">
+<section class="tickets-page-container">
     <section class="tickets-nav-section">
         <vc:tickets-nav-bar></vc:tickets-nav-bar>
     </section>
 
     <section class="tickets-wrapper">
-        <section class="tickets-list">
+        <div class="tickets-list">
             @if (Model.TicketsCount > 0)
             {
                 <div class="tickets-table">
@@ -71,7 +71,7 @@
             {
                 <p>No tickets currently available.</p>
             }
-        </section>
+        </div>
 
         @if (Model.PagesCount > 1)
         {
@@ -135,7 +135,7 @@
             </nav>
         }
     </section>
-</article>
+</section>
 
 <dialog class="create-dialog">
     <vc:create-ticket></vc:create-ticket>

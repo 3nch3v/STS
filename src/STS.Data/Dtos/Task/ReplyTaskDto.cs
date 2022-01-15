@@ -1,6 +1,6 @@
-﻿namespace STS.Web.ViewModels.Tasks
+﻿namespace STS.Data.Dtos.Task
 {
-    public class ReplayTaskViewModel
+    public class ReplyTaskDto
     {
         public int Id { get; set; }
 
