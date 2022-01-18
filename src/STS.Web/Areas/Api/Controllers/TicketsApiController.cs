@@ -2,10 +2,12 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tickets;
+using STS.Data.Models;
 
 namespace STS.Web.Areas.Api.Controllers
 {
@@ -13,15 +15,20 @@ namespace STS.Web.Areas.Api.Controllers
     [Route("api/tickets")]
     [ApiController]
     [Authorize]
-    public class TicketsController : ControllerBase
+    public class TicketsApiController : ControllerBase
     {
         private readonly ITicketService ticketService;
         private readonly IMapper mapper;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public TicketsController(ITicketService ticketService, IMapper mapper)
+        public TicketsApiController(
+            ITicketService ticketService, 
+            IMapper mapper, 
+            UserManager<ApplicationUser> userManager)
         {
             this.ticketService = ticketService;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         [HttpPut]
@@ -32,6 +39,15 @@ namespace STS.Web.Areas.Api.Controllers
             if (ticket == null)
             {
                 return NotFound();
+            }
+
+            var userId = userManager.GetUserId(User);
+
+            if (ticket.EmployeeId != userId
+               && (ticketDto.Title != null 
+                  || ticketDto.Content != null))
+            {
+                return Unauthorized();
             }
 
             var result = await ticketService.EditAsync(ticketDto.Id, ticketDto);

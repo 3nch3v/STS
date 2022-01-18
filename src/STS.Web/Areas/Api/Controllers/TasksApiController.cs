@@ -7,17 +7,19 @@ using AutoMapper;
 using STS.Services.Contracts;
 using STS.Web.ViewModels.Tasks;
 
+using static STS.Common.GlobalConstants;
+
 namespace STS.Web.Areas.Api.Controllers
 {
     [Route("api/tasks")]
     [ApiController]
     [Authorize]
-    public class TasksController : ControllerBase
+    public class TasksApiController : ControllerBase
     {
         private readonly ITaskService taskServie;
         private readonly IMapper mapper;
 
-        public TasksController(ITaskService taskServie, IMapper mapper)
+        public TasksApiController(ITaskService taskServie, IMapper mapper)
         {
             this.taskServie = taskServie;
             this.mapper = mapper;
@@ -36,6 +38,17 @@ namespace STS.Web.Areas.Api.Controllers
             if (task == null)
             {
                 return NotFound();
+            }
+
+            if (!User.IsInRole(ManagerRoleName)
+                && !User.IsInRole(AdministratorRoleName)
+                && (taskDto.Title != null
+                   || taskDto.Description != null
+                   || taskDto.Deadline != null
+                   || taskDto.PriorityId != null
+                   || taskDto.EmployeeId != null)) 
+            {
+                return Unauthorized();
             }
 
             var result = await taskServie.EditAsync(taskDto);

@@ -105,7 +105,7 @@ namespace STS.Web.Controllers
 
             if (ticket.EmployeeId != userId)
             {
-                return BadRequest();
+                return Unauthorized();
             }
 
             await ticketService.DeleteAsync(id);

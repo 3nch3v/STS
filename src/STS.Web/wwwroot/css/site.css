@@ -81,10 +81,10 @@ button.accept-policy {
 }
 
 .home-wrapper,
-.profile-wrapper {
+.profile-wrapper,
+.err-wrapper {
     display: flex;
     flex-direction: row;
-
     color: #C2CAD2;
 }
 
@@ -92,9 +92,14 @@ button.accept-policy {
     justify-content: space-between;
 }
 
-.profile-wrapper {
+.profile-wrapper,
+.err-wrapper {
     justify-content: center;
     gap: 50px;
+}
+
+.err-wrapper {
+    align-items: center;
 }
 
 .d-mail,
@@ -150,8 +155,14 @@ button.accept-policy {
     padding: 25px 15px 25px 25px;
 }
 
+.excl-mark {
+    max-width: 250px;
+}
+
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-    .home-wrapper, .profile-wrapper {
+    .home-wrapper, 
+    .profile-wrapper,
+    .err-wrapper {
         display: flex;
         flex-direction: column;
         gap: 25px;

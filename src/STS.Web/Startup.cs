@@ -96,7 +96,7 @@ namespace STS.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
+                app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
                 app.UseHsts();
             }
 

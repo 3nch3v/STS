@@ -138,13 +138,19 @@
 
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
     .tasks-wrapper,
-    .m-tasks-wrapper,
-    .task-wrapper {
+    .m-tasks-wrapper {
         margin: 0;
     }
 
+    .task-wrapper {
+        flex-direction: column;
+        margin: 0;
+        gap: 10px;
+    }
+
     .tasks-side-bar-section,
-    .task-comment-form div {
+    .task-comment-form div,
+    .task-comments-wrapper {
         width: 100%;
     }
 
@@ -196,6 +202,7 @@ input[type="datetime-local"]:focus {
 .create-form-wrapper {
     font-weight: bold;
     color: #8B949E;
+
 }
 
 .search-input-btn-sec,

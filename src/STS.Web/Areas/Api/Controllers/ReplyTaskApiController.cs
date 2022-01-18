@@ -14,14 +14,14 @@ namespace STS.Web.Areas.Api.Controllers
     [Route("api/reply")]
     [ApiController]
     [Authorize]
-    public class ReplyTaskController : ControllerBase
+    public class ReplyTaskApiController : ControllerBase
     {
         private readonly ITaskService taskServie;
         private readonly IReplyTaskService replyTaskService;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public ReplyTaskController(
+        public ReplyTaskApiController(
             ITaskService taskServie,
             IReplyTaskService replyTaskService,
             IMapper mapper,

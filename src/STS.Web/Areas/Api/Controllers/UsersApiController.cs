@@ -13,12 +13,12 @@ namespace STS.Web.Areas.Api.Controllers
     [Route("api/users")]
     [ApiController]
     [Authorize]
-    public class UsersController : ControllerBase
+    public class UsersApiController : ControllerBase
     {
         private readonly ICommonService commonService;
         private readonly IMapper mapper;
 
-        public UsersController(ICommonService commonService, IMapper mapper)
+        public UsersApiController(ICommonService commonService, IMapper mapper)
         {
             this.commonService = commonService;
             this.mapper = mapper;

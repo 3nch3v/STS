@@ -4,13 +4,15 @@
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-<h2 class="text-danger">@Model.ErrorMessage</h2>
-
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+<section class="err-wrapper">
+    <div class="error">
+        <img class="excl-mark" src="~/img/excl-mark.png" />
+        
+    </div>
+    <div>
+         <h3 style="font-size: 90px;">Error</h3>
+        <h4>Oops. Something Went Wrong</h4>
+        <p>@Model.ErrorMessage</p>
+        <p>Please go back and try again.</p>
+    </div>
+</section>

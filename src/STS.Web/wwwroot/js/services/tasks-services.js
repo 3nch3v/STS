@@ -35,13 +35,12 @@ async function replyTask() {
     const commentInput = document.querySelector('.comment-task-ta');
     const tasksComments = document.querySelector('.comments');
     const errMsg = document.querySelector('.reply-validation');
-    const noTasks = document.querySelector('.no-task-comments');
+    const noTasksComments = document.querySelector('.no-task-comments');
     
     const comment = commentInput.value.trim();
 
     if (comment.length < constants.REPLY_MIN_LENGTH
         || comment.length > constants.REPLY_MAX_LENGTH) {
-
         errMsg.textContent = constants.TASK_REPLAY_ERR_MSG;
         return;
     } else {
@@ -50,19 +49,21 @@ async function replyTask() {
 
     const token = taskData.dataset.requestToken;
     const taskId = taskData.dataset.taskId;
-    const statusId = Array.from(selectStatus.options).find(x => x.textContent.trim() == 'Open').value;
-    const result = await createTaskComment(token, { employeeTaskId: taskId, content: comment });
-    await editTask(token, { id: taskId, statusId: statusId });
-    const newComment = createCommentHtml(result.id, result.content, result.userUserName)
+    const statusId = Array.from(selectStatus.options).find(x => x.textContent.trim() == 'New reply').value;
+
+    const [commentRes] = await Promise.all([
+        createTaskComment(token, { employeeTaskId: taskId, content: comment }),
+        editTask(token, { id: taskId, statusId: statusId })
+    ])
+
+    const newComment = createCommentHtml(commentRes.id, commentRes.content, commentRes.userUserName)
     tasksComments.appendChild(newComment);
     commentInput.value = '';
-    const openStatusIndex = [...selectStatus.options].find(x => x.textContent == "Open");
-    if (openStatusIndex) {
-        selectStatus.value = openStatusIndex.value;
-    }
-    changeStatusName('Open')
-    if (noTasks) {
-        noTasks.remove();
+    changeStatusName('New reply')
+    selectStatus.value = statusId;
+
+    if (noTasksComments) {
+        noTasksComments.remove();
     }
 }
 

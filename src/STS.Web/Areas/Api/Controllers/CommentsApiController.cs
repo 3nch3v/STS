@@ -13,12 +13,12 @@ namespace STS.Web.Areas.Api.Controllers
     [Route("api/comments")]
     [ApiController]
     [Authorize]
-    public class CommentsController : ControllerBase
+    public class CommentsApiController : ControllerBase
     {
         private readonly ICommentService commentService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public CommentsController(ICommentService commentService, UserManager<ApplicationUser> userManager)
+        public CommentsApiController(ICommentService commentService, UserManager<ApplicationUser> userManager)
         {
             this.commentService = commentService;
             this.userManager = userManager;
@@ -65,7 +65,7 @@ namespace STS.Web.Areas.Api.Controllers
 
             if (comment.UserId != userId)
             {
-                return BadRequest();
+                return Unauthorized();
             }
 
              await commentService.DeleteAsync(id);

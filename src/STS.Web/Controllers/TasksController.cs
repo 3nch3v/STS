@@ -41,12 +41,16 @@ namespace STS.Web.Controllers
             var currUserId = userManager.GetUserId(User);
             var taskDto = taskService.GetById(id);
 
-            if (taskDto == null 
-                || (taskDto.EmployeeId != currUserId 
-                   && !User.IsInRole(ManagerRoleName) 
-                   && !User.IsInRole(AdministratorRoleName)))
+            if (taskDto == null)
             {
                 return BadRequest();
+            }
+
+            if (taskDto.EmployeeId != currUserId
+                && !User.IsInRole(ManagerRoleName)
+                && !User.IsInRole(AdministratorRoleName)) 
+            {
+                return Unauthorized();
             }
 
             var task = mapper.Map<TaskViewModel>(taskDto);
@@ -105,10 +109,14 @@ namespace STS.Web.Controllers
             var task = taskService.GetById(id);
             var userId = userManager.GetUserId(User);
 
-            if (task == null 
-                || task.ManagerId != userId)
+            if (task == null)
             {
                 return BadRequest();
+            }
+
+            if (task.ManagerId != userId) 
+            {
+                return Unauthorized();
             }
 
             await taskService.DeleteAsync(id);

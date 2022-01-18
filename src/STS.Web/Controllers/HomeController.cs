@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -109,27 +108,16 @@ namespace STS.Web.Controllers
             if (!passChangeResult.Succeeded)
             {
                 await signInManager.SignOutAsync();
-                return RedirectToAction(nameof(Error), statusErrorCode500);
+                return RedirectToAction(nameof(Error), new { statusCode = statusErrorCode500 });
             }
 
             return RedirectToAction("Tickets", "Tickets");
         }
 
-        public IActionResult Privacy()
+        public IActionResult Error(int statusCode)
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error(int code)
-        {
-            string msg = this.GetMessage(code);
-
-            var error = new ErrorViewModel
-            {
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
-                ErrorMessage = msg,
-            };
+            string msg = this.GetMessage(statusCode);
+            var error = new ErrorViewModel(msg);
 
             return View(error);
         }
