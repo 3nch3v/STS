@@ -184,18 +184,18 @@
 
 <partial name="_NotificationPartial"></partial>
 
-<dialog class="create-dialog">
+<section class="create-dialog-overlay">
     <vc:create-ticket></vc:create-ticket>
-</dialog>
+</section>
 
-<dialog class="comment-dialog">
+<section class="comment-dialog-overlay">
     <partial name="_CommentFormPartial" view-data="ViewData"></partial>
-</dialog>
+</section>
 
 @section Scripts {
     <script src="~/js/services/confirm-on-delete.js"></script>
-    <script type="module" src="~/js/services/create-ticket-dialog.js"></script>
-    <script type="module" src="~/js/services/comments-services.js"></script>
     <script type="module" src="~/js/services/tickets-services.js"></script>
     <script type="module" src="~/js/services/create-ticket-validation.js"></script>
+    <script type="module" src="~/js/services/comments-ticket-services.js"></script>
+
 }

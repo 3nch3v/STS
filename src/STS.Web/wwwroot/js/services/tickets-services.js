@@ -12,6 +12,9 @@ const createDepartmentSelect = document.querySelector('.create-f-dep-select');
 const assignToMeBtn = document.querySelector('.assign-to-me-btn');
 const editTicketTitleBtn = document.querySelector('.edit-t-title');
 const editTicketContentBtn = document.querySelector('.edit-t-content');
+const createTicketModal = document.querySelector('.create-dialog-overlay');
+const createBtn = document.querySelector('.show-create-btn');
+const cancelBtn = document.querySelector('.cancel-btn');
 
 if (departmentSelect) departmentSelect.addEventListener('change', changeDepartment);
 if (assignToSelect) assignToSelect.addEventListener('change', changeEmplyee);
@@ -20,6 +23,16 @@ if (editTicketContentBtn) editTicketContentBtn.addEventListener('click', editCon
 if (assignToMeBtn) assignToMeBtn.addEventListener('click', assignToMe)
 if (editTicketTitleBtn) editTicketTitleBtn.addEventListener('click', editTitle)
 if (createDepartmentSelect) createDepartmentSelect.addEventListener('change', showEmployeeSelect)
+createBtn.addEventListener('click', showModal);
+cancelBtn.addEventListener('click', cancelModal);
+
+function showModal() {
+    createTicketModal.style.display = 'block';
+}
+
+function cancelModal() {
+    createTicketModal.style.display = 'none';
+}
 
 async function showEmployeeSelect() {
     const employeeSelect = document.querySelector('.create-f-empl-select');

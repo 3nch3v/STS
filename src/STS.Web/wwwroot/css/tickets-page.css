@@ -18,9 +18,9 @@
     flex-grow: 1;
     flex-shrink: 1;
     width: 80%;
+    margin-bottom: 20px;
 }
 
-/*nav*/
 .tickets-nav {
     border-radius: 8px;
     background-color: #30363D;
@@ -64,7 +64,6 @@
     font: 14px Arial, sans-serif;
 }
 
-/*table*/
 .tickets-table-row,
 .tickets-table-header {
     display: flex;
@@ -74,16 +73,19 @@
 .table-t-title {
     flex-shrink: 1;
     flex-grow: 1;
+    white-space: pre-wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tickets-table {
     width: 100%;
 }
 
+.status,
 .table-priority,
 .table-assigned-to,
 .table-date{
-    width: 1px;
     white-space: nowrap;
 }
 
@@ -94,10 +96,6 @@
 
 .table-status {
     width: 110px;
-}
-
-.table-t-title {
-    white-space: pre-wrap;
 }
 
 .tickets-table,
@@ -121,7 +119,7 @@
 .user-row div,
 .users-talbe-header div{
     display: table-cell;
-    padding: 8px;
+    padding: 6px;
 }
 
 .tickets-table-header {
@@ -169,91 +167,23 @@ p.daily-tasks {
 .repeat-pass {
     background-color: #30363D;
     color: #C2CAD2;
-    border-bottom-left-radius: 6px;
-    border-top-left-radius: 6px;
     border-color: #30363D;
     padding: 6px;
+}
+
+.old-pass,
+.new-pass,
+.repeat-pass,
+.email,
+.password {
+    border-radius: 6px;
 }
 
 .search-input-field {
     width: 100%;
     margin-right: 1px;
-}
-
-@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-    body {
-        width: 100%;
-    }
-
-    .tickets-wrapper {
-        width: 100%;
-    }
-    .tickets-page-container {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: start;
-        gap: 20px;
-    }
-
-    .tickets-table,
-    .tickets-table-header,
-    .table-body,
-    .tickets-table-header div,
-    .tickets-table-row div,
-    .tickets-table-row {
-        display: block;
-    }
-      
-    .tickets-table-header div{
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    .tickets-table-row {
-        border: 1px solid #30363D;
-    }
-
-    .tickets-table-row div {
-        border: none;
-        position: relative;
-        padding-left: 120px;
-    }
-
-    .tickets-table-row div:before {
-        position: absolute;     
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-    }
-
-    .tickets-table-row div:nth-of-type(1):before {
-        content: "#";
-    }
-    
-    .tickets-table-row div:nth-of-type(2):before {
-        content: "Status";
-    }
-    
-    .tickets-table-row div:nth-of-type(3):before {
-        content: "Priority";
-    }
-    
-    .tickets-table-row div:nth-of-type(4):before {
-        content: "Title";
-    }
-    
-    .tickets-table-row div:nth-of-type(5):before {
-        content: "Crated on";
-    }
-    
-    .tickets-table-row div:nth-of-type(6):before {
-        content: "Assigned to";
-    }         	
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
 }
 
 .ticket-search {
@@ -292,4 +222,81 @@ p.daily-tasks {
 
 .search-ticket-form {
     display:flex;
+}
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+    body {
+        width: 100%;
+    }
+
+    .tickets-wrapper {
+        width: 100%;
+    }
+
+    .tickets-page-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: start;
+        gap: 20px;
+    }
+
+    .tickets-table,
+    .tickets-table-header,
+    .table-body,
+    .tickets-table-header div,
+    .tickets-table-row div,
+    .tickets-table-row {
+        display: block;
+    }
+
+        .tickets-table-header div {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+    .tickets-table-row {
+        border: 1px solid #30363D;
+    }
+
+        .tickets-table-row div {
+            border: none;
+            position: relative;
+            padding-left: 120px;
+        }
+
+            .tickets-table-row div:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+            }
+
+            .tickets-table-row div:nth-of-type(1):before {
+                content: "#";
+            }
+
+            .tickets-table-row div:nth-of-type(2):before {
+                content: "Status";
+            }
+
+            .tickets-table-row div:nth-of-type(3):before {
+                content: "Priority";
+            }
+
+            .tickets-table-row div:nth-of-type(4):before {
+                content: "Title";
+            }
+
+            .tickets-table-row div:nth-of-type(5):before {
+                content: "Crated on";
+            }
+
+            .tickets-table-row div:nth-of-type(6):before {
+                content: "Assigned to";
+            }
 }

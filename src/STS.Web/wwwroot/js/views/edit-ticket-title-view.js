@@ -1,4 +1,4 @@
-﻿import { html, render } from '../node_modules/lit-html/lit-html.js';
+﻿import { html, render } from '../../lib/lit-html/lit-html.js';
 
 const titleTemplate = (title, isTitleView, requestFunc, isInputValid, editTitle) => html`
     ${isTitleView

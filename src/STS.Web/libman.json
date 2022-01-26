@@ -48,6 +48,11 @@
         "fonts/fontawesome-webfont.woff2",
         "fonts/FontAwesome.otf"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "lit-html@2.1.2",
+      "destination": "wwwroot/lib/lit-html/"
     }
   ]
 }

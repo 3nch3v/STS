@@ -3,11 +3,11 @@
 const titleErr = document.querySelector('.title-err');
 const descriptionErr = document.querySelector('.description-err');
 const createTicketForm = document.querySelector('.create-form-wrapper form');
-const dialogCancelBtn = document.querySelector('.cancel-btn');
+const cancelBtn = document.querySelector('.cancel-btn');
 const titleInput = document.querySelector('.t-tile input');
 const descriptionInput = document.querySelector('.t-description textarea');
 
-dialogCancelBtn.addEventListener('click', clearForm);
+cancelBtn.addEventListener('click', clearForm);
 createTicketForm.addEventListener('submit', validateTask);
 
 function validateTask(event) {

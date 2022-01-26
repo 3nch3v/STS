@@ -125,52 +125,26 @@
     color: #C2CAD2;
 }
 
+.form-control.comment-task-ta {
+    border: 1px solid #39A6FF;
+    border-radius: 8px;
+}
+
 .form-control.comment-task-ta:focus {
-    border-radius: 6px;
     font-size: 18px;
     border: 1px solid #39A6FF;
 }
 
 .task-comment-form div {
-    width: 85%;
+    width: 95%;
 }
 
-
-@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-    .tasks-wrapper,
-    .m-tasks-wrapper {
-        margin: 0;
-    }
-
-    .task-wrapper {
-        flex-direction: column;
-        margin: 0;
-        gap: 10px;
-    }
-
-    .tasks-side-bar-section,
-    .task-comment-form div,
-    .task-comments-wrapper {
-        width: 100%;
-    }
-
-    .form-control.comment-task-ta {
-        height: 100px;
-    }
-
-    .c-btn.task-btn,
-    .task-status-select,
-    .t-employee-select {
-        margin-bottom: 10px;
-    }
-
-    .task-s-p-d {
-        gap: 0;
-    }
+.t-description textarea {
+    max-height: 230px;
 }
 
-.create-task-dialog {
-    margin: auto;
+.task-comment-form {
+    flex-wrap: nowrap;
 }
 
 .expiring-side-bar {
@@ -199,11 +173,6 @@ input[type="datetime-local"]:focus {
     color: #C2CAD2;
 }
 
-.create-form-wrapper {
-    font-weight: bold;
-    color: #8B949E;
-
-}
 
 .search-input-btn-sec,
 .user-s-inpit-btn-sec {
@@ -217,4 +186,40 @@ input[type="datetime-local"]:focus {
 
 .c-btn.task-btn {
     margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+    .tasks-wrapper, .m-tasks-wrapper {
+        margin: 0;
+    }
+
+    .task-wrapper {
+        flex-direction: column;
+        margin: 0;
+        gap: 10px;
+    }
+
+    .tasks-side-bar-section,
+    .task-comment-form div,
+    .task-comments-wrapper {
+        width: 100%;
+    }
+
+    .form-control.comment-task-ta {
+        height: 100px;
+    }
+
+    .c-btn.task-btn,
+    .task-status-select,
+    .t-employee-select {
+        margin-bottom: 10px;
+    }
+
+    .task-s-p-d {
+        gap: 0;
+    }
+
+    .task-comment-form {
+        flex-wrap: wrap;
+    }
 }

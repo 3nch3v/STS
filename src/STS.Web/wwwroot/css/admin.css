@@ -176,6 +176,7 @@
     border-radius: 6px;
     background-color: #30363D;
     height: 32px;
+    padding-left: 5px;
 }
 
 .inputs-div input:focus {
@@ -211,7 +212,7 @@
 .admin-users {
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 25px;
     justify-content: center;
     margin: auto;
 }

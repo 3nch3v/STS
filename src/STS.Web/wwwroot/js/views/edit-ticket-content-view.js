@@ -1,4 +1,4 @@
-﻿import { html, render } from '../node_modules/lit-html/lit-html.js';
+﻿import { html, render } from '../../lib/lit-html/lit-html.js';
 
 const ticketContentTemplate = (content, isContentView, requestFunc, isInputValid, editContent, rows) => html`
     ${isContentView
@@ -26,6 +26,6 @@ export default function getContentView(content, isContentView, requestFunc, isIn
     const container = document.querySelector(".t-content-section-edited");
     const oldView = document.querySelector(".ticket-body-section");
     oldView.replaceChildren();
-    const rows = Math.round(content.length / 100);
+    const rows = Math.round(content.length / 115);
     render(ticketContentTemplate(content, isContentView, requestFunc, isInputValid, editContent, rows), container);
 };

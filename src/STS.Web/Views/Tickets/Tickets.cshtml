@@ -1,8 +1,8 @@
-﻿@using STS.Web.ViewModels.Tickets;
-
+﻿@using Microsoft.JSInterop
+@using STS.Web.ViewModels.Tickets;
 @using static STS.Common.GlobalConstants;
-
 @model TicketsListViewModel;
+@inject IJSRuntime JS
 
 @{
     this.ViewData["Title"] = "Tickets";
@@ -56,7 +56,7 @@
                             <div>
                                 <span class="priority @ticket.PriorityName.ToLower().Replace(" ", "")">@ticket.PriorityName</span>
                             </div>
-                            <div class="table-t-title">@ticket.Title</div>
+                            <div class="table-t-title">@(ticket.Title.Length > 80 ? ticket.Title.Substring(0, 80) : ticket.Title)</div>
                             <div>
                                 @(ticket.AssignedToUserName == null
                         ? "unassigned"
@@ -137,12 +137,11 @@
     </section>
 </section>
 
-<dialog class="create-dialog">
+<section class="create-dialog-overlay">
     <vc:create-ticket></vc:create-ticket>
-</dialog>
+</section>
 
-@section Scripts {
-    <script type="module" src="~/js/services/create-ticket-dialog.js"></script>
-    <script type="module" src="~/js/services/create-ticket-validation.js"></script>
+@section Scripts {    
     <script type="module" src="~/js/services/tickets-services.js"></script>
+    <script type="module" src="~/js/services/create-ticket-validation.js"></script>
 }

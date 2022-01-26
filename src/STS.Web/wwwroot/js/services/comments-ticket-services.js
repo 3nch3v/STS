@@ -1,20 +1,31 @@
 ﻿import constants from '../constants.js';
 import appendComment from '../views/comment-view.js';
-import { getTicketId, getRequestToken, modal, } from './util.js';
+import { getTicketId, getRequestToken } from './util.js';
 import { createComment, deleteCommentById } from '../data/data.js';
 import { changeStatusIcon } from './tickets-services.js';
 
-modal('.t-comment-btn', '.comment-dialog', '.cancel-c-btn');
-
+const createCommentModal = document.querySelector('.comment-dialog-overlay');
+const createBtn = document.querySelector('.t-comment-btn');
+const cancelCommentDialogBtn = document.querySelector('.cancel-c-btn');
 const commentForm = document.querySelector('.comment-form');
 const submitBtn = commentForm.querySelector('button.c-btn');
 const cancelBtn = commentForm.querySelector('button.cancel-c-btn');
 const comments = document.querySelector('.ticket-comments');
 const commentValidationMsg = commentForm.querySelector('.comment-validation');
 
+createBtn.addEventListener('click', showModal);
+cancelCommentDialogBtn.addEventListener('click', cancelModal);
 submitBtn.addEventListener('click', postCommen);
 cancelBtn.addEventListener('click', cleanForm);
 comments.addEventListener('click', deleteComment);
+
+function showModal() {
+    createCommentModal.style.display = 'block';
+}
+
+function cancelModal() {
+    createCommentModal.style.display = 'none';
+}
 
 async function postCommen(event) {
     event.preventDefault();
@@ -53,7 +64,7 @@ async function postCommen(event) {
     const commentCopy = commentChildren[commentChildren.length - 1].cloneNode(true);
     comments.appendChild(commentCopy);
     commentForm.reset();
-    closeDialog();
+    cancelModal();
 };
 
 async function deleteComment(event) {
@@ -83,9 +94,5 @@ async function deleteComment(event) {
 function cleanForm() {
     commentForm.reset();
     commentValidationMsg.textContent = '';
-    closeDialog();
-}
-
-function closeDialog() {
-    document.querySelector('.comment-dialog').close('Cancel');
+    cancelModal();
 }

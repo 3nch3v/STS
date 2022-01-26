@@ -12,24 +12,6 @@ export function getRequestToken() {
     return token;
 }
 
-export function modal(modalElement, dialogElement, cancelBtnElement) {
-    const showModal = document.querySelector(modalElement);
-    const dialog = document.querySelector(dialogElement);
-    const cancelBtn = document.querySelector(cancelBtnElement);
-    showModal.addEventListener('click', openDialog);
-    cancelBtn.addEventListener('click', closeDialog);
-
-    function openDialog() {
-        if (!dialog.open) {
-            dialog.showModal();
-        }
-    };
-
-    function closeDialog() {
-        dialog.close('Cancel');
-    };
-}
-
 export function createHtmlElement(type, attributes, ...content) {
     const result = document.createElement(type);
 

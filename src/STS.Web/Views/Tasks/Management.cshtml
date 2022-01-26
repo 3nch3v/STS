@@ -95,11 +95,11 @@
 
 <partial name="_NotificationPartial"></partial>
 
-<dialog class="create-task-dialog">
+<section class="create-task-overlay">
     <vc:create-task></vc:create-task>
-</dialog>
+</section>
 
 @section Scripts {
+    <script type="module" src="~/js/services/show-create-task-dialog.js"></script>
     <script type="module" src="~/js/services/create-task-validation.js"></script>
-    <script type="module" src="~/js/services/create-task-dialog.js"></script>
 } 

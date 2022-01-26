@@ -1,0 +1,38 @@
+﻿.create-dialog-overlay,
+.comment-dialog-overlay,
+.create-task-overlay {
+    display: none;
+}
+
+.create-dialog-overlay,
+.comment-dialog-overlay,
+.create-task-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.create-form-wrapper,
+.comment-form-wrapper,
+.create-task-form-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    border-radius: 8px;
+    width: 1020px;
+    color: #8B949E;
+    border: 1px solid #39A6FF;
+    background-color: #0C0F15;
+    padding: 20px;
+}
+
+.create-form-wrapper.task {
+    width: 700px;
+}
+

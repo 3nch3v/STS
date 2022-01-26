@@ -48,10 +48,6 @@
     padding: 15px;
 }
 
-/*.task-info {
-    margin-top: 10px;
-}
-*/
 .ticket-actions {
     margin-bottom: 15px;
 }
@@ -105,23 +101,6 @@
 
 .ticket-footer div p {
     margin-bottom: 10px;
-}
-
-@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-    .ticket-container {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        align-items: start;
-    }
-
-    .t-comment {
-        padding-bottom: 15px;
-    }
-
-    .show-create-btn {
-        margin-bottom: 10px;
-    }
 }
 
 .comment-actions {
@@ -192,4 +171,21 @@
 
 .new-comment {
     display: none;
+}
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+    .ticket-container {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: start;
+    }
+
+    .t-comment {
+        padding-bottom: 15px;
+    }
+
+    .show-create-btn {
+        margin-bottom: 10px;
+    }
 }
